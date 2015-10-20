@@ -178,10 +178,10 @@ void Validation::Loop()
 	
 	hJet_ParFl_bDisJP->Fill(Jet_GenPartonFlavour->at(iJet),Jet_bDis_JP->at(iJet));
 	hJet_HadFl_bDisJP->Fill(Jet_GenHadronFlavour->at(iJet),Jet_bDis_JP->at(iJet));
-
+	
 	hJet_ParFl_bDisCMVA->Fill(Jet_GenPartonFlavour->at(iJet),Jet_bDis_CMVA->at(iJet));
 	hJet_HadFl_bDisCMVA->Fill(Jet_GenHadronFlavour->at(iJet),Jet_bDis_CMVA->at(iJet));
-
+	
       }//end loop on Jets
     //*************************************************************************
 
@@ -196,6 +196,7 @@ void Validation::Loop()
   outFile->cd();
 
   // Create and write canvases here
+  
 
   // Uncomment this line to write also the histograms to the file
   outFile->Write();
@@ -283,26 +284,25 @@ void Validation::MakeHisto(void)
   hMET_SumEt = new TH1D ("hMET_SumEt","hMET_SumEt",200,0,5000);
   
   //Jet***************************************************************************
-  hJet_Pt;
-  hJet_Eta;
-  hJet_Phi;
-  hJet_E;
-  hJet_JetArea;
+  hJet_Pt          = new TH1D("hJet_Pt"     ,"hJet_Pt"     ,200,0,200);
+  hJet_Eta         = new TH1D("hJet_Eta"    ,"hJet_Eta"    ,100,-4,4);
+  hJet_Phi         = new TH1D("hJet_Phi"    ,"hJet_Phi"    ,200,-4,4);
+  hJet_E           = new TH1D("hJet_E"      ,"hJet_E"      ,200,0,200);
+  hJet_JetArea     = new TH1D("hJet_JetArea","hJet_JetArea",100,-4,4);
   
-  hJet_ChMulti;
-  hJet_ChHadMulti;
-  hJet_NMulti;
-  hJet_NHadMulti;
+  hJet_ChMulti     = new TH1D("hJet_ChMulti"     ,"hJet_ChMulti"     ,50,0,50);
+  hJet_ChHadMulti  = new TH1D("hJet_ChHadMulti"  ,"hJet_ChHadMulti"  ,50,0,50);
+  hJet_NMulti      = new TH1D("hJet_NMulti"      ,"hJet_NMulti"      ,50,0,50);
+  hJet_NHadMulti   = new TH1D("hJet_NHadMulti"   ,"hJet_NHadMulti"   ,50,0,50);
+  hJet_ElecMulti   = new TH1D("hJet_ElecMulti"   ,"hJet_ElecMulti"   ,50,0,50);
+  hJet_MuonMulti   = new TH1D("hJet_MuonMulti"   ,"hJet_MuonMulti"   ,50,0,50);
+  hJet_PhotonMulti = new TH1D("hJet_PhotonMulti" ,"hJet_PhotonMulti" ,50,0,50);
   
-  hJet_ElecMulti;
-  hJet_MuonMulti;
-  hJet_PhotonMulti;
-  
-  hJet_ParFl_bDisJP;
-  hJet_HadFl_bDisJP;
+  hJet_ParFl_bDisJP = new TProfile ("hJet_ParFl_bDisJP","hJet_ParFl_bDisJP",11,-5.5,5.5,-100,100);
+  hJet_HadFl_bDisJP = new TProfile ("hJet_HadFl_bDisJP","hJet_HadFl_bDisJP",6,-0.5,5.5,-100,100);
     
-  hJet_ParFl_bDisCMVA;
-  hJet_HadFl_bDisCMVA;
+  hJet_ParFl_bDisCMVA = new TProfile ("hJet_ParFl_bDisCMVA","hJet_ParFl_bDisCMVA",11,-5.5,5.5,-100,100);
+  hJet_HadFl_bDisCMVA = new TProfile ("hJet_HadFl_bDisCMVA","hJet_HadFl_bDisCMVA",6,-0.5,5.5,-100,100);
 }
 
 //****************************************************************************
