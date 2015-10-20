@@ -107,8 +107,7 @@ ttHAnalysis_C.so: /home/athermw/root/include/TAttCanvas.h
 ttHAnalysis_C.so: /home/athermw/root/include/TCanvasImp.h
 ttHAnalysis_C.so: ../utilities/MCTools.C ../utilities/MCTools.h
 ttHAnalysis_C.so: ../utilities/AuxTools.h ../utilities/ObjectMCAssociator.C
-ttHAnalysis_C.so: ../utilities/ObjectMCAssociator.h ../utilities/L1Tracks.C
-ttHAnalysis_C.so: ../utilities/L1Tracks.h ../utilities/AuxTools.C
+ttHAnalysis_C.so: ../utilities/ObjectMCAssociator.h ../utilities/AuxTools.C
 ttHAnalysis_C.so: ../utilities/Table.C ../utilities/constants.h
 ttHAnalysis_C.so: /home/athermw/root/include/cintdictversion.h /home/athermw/root/include/RVersion.h
 ttHAnalysis_C__ROOTBUILDVERSION= 5.34/25

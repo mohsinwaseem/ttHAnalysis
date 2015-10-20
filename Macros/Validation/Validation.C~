@@ -1,10 +1,10 @@
-#ifndef MACRONAMEMC_cxx
-#define MACRONAMEMC_cxx
+#ifndef Validation_cxx
+#define Validation_cxx
 
-#include "MACRONAMEMC.h"
+#include "Validation.h"
 #include "../utilities/constants.h"
 
-void MACRONAMEMC::Loop()
+void Validation::Loop()
 {
   if (fChain == 0) return;
 
@@ -40,4 +40,4 @@ void MACRONAMEMC::Loop()
   // outFile->Write();
 }
 
-#endif // MACRONAMEMC_cxx
+#endif // Validation_cxx

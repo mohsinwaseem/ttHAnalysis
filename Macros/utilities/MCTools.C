@@ -114,7 +114,7 @@ TLorentzVector MCTools::GetP4(const Int_t iGenP)
 
   // Sanity check on 4-momentum
   TLorentzVector p4;
-  p4.SetPtEtaPhiM(GenP_Pt->at(iGenP), GenP_Eta->at(iGenP), GenP_Phi->at(iGenP), GenP_Mass->at(iGenP));
+  p4.SetPtEtaPhiM(GenP_Pt->at(iGenP), GenP_Eta->at(iGenP), GenP_Phi->at(iGenP), GenP_M->at(iGenP));
   return p4;
 
 }
@@ -150,7 +150,7 @@ TLorentzVector MCTools::GetVisibleP4(const std::vector<unsigned short>& Daug)
     Double_t pt   = GenP_Pt  ->at(index);
     Double_t eta  = GenP_Eta ->at(index);
     Double_t phi  = GenP_Phi ->at(index);
-    Double_t mass = GenP_Mass->at(index);
+    Double_t mass = GenP_M->at(index);
 
     TLorentzVector tmp;
     tmp.SetPtEtaPhiM(pt, eta, phi, mass);
@@ -636,7 +636,7 @@ void MCTools::PrintGenp(Int_t Indx, bool bPrintHeaders)
 	if (GenP_Daughters->at(Indx).at(NDaug-1) != daug2) daug2 -=1;
       }
   }
-  double mass = GenP_Mass->at(Indx);
+  double mass = GenP_M->at(Indx);
   double pt   = GenP_Pt->at(Indx);
   double phi  = GenP_Phi->at(Indx);
   double eta  = GenP_Eta->at(Indx);
@@ -693,7 +693,7 @@ void MCTools::PrintGenpMinimalInfo(Int_t Indx, bool bPrintHeaders)
   double pt    = GenP_Pt->at(Indx);
   double eta   = GenP_Eta->at(Indx);
   double phi   = GenP_Phi->at(Indx);
-  double mass  = GenP_Mass->at(Indx);
+  double mass  = GenP_M->at(Indx);
   double PdgId = GenP_PdgId->at(Indx);
 
   TLorentzVector pGen;
@@ -740,7 +740,7 @@ TLorentzVector MCTools::GetGenpP4(const Int_t Index)
   Double_t pt   = GenP_Pt  ->at(Index);
   Double_t eta  = GenP_Eta ->at(Index);
   Double_t phi  = GenP_Phi ->at(Index);
-  Double_t mass = GenP_Mass->at(Index);
+  Double_t mass = GenP_M->at(Index);
     
   TLorentzVector p4;
   p4.SetPtEtaPhiM(pt, eta, phi, mass);

@@ -34,7 +34,7 @@ TreeReaderReco::TreeReaderReco(const std::string SamplePath, const std::string S
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-     TChain* chain = new TChain("TkTauFromCaloNTupleMaker/EvtTree");
+     TChain* chain = new TChain("MyNtuple/EvtTree");
      OpenFile(SamplePath, SampleName, chain);
      tree = chain;
    }

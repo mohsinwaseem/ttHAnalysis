@@ -237,6 +237,7 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<float> *Jet_GenJet_emE;
   std::vector<float> *Jet_GenJet_hadE;
   std::vector<float> *Jet_GenJet_invisibleE;
+
   std::vector<Int_t> *Jet_GenPartonFlavour;
   std::vector<Int_t> *Jet_GenHadronFlavour;
 

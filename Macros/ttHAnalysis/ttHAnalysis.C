@@ -25,8 +25,13 @@ void ttHAnalysis::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       
+      cout<<"\tThere are this much genparticles\t"<< GenP_Pt->size()<<endl;
+      
+
       // Update the progress bar
+      cout<<endl;
       tools.ProgressBar(jentry, nentries, 100, 150);
+      cout<<endl;
     }
   
   // Keep this line here!

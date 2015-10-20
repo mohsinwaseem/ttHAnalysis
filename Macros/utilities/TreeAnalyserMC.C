@@ -9,11 +9,11 @@
 #include <typeinfo>
 
 #include "TreeAnalyserMC.h"
-#include "L1Tracks.C"
+//#include "L1Tracks.C"
 
 void TreeAnalyserMC::InitSelector()
 {
-  s = new L1Tracks(this);
+  //  s = new L1Tracks(this);
 }
 
 #endif //TreeAnalyserMC_cxx
