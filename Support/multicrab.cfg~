@@ -1,0 +1,51 @@
+[MULTICRAB]
+cfg = crab.cfg
+
+[COMMON]
+CMSSW.pset =  MyNtupleMaker_cfg.py
+#CMSSW.pset =  TkTauFromCaloNTupleMaker_cfg.py
+#CMSSW.pset = L1TrackNtupleMaker_cfg.py
+#CMSSW.pset = TkTauFromCaloAnalyzer_cfg.py
+#CMSSW.pset = TauTriggerTree_TP_cfg.py
+
+[ttHJetToNonbb_M120_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix_1]
+# Number of files: 147
+# Number of events: 99 535
+CMSSW.datasetpath = /ttHJetToNonbb_M120_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM
+CMSSW.total_number_of_events = -1
+CMSSW.number_of_jobs = 20
+
+[ttHJetToNonbb_M120_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix_2]
+# Number of files: 147
+# Number of events: 99 535
+CMSSW.datasetpath = /ttHJetToNonbb_M120_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9_ext1-v1/MINIAODSIM
+CMSSW.total_number_of_events = -1
+CMSSW.number_of_jobs = 20
+
+[ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix_1]
+# Number of files: 147
+# Number of events: 99 535
+CMSSW.datasetpath = /ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM
+CMSSW.total_number_of_events = -1
+CMSSW.number_of_jobs = 20
+
+[ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix_2]
+# Number of files: 147
+# Number of events: 99 535
+CMSSW.datasetpath = /ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9_ext1-v1/MINIAODSIM
+CMSSW.total_number_of_events = -1
+CMSSW.number_of_jobs = 20
+
+[ttHJetToNonbb_M130_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix_1]
+# Number of files: 147
+# Number of events: 99 535
+CMSSW.datasetpath = /ttHJetToNonbb_M130_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM
+CMSSW.total_number_of_events = -1
+CMSSW.number_of_jobs = 20
+
+[ttHJetToNonbb_M130_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix_2]
+# Number of files: 147
+# Number of events: 99 535
+CMSSW.datasetpath = /ttHJetToNonbb_M130_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9_ext1-v1/MINIAODSIM
+CMSSW.total_number_of_events = -1
+CMSSW.number_of_jobs = 20
