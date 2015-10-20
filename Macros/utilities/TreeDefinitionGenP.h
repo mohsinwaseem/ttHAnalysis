@@ -9,82 +9,85 @@ class TreeDefinitionGenP : public virtual TreeDefinitionBase
 
    Int_t           RunNumber;
    Int_t           EvtNumber;
-   Double_t        HepMCEvt_VtxX;
-   Double_t        HepMCEvt_VtxY;
-   Double_t        HepMCEvt_VtxZ;
+   //GenJets
+   Int_t GenJet_N;
+   std::vector<float> *GenJet_Pt;
+   std::vector<float> *GenJet_Eta;
+   std::vector<float> *GenJet_Phi;
+   std::vector<float> *GenJet_M;
+   std::vector<float> *GenJet_E;
+   std::vector<float> *GenJet_emE;
+   std::vector<float> *GenJet_hadE;
+   std::vector<float> *GenJet_invE;
+   std::vector<float> *GenJet_auxE;
+   std::vector<float> *GenJet_VertexX;
+   std::vector<float> *GenJet_VertexY;
+   std::vector<float> *GenJet_VertexZ;
+   std::vector<vector<Int_t > > *GenJet_GenpPdgId;
+   std::vector<vector<float > > *GenJet_GenpPt;
+   std::vector<vector<float > > *GenJet_GenpEta;
+   std::vector<vector<float > > *GenJet_GenpPhi;
+   std::vector<vector<float > > *GenJet_GenpE;
+   
+   
+   //Genp
+   Int_t GenP_N;
+   std::vector<float> *GenP_Pt;
+   std::vector<float> *GenP_Eta;
+   std::vector<float> *GenP_Phi;
+   std::vector<float> *GenP_M;
+   std::vector<float> *GenP_E;
+   std::vector<Int_t> *GenP_PdgId;
+   std::vector<Int_t> *GenP_Charge;
+   std::vector<Int_t> *GenP_Status;
+   std::vector<float> *GenP_VertexX;
+   std::vector<float> *GenP_VertexY;
+   std::vector<float> *GenP_VertexZ;
+   std::vector< std::vector<unsigned short> > *GenP_Mothers;
+   std::vector< std::vector<unsigned short> > *GenP_Daughters; 
+   
+   // List of branches
+   TBranch   *b_RunNumber;
+   TBranch   *b_EvtNumber;
+   //GenJets
+   TBranch   *b_GenJet_N;
+   TBranch   *b_GenJet_Pt;
+   TBranch   *b_GenJet_Eta;
+   TBranch   *b_GenJet_Phi;
+   TBranch   *b_GenJet_M;
+   TBranch   *b_GenJet_E;
+   TBranch   *b_GenJet_emE;
+   TBranch   *b_GenJet_hadE;
+   TBranch   *b_GenJet_invE;
+   TBranch   *b_GenJet_auxE;
+   TBranch   *b_GenJet_VertexX;
+   TBranch   *b_GenJet_VertexY;
+   TBranch   *b_GenJet_VertexZ;
+   TBranch   *b_GenJet_GenpPdgId;
+   TBranch   *b_GenJet_GenpPt;
+   TBranch   *b_GenJet_GenpEta;
+   TBranch   *b_GenJet_GenpPhi;
+   TBranch   *b_GenJet_GenpE;
+   
+   
+   //Genp
+   TBranch   *b_GenP_N;
+   TBranch   *b_GenP_Pt;
+   TBranch   *b_GenP_Eta;
+   TBranch   *b_GenP_Phi;
+   TBranch   *b_GenP_M;
+   TBranch   *b_GenP_E;
+   TBranch   *b_GenP_PdgId;
+   TBranch   *b_GenP_Charge;
+   TBranch   *b_GenP_Status;
+   TBranch   *b_GenP_VertexX;
+   TBranch   *b_GenP_VertexY;
+   TBranch   *b_GenP_VertexZ;
+   TBranch   *b_GenP_Mothers;
+   TBranch   *b_GenP_Daughters;
 
-   std::vector<double>  *GenP_Pt;
-   std::vector<double>  *GenP_Eta;
-   std::vector<double>  *GenP_Phi;
-   std::vector<double>  *GenP_Mass;
-   std::vector<int>     *GenP_Charge;
-   std::vector<int>     *GenP_PdgId;
-   std::vector<int>     *GenP_Status;
-   std::vector<double>  *GenP_VertexX;
-   std::vector<double>  *GenP_VertexY;
-   std::vector<double>  *GenP_VertexZ;
-   std::vector<std::vector<unsigned short> > *GenP_Mothers;
-   std::vector<std::vector<unsigned short> > *GenP_Daughters;
 
-   std::vector<double>            *TP_Pt;
-   std::vector<double>            *TP_Px;
-   std::vector<double>            *TP_Py;
-   std::vector<double>            *TP_Pz;
-   std::vector<double>            *TP_Eta;
-   std::vector<double>            *TP_Phi;
-   std::vector<int>               *TP_NMatch;
-   //std::vector<std::vector<int> > *TP_TTTrackIndex;
-   std::vector<int>               *TP_TTTrackIndex;
-   std::vector<int>               *TP_Charge;
-   std::vector<int>               *TP_PdgId;
-   std::vector<double>            *TP_POCAx;
-   std::vector<double>            *TP_POCAy;                                                                                                                           
-   std::vector<double>            *TP_POCAz;                                                                                                                           
-   std::vector<double>            *TP_d0;  // d0  = x0*sin(phi) + y0*cos*(phi) = [1/sin(theta)] * sqrt( x0^2 + y0^2)
-   std::vector<double>            *TP_dxy; // dxy = sqrt( x0^2 + y0^2)
-   std::vector<int>               *TP_TTClusters; 
-   std::vector<int>               *TP_TTStubs;
-   std::vector<int>               *TP_TTTracks; 
 
-  // List of branches
-   TBranch *b_RunNumber;
-   TBranch *b_EvtNumber;
-   TBranch *b_HepMCEvt_VtxX;
-   TBranch *b_HepMCEvt_VtxY;
-   TBranch *b_HepMCEvt_VtxZ;
-
-   TBranch *b_GenP_Pt;
-   TBranch *b_GenP_Eta;
-   TBranch *b_GenP_Phi;
-   TBranch *b_GenP_Mass;
-   TBranch *b_GenP_Charge;
-   TBranch *b_GenP_PdgId;
-   TBranch *b_GenP_Status;
-   TBranch *b_GenP_VertexX;
-   TBranch *b_GenP_VertexY;
-   TBranch *b_GenP_VertexZ;
-   TBranch *b_GenP_Mothers;
-   TBranch *b_GenP_Daughters;
-
-   TBranch *b_TP_Pt;
-   TBranch *b_TP_Px;
-   TBranch *b_TP_Py;
-   TBranch *b_TP_Pz;
-   TBranch *b_TP_Eta;
-   TBranch *b_TP_Phi;
-   TBranch *b_TP_NMatch;
-   TBranch *b_TP_TTTrackIndex;
-   TBranch *b_TP_Charge;
-   TBranch *b_TP_PdgId;
-   TBranch *b_TP_POCAx;
-   TBranch *b_TP_POCAy;                                                                                                                           
-   TBranch *b_TP_POCAz;                                                                                                                           
-   TBranch *b_TP_d0;
-   TBranch *b_TP_dxy;
-   TBranch *b_TP_TTClusters;
-   TBranch *b_TP_TTStubs;
-   TBranch *b_TP_TTTracks;
-  
    virtual void InitGenP(TTree *tree);
 
 };
@@ -100,37 +103,42 @@ void TreeDefinitionGenP::InitGenP(TTree *tree)
   // (once per file to be processed).
 
   // Set object pointer
-   GenP_Pt         = 0;
-   GenP_Eta        = 0;
-   GenP_Phi        = 0;
-   GenP_Mass       = 0;
-   GenP_Charge     = 0;
-   GenP_PdgId      = 0;
-   GenP_Status     = 0;
-   GenP_VertexX    = 0;
-   GenP_VertexY    = 0;
-   GenP_VertexZ    = 0;
-   GenP_Mothers    = 0;
-   GenP_Daughters  = 0;
+  //GenJets
+  GenJet_Pt = 0;
+  GenJet_Eta = 0;
+  GenJet_Phi = 0;
+  GenJet_M = 0;
+  GenJet_E = 0;
+  GenJet_emE = 0;
+  GenJet_hadE = 0;
+  GenJet_invE = 0;
+  GenJet_auxE = 0;
+  GenJet_VertexX = 0;
+  GenJet_VertexY = 0;
+  GenJet_VertexZ = 0;
+  GenJet_GenpPdgId = 0;
+  GenJet_GenpPt = 0;
+  GenJet_GenpEta = 0;
+  GenJet_GenpPhi = 0;
+  GenJet_GenpE = 0;
+  
+  
+  //Genp
+  GenP_Pt = 0;
+  GenP_Eta = 0;
+  GenP_Phi = 0;
+  GenP_M = 0;
+  GenP_E = 0;
+  GenP_PdgId = 0;
+  GenP_Charge = 0;
+  GenP_Status = 0;
+  GenP_VertexX = 0;
+  GenP_VertexY = 0;
+  GenP_VertexZ = 0;
+  GenP_Mothers = 0;
+  GenP_Daughters = 0;
+  
 
-   TP_Pt           = 0;
-   TP_Px           = 0;
-   TP_Py           = 0;
-   TP_Pz           = 0;
-   TP_Eta          = 0;
-   TP_Phi          = 0;
-   TP_NMatch       = 0;
-   TP_TTTrackIndex = 0;
-   TP_Charge       = 0;
-   TP_PdgId        = 0;
-   TP_POCAx        = 0;
-   TP_POCAy        = 0;                                                                                                                           
-   TP_POCAz        = 0;                                                                                                                           
-   TP_d0           = 0;
-   TP_dxy          = 0;
-   TP_TTClusters   = 0;
-   TP_TTStubs      = 0;
-   TP_TTTracks     = 0;
 
    // Set branch addresses and branch pointers
    if (!tree) return;
@@ -141,44 +149,42 @@ void TreeDefinitionGenP::InitGenP(TTree *tree)
    fChain->SetBranchAddress("RunNumber", &RunNumber, &b_RunNumber);
    fChain->SetBranchAddress("EvtNumber", &EvtNumber, &b_EvtNumber);
 
-   std::cout << "I N F O ! TreeDefinitionGenP::InitGenP(...) - Setting HepMC addresses." << std::endl;
-   fChain->SetBranchAddress("HepMCEvt_VtxX", &HepMCEvt_VtxX, &b_HepMCEvt_VtxX);
-   fChain->SetBranchAddress("HepMCEvt_VtxY", &HepMCEvt_VtxY, &b_HepMCEvt_VtxY);
-   fChain->SetBranchAddress("HepMCEvt_VtxZ", &HepMCEvt_VtxZ, &b_HepMCEvt_VtxZ);
+   std::cout << "I N F O ! TreeDefinitionGenP::InitGenP(...) - Setting GenJet addresses." << std::endl;
+   fChain->SetBranchAddress("GenJet_N"          , &GenJet_N         , &b_GenJet_N);
+   fChain->SetBranchAddress("GenJet_Pt"         , &GenJet_Pt        , &b_GenJet_Pt);
+   fChain->SetBranchAddress("GenJet_Eta"        , &GenJet_Eta       , &b_GenJet_Eta);
+   fChain->SetBranchAddress("GenJet_Phi"        , &GenJet_Phi       , &b_GenJet_Phi);
+   fChain->SetBranchAddress("GenJet_M"          , &GenJet_M         , &b_GenJet_M);
+   fChain->SetBranchAddress("GenJet_E"          , &GenJet_E         , &b_GenJet_E);
+   fChain->SetBranchAddress("GenJet_emE"        , &GenJet_emE       , &b_GenJet_emE);
+   fChain->SetBranchAddress("GenJet_hadE"       , &GenJet_hadE      , &b_GenJet_hadE);
+   fChain->SetBranchAddress("GenJet_invE"       , &GenJet_invE      , &b_GenJet_invE);
+   fChain->SetBranchAddress("GenJet_auxE"       , &GenJet_auxE      , &b_GenJet_auxE);
+   fChain->SetBranchAddress("GenJet_VertexX"    , &GenJet_VertexX   , &b_GenJet_VertexX);
+   fChain->SetBranchAddress("GenJet_VertexY"    , &GenJet_VertexY   , &b_GenJet_VertexY);
+   fChain->SetBranchAddress("GenJet_VertexZ"    , &GenJet_VertexZ   , &b_GenJet_VertexZ);
+   fChain->SetBranchAddress("GenJet_GenpPdgId"  , &GenJet_GenpPdgId , &b_GenJet_GenpPdgId);
+   fChain->SetBranchAddress("GenJet_GenpPt"     , &GenJet_GenpPt    , &b_GenJet_GenpPt);
+   fChain->SetBranchAddress("GenJet_GenpEta"    , &GenJet_GenpEta   , &b_GenJet_GenpEta);
+   fChain->SetBranchAddress("GenJet_GenpPhi"    , &GenJet_GenpPhi   , &b_GenJet_GenpPhi);
+   fChain->SetBranchAddress("GenJet_GenpE"      , &GenJet_GenpE     , &b_GenJet_GenpE);
 
-   std::cout << "I N F O ! TreeDefinitionGenP::InitGenP(...) - Setting GenP addresses." << std::endl;
-   fChain->SetBranchAddress("GenP_Pt"       , &GenP_Pt       , &b_GenP_Pt);
-   fChain->SetBranchAddress("GenP_Eta"      , &GenP_Eta      , &b_GenP_Eta);
-   fChain->SetBranchAddress("GenP_Phi"      , &GenP_Phi      , &b_GenP_Phi);
-   fChain->SetBranchAddress("GenP_Mass"     , &GenP_Mass     , &b_GenP_Mass);
-   fChain->SetBranchAddress("GenP_Charge"   , &GenP_Charge   , &b_GenP_Charge);
-   fChain->SetBranchAddress("GenP_PdgId"    , &GenP_PdgId    , &b_GenP_PdgId);
-   fChain->SetBranchAddress("GenP_Status"   , &GenP_Status   , &b_GenP_Status);
-   fChain->SetBranchAddress("GenP_VertexX"  , &GenP_VertexX  , &b_GenP_VertexX);
-   fChain->SetBranchAddress("GenP_VertexY"  , &GenP_VertexY  , &b_GenP_VertexY);
-   fChain->SetBranchAddress("GenP_VertexZ"  , &GenP_VertexZ  , &b_GenP_VertexZ);
-   fChain->SetBranchAddress("GenP_Mothers"  , &GenP_Mothers  , &b_GenP_Mothers);
-   fChain->SetBranchAddress("GenP_Daughters", &GenP_Daughters, &b_GenP_Daughters);
 
-   std::cout << "I N F O ! TreeDefinitionGenP::InitGenP(...) - Setting TP addresses." << std::endl;
-   fChain->SetBranchAddress("TP_Pt"           , &TP_Pt          , &b_TP_Pt);
-   fChain->SetBranchAddress("TP_Px"           , &TP_Px          , &b_TP_Px);
-   fChain->SetBranchAddress("TP_Py"           , &TP_Py          , &b_TP_Py);
-   fChain->SetBranchAddress("TP_Pz"           , &TP_Pz          , &b_TP_Pz);
-   fChain->SetBranchAddress("TP_Eta"          , &TP_Eta         , &b_TP_Eta);
-   fChain->SetBranchAddress("TP_Phi"          , &TP_Phi         , &b_TP_Phi);
-   fChain->SetBranchAddress("TP_NMatch"       , &TP_NMatch      , &b_TP_NMatch);
-   fChain->SetBranchAddress("TP_TTTrackIndex" , &TP_TTTrackIndex, &b_TP_TTTrackIndex);
-   fChain->SetBranchAddress("TP_Charge"       , &TP_Charge      , &b_TP_Charge);
-   fChain->SetBranchAddress("TP_PdgId"        , &TP_PdgId       , &b_TP_PdgId);
-   fChain->SetBranchAddress("TP_POCAx"        , &TP_POCAx       , &b_TP_POCAx);
-   fChain->SetBranchAddress("TP_POCAy"        , &TP_POCAy       , &b_TP_POCAy);                                                                                                                           
-   fChain->SetBranchAddress("TP_POCAz"        , &TP_POCAz       , &b_TP_POCAz);                                                                                                                           
-   fChain->SetBranchAddress("TP_d0"           , &TP_d0          , &b_TP_d0);
-   fChain->SetBranchAddress("TP_dxy"          , &TP_dxy         , &b_TP_dxy);
-   fChain->SetBranchAddress("TP_TTClusters"   , &TP_TTClusters  , &b_TP_TTClusters);
-   fChain->SetBranchAddress("TP_TTStubs"      , &TP_TTStubs     , &b_TP_TTStubs);
-   fChain->SetBranchAddress("TP_TTTracks"     , &TP_TTTracks    , &b_TP_TTTracks);
+   std::cout << "I N F O ! TreeDefinitionGenP::InitGenP(...) - Setting GenPar addresses." << std::endl;
+   fChain->SetBranchAddress("GenP_N"          , &GenP_N         , &b_GenP_N);
+   fChain->SetBranchAddress("GenP_Pt"         , &GenP_Pt        , &b_GenP_Pt);
+   fChain->SetBranchAddress("GenP_Eta"        , &GenP_Eta       , &b_GenP_Eta);
+   fChain->SetBranchAddress("GenP_Phi"        , &GenP_Phi       , &b_GenP_Phi);
+   fChain->SetBranchAddress("GenP_M"          , &GenP_M         , &b_GenP_M);
+   fChain->SetBranchAddress("GenP_E"          , &GenP_E         , &b_GenP_E);
+   fChain->SetBranchAddress("GenP_PdgId"      , &GenP_PdgId     , &b_GenP_PdgId);
+   fChain->SetBranchAddress("GenP_Charge"     , &GenP_Charge    , &b_GenP_Charge);
+   fChain->SetBranchAddress("GenP_Status"     , &GenP_Status    , &b_GenP_Status);
+   fChain->SetBranchAddress("GenP_VertexX"    , &GenP_VertexX   , &b_GenP_VertexX);
+   fChain->SetBranchAddress("GenP_VertexY"    , &GenP_VertexY   , &b_GenP_VertexY);
+   fChain->SetBranchAddress("GenP_VertexZ"    , &GenP_VertexZ   , &b_GenP_VertexZ);
+   fChain->SetBranchAddress("GenP_Mothers"    , &GenP_Mothers   , &b_GenP_Mothers);
+   fChain->SetBranchAddress("GenP_Daughters"  , &GenP_Daughters , &b_GenP_Daughters);
 
 }
 

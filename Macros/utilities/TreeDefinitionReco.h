@@ -11,24 +11,21 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
     //Declaration of leaf types
 
   //Event tree
-  //Event
-  Int_t *RunNumber;
-  Int_t *EvtNumber;
 
   //MET
-  float *MET_Px;
-  float *MET_Py;
-  float *MET_Pt;
-  float *MET_Phi;
-  float *MET_SumEt;
+  float MET_Px;
+  float MET_Py;
+  float MET_Pt;
+  float MET_Phi;
+  float MET_SumEt;
   
-  float *MET_UncorrectedPt;
-  float *MET_UncorrectedPhi;
-  float *MET_UncorrectedSumEt;
+  float MET_UncorrectedPt;
+  float MET_UncorrectedPhi;
+  float MET_UncorrectedSumEt;
   
-  float *MET_CaloMETPt;
-  float *MET_CaloMETPhi;
-  float *MET_CaloMETSumEt;
+  float MET_CaloMETPt;
+  float MET_CaloMETPhi;
+  float MET_CaloMETSumEt;
 
   //Electrons
   Int_t* Elec_N;
@@ -244,9 +241,9 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<Int_t> *Jet_GenHadronFlavour;
 
   //Vertex and Primary Vertex
-  float *PV_X;
-  float *PV_Y;
-  float *PV_Z;
+  float PV_X;
+  float PV_Y;
+  float PV_Z;
   std::vector<float> *Vertex_X;
   std::vector<float> *Vertex_ErrorX;
   std::vector<float> *Vertex_Y;
@@ -259,9 +256,6 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
    
 
    // List of branches
-  //Event
-  TBranch *b_RunNumber;
-  TBranch *b_EvtNumber;
 
   //MET
   TBranch *b_MET_Px;
@@ -520,10 +514,6 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   
   
   // Set object pointer
-  //Event
-  RunNumber = 0;
-  EvtNumber = 0;
-
   //MET
   MET_Px = 0;
   MET_Py = 0;
@@ -776,13 +766,6 @@ void TreeDefinitionReco::InitReco(TTree *tree)
    fCurrent = -1;
    fChain->SetMakeClass(1);
 
-
-
-
-   //Event
-  fChain->SetBranchAddress("RunNumber"               , &RunNumber               , &b_RunNumber);
-  fChain->SetBranchAddress("EvtNumber"               , &EvtNumber               , &b_EvtNumber);
-
   std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting MET addresses." << std::endl;
   //MET
   fChain->SetBranchAddress("MET_Px"               , &MET_Px               , &b_MET_Px);
@@ -799,239 +782,240 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   fChain->SetBranchAddress("MET_CaloMETPhi"       , &MET_CaloMETPhi       , &b_MET_CaloMETPhi);
   fChain->SetBranchAddress("MET_CaloMETSumEt"     , &MET_CaloMETSumEt     , &b_MET_CaloMETSumEt);
 
+  std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting Electron addresses." << std::endl;
   //Electrons
-  fChain->SetBranchAddress("Elec_N"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_M"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_E"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_Id"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_Charge"               , &               , &b_);
+  fChain->SetBranchAddress("Elec_N"                      , &Elec_N                      , &b_Elec_N);
+  fChain->SetBranchAddress("Elec_Pt"                     , &Elec_Pt                     , &b_Elec_Pt);
+  fChain->SetBranchAddress("Elec_Eta"                    , &Elec_Eta                    , &b_Elec_Eta);
+  fChain->SetBranchAddress("Elec_Phi"                    , &Elec_Phi                    , &b_Elec_Phi);
+  fChain->SetBranchAddress("Elec_M"                      , &Elec_M                      , &b_Elec_M);
+  fChain->SetBranchAddress("Elec_E"                      , &Elec_E                      , &b_Elec_E);
+  fChain->SetBranchAddress("Elec_Id"                     , &Elec_Id                     , &b_Elec_Id);
+  fChain->SetBranchAddress("Elec_Charge"                 , &Elec_Charge                 , &b_Elec_Charge);
   
-  fChain->SetBranchAddress("Elec_SCl_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_EtaWidth"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_PhiWidth"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_E"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_RawE"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_PreShowerE"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_PreShower1E"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_PreShower2E"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_SCl_PositionR"               , &               , &b_);
+  fChain->SetBranchAddress("Elec_SCl_Eta"                , &Elec_SCl_Eta                , &b_Elec_SCl_Eta);
+  fChain->SetBranchAddress("Elec_SCl_EtaWidth"           , &Elec_SCl_EtaWidth           , &b_Elec_SCl_EtaWidth);
+  fChain->SetBranchAddress("Elec_SCl_Phi"                , &Elec_SCl_Phi                , &b_Elec_SCl_Phi);
+  fChain->SetBranchAddress("Elec_SCl_PhiWidth"           , &Elec_SCl_PhiWidth           , &b_Elec_SCl_PhiWidth);
+  fChain->SetBranchAddress("Elec_SCl_E"                  , &Elec_SCl_E                  , &b_Elec_SCl_E);
+  fChain->SetBranchAddress("Elec_SCl_RawE"               , &Elec_SCl_RawE               , &b_Elec_SCl_RawE);
+  fChain->SetBranchAddress("Elec_SCl_PreShowerE"         , &Elec_SCl_PreShowerE         , &b_Elec_SCl_PreShowerE);
+  fChain->SetBranchAddress("Elec_SCl_PreShower1E"        , &Elec_SCl_PreShower1E        , &b_Elec_SCl_PreShower1E);
+  fChain->SetBranchAddress("Elec_SCl_PreShower2E"        , &Elec_SCl_PreShower2E        , &b_Elec_SCl_PreShower2E);
+  fChain->SetBranchAddress("Elec_SCl_PositionR"          , &Elec_SCl_PositionR          , &b_Elec_SCl_PositionR);
   
-  fChain->SetBranchAddress("Elec_HasGsfTrack"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_D0"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_D0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_Z0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_PV_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_PV_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_RP_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_RP_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_BS_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_BS_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_GsfTrack_DxyError"               , &               , &b_);
+  fChain->SetBranchAddress("Elec_HasGsfTrack"            , &Elec_HasGsfTrack            , &b_Elec_HasGsfTrack);
+  fChain->SetBranchAddress("Elec_GsfTrack_D0"            , &Elec_GsfTrack_D0            , &b_Elec_GsfTrack_D0);
+  fChain->SetBranchAddress("Elec_GsfTrack_Z0"            , &Elec_GsfTrack_Z0            , &b_Elec_GsfTrack_Z0);
+  fChain->SetBranchAddress("Elec_GsfTrack_D0Error"       , &Elec_GsfTrack_D0Error       , &b_Elec_GsfTrack_D0Error);
+  fChain->SetBranchAddress("Elec_GsfTrack_Z0Error"       , &Elec_GsfTrack_Z0Error       , &b_Elec_GsfTrack_Z0Error);
+  fChain->SetBranchAddress("Elec_GsfTrack_PV_Dxy"        , &Elec_GsfTrack_PV_Dxy        , &b_Elec_GsfTrack_PV_Dxy);
+  fChain->SetBranchAddress("Elec_GsfTrack_PV_Z0"         , &Elec_GsfTrack_PV_Z0         , &b_Elec_GsfTrack_PV_Z0);
+  fChain->SetBranchAddress("Elec_GsfTrack_RP_Dxy"        , &Elec_GsfTrack_RP_Dxy        , &b_Elec_GsfTrack_RP_Dxy);
+  fChain->SetBranchAddress("Elec_GsfTrack_RP_Z0"         , &Elec_GsfTrack_RP_Z0         , &b_Elec_GsfTrack_RP_Z0);
+  fChain->SetBranchAddress("Elec_GsfTrack_BS_Dxy"        , &Elec_GsfTrack_BS_Dxy        , &b_Elec_GsfTrack_BS_Dxy);
+  fChain->SetBranchAddress("Elec_GsfTrack_BS_Z0"         , &Elec_GsfTrack_BS_Z0         , &b_Elec_GsfTrack_BS_Z0);
+  fChain->SetBranchAddress("Elec_GsfTrack_DxyError"      , &Elec_GsfTrack_DxyError      , &b_Elec_GsfTrack_DxyError);
   //std::vector<Double_t> *Elec_GsfTrack_Z0Error;
-  fChain->SetBranchAddress("Elec_GsfTrack_NormalizedChi2"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP3d"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP3dError"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP2d"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP2dError"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP3dBS"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP3dBSError"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP2dBS"               , &               , &b_);
-  fChain->SetBranchAddress("Elec_IP2dBSError"               , &               , &b_);
+  fChain->SetBranchAddress("Elec_GsfTrack_NormalizedChi2", &Elec_GsfTrack_NormalizedChi2, &b_Elec_GsfTrack_NormalizedChi2);
+  fChain->SetBranchAddress("Elec_IP3d"                   , &Elec_IP3d                   , &b_Elec_IP3d);
+  fChain->SetBranchAddress("Elec_IP3dError"              , &Elec_IP3dError              , &b_Elec_IP3dError);
+  fChain->SetBranchAddress("Elec_IP2d"                   , &Elec_IP2d                   , &b_Elec_IP2d);
+  fChain->SetBranchAddress("Elec_IP2dError"              , &Elec_IP2dError              , &b_Elec_IP2dError);
+  fChain->SetBranchAddress("Elec_IP3dBS"                 , &Elec_IP3dBS                 , &b_Elec_IP3dBS);
+  fChain->SetBranchAddress("Elec_IP3dBSError"            , &Elec_IP3dBSError            , &b_Elec_IP3dBSError);
+  fChain->SetBranchAddress("Elec_IP2dBS"                 , &Elec_IP2dBS                 , &b_Elec_IP2dBS);
+  fChain->SetBranchAddress("Elec_IP2dBSError"            , &Elec_IP2dBSError            , &b_Elec_IP2dBSError);
   
   
-  
+  std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting Muon addresses." << std::endl;
   //Muons
-  fChain->SetBranchAddress("Muon_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_M"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_E"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_Id"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_Charge"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_Pt"                        , &Muon_Pt                        , &b_Muon_Pt);
+  fChain->SetBranchAddress("Muon_Eta"                       , &Muon_Eta                       , &b_Muon_Eta);
+  fChain->SetBranchAddress("Muon_Phi"                       , &Muon_Phi                       , &b_Muon_Phi);
+  fChain->SetBranchAddress("Muon_M"                         , &Muon_M                         , &b_Muon_M);
+  fChain->SetBranchAddress("Muon_E"                         , &Muon_E                         , &b_Muon_E);
+  fChain->SetBranchAddress("Muon_Id"                        , &Muon_Id                        , &b_Muon_Id);
+  fChain->SetBranchAddress("Muon_Charge"                    , &Muon_Charge                    , &b_Muon_Charge);
   
-  fChain->SetBranchAddress("Muon_IP3d"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP3dError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP2d"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP2dError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP3dBS"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP3dBSError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP2dBS"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_IP2dBSError"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_IP3d"                      , &Muon_IP3d                      , &b_Muon_IP3d);
+  fChain->SetBranchAddress("Muon_IP3dError"                 , &Muon_IP3dError                 , &b_Muon_IP3dError);
+  fChain->SetBranchAddress("Muon_IP2d"                      , &Muon_IP2d                      , &b_Muon_IP2d);
+  fChain->SetBranchAddress("Muon_IP2dError"                 , &Muon_IP2dError                 , &b_Muon_IP2dError);
+  fChain->SetBranchAddress("Muon_IP3dBS"                    , &Muon_IP3dBS                    , &b_Muon_IP3dBS);
+  fChain->SetBranchAddress("Muon_IP3dBSError"               , &Muon_IP3dBSError               , &b_Muon_IP3dBSError);
+  fChain->SetBranchAddress("Muon_IP2dBS"                    , &Muon_IP2dBS                    , &b_Muon_IP2dBS);
+  fChain->SetBranchAddress("Muon_IP2dBSError"               , &Muon_IP2dBSError               , &b_Muon_IP2dBSError);
   
-  fChain->SetBranchAddress("Muon_HasGlobalTrack"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_D0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_D0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_Z0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_PV_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_PV_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_RP_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_RP_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_BS_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_BS_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_DxyError"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_HasGlobalTrack"            , &Muon_HasGlobalTrack            , &b_Muon_HasGlobalTrack);
+  fChain->SetBranchAddress("Muon_GlobalTrack_D0"            , &Muon_GlobalTrack_D0            , &b_Muon_GlobalTrack_D0);
+  fChain->SetBranchAddress("Muon_GlobalTrack_Z0"            , &Muon_GlobalTrack_Z0            , &b_Muon_GlobalTrack_Z0);
+  fChain->SetBranchAddress("Muon_GlobalTrack_D0Error"       , &Muon_GlobalTrack_D0Error       , &b_Muon_GlobalTrack_D0Error);
+  fChain->SetBranchAddress("Muon_GlobalTrack_Z0Error"       , &Muon_GlobalTrack_Z0Error       , &b_Muon_GlobalTrack_Z0Error);
+  fChain->SetBranchAddress("Muon_GlobalTrack_PV_Dxy"        , &Muon_GlobalTrack_PV_Dxy        , &b_Muon_GlobalTrack_PV_Dxy);
+  fChain->SetBranchAddress("Muon_GlobalTrack_PV_Z0"         , &Muon_GlobalTrack_PV_Z0         , &b_Muon_GlobalTrack_PV_Z0);
+  fChain->SetBranchAddress("Muon_GlobalTrack_RP_Dxy"        , &Muon_GlobalTrack_RP_Dxy        , &b_Muon_GlobalTrack_RP_Dxy);
+  fChain->SetBranchAddress("Muon_GlobalTrack_RP_Z0"         , &Muon_GlobalTrack_RP_Z0         , &b_Muon_GlobalTrack_RP_Z0);
+  fChain->SetBranchAddress("Muon_GlobalTrack_BS_Dxy"        , &Muon_GlobalTrack_BS_Dxy        , &b_Muon_GlobalTrack_BS_Dxy);
+  fChain->SetBranchAddress("Muon_GlobalTrack_BS_Z0"         , &Muon_GlobalTrack_BS_Z0         , &b_Muon_GlobalTrack_BS_Z0);
+  fChain->SetBranchAddress("Muon_GlobalTrack_DxyError"      , &Muon_GlobalTrack_DxyError      , &b_Muon_GlobalTrack_DxyError);
   //std::vector<Double_t> *Muon_GlobalTrack_Z0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_NormalizedChi2"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_PtError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_EtaError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_PhiError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_GlobalTrack_Charge"               , &               , &b_);
-  
-  fChain->SetBranchAddress("Muon_HasInnerTrack"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_D0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_D0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_Z0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_PV_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_PV_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_RP_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_RP_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_BS_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_BS_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_DxyError"               , &               , &b_);
-  //std::vector<Double_t> *Muon_InnerTrack_Z0Error;
-  fChain->SetBranchAddress("Muon_InnerTrack_NormalizedChi2"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_PtError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_EtaError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_PhiError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_InnerTrack_Charge"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_GlobalTrack_NormalizedChi2", &Muon_GlobalTrack_NormalizedChi2, &b_Muon_GlobalTrack_NormalizedChi2);
+  fChain->SetBranchAddress("Muon_GlobalTrack_Pt"            , &Muon_GlobalTrack_Pt            , &b_Muon_GlobalTrack_Pt);
+  fChain->SetBranchAddress("Muon_GlobalTrack_Eta"           , &Muon_GlobalTrack_Eta           , &b_Muon_GlobalTrack_Eta);
+  fChain->SetBranchAddress("Muon_GlobalTrack_Phi"           , &Muon_GlobalTrack_Phi           , &b_Muon_GlobalTrack_Phi);
+  fChain->SetBranchAddress("Muon_GlobalTrack_PtError"       , &Muon_GlobalTrack_PtError       , &b_Muon_GlobalTrack_PtError);
+  fChain->SetBranchAddress("Muon_GlobalTrack_EtaError"      , &Muon_GlobalTrack_EtaError      , &b_Muon_GlobalTrack_EtaError);
+  fChain->SetBranchAddress("Muon_GlobalTrack_PhiError"      , &Muon_GlobalTrack_PhiError      , &b_Muon_GlobalTrack_PhiError);
+  fChain->SetBranchAddress("Muon_GlobalTrack_Charge"        , &Muon_GlobalTrack_Charge        , &b_Muon_GlobalTrack_Charge);
 
-  fChain->SetBranchAddress("Muon_HasBestTrack"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrackType"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_D0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_D0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_Z0Error"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_PV_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_PV_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_RP_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_RP_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_BS_Dxy"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_BS_Z0"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_DxyError"               , &               , &b_);
-  //std::vector<Double_t> *Muon_BestTrack_Z0Error;
-  fChain->SetBranchAddress("Muon_BestTrack_NormalizedChi2"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_PtError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_EtaError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_PhiError"               , &               , &b_);
-  fChain->SetBranchAddress("Muon_BestTrack_Charge"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_HasInnerTrack"            , &Muon_HasInnerTrack            , &b_Muon_HasInnerTrack);
+  fChain->SetBranchAddress("Muon_InnerTrack_D0"            , &Muon_InnerTrack_D0            , &b_Muon_InnerTrack_D0);
+  fChain->SetBranchAddress("Muon_InnerTrack_Z0"            , &Muon_InnerTrack_Z0            , &b_Muon_InnerTrack_Z0);
+  fChain->SetBranchAddress("Muon_InnerTrack_D0Error"       , &Muon_InnerTrack_D0Error       , &b_Muon_InnerTrack_D0Error);
+  fChain->SetBranchAddress("Muon_InnerTrack_Z0Error"       , &Muon_InnerTrack_Z0Error       , &b_Muon_InnerTrack_Z0Error);
+  fChain->SetBranchAddress("Muon_InnerTrack_PV_Dxy"        , &Muon_InnerTrack_PV_Dxy        , &b_Muon_InnerTrack_PV_Dxy);
+  fChain->SetBranchAddress("Muon_InnerTrack_PV_Z0"         , &Muon_InnerTrack_PV_Z0         , &b_Muon_InnerTrack_PV_Z0);
+  fChain->SetBranchAddress("Muon_InnerTrack_RP_Dxy"        , &Muon_InnerTrack_RP_Dxy        , &b_Muon_InnerTrack_RP_Dxy);
+  fChain->SetBranchAddress("Muon_InnerTrack_RP_Z0"         , &Muon_InnerTrack_RP_Z0         , &b_Muon_InnerTrack_RP_Z0);
+  fChain->SetBranchAddress("Muon_InnerTrack_BS_Dxy"        , &Muon_InnerTrack_BS_Dxy        , &b_Muon_InnerTrack_BS_Dxy);
+  fChain->SetBranchAddress("Muon_InnerTrack_BS_Z0"         , &Muon_InnerTrack_BS_Z0         , &b_Muon_InnerTrack_BS_Z0);
+  fChain->SetBranchAddress("Muon_InnerTrack_DxyError"      , &Muon_InnerTrack_DxyError      , &b_Muon_InnerTrack_DxyError);
+  //std::vector<Double_t> *Muon_InnerTrack_Z0Error"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_InnerTrack_NormalizedChi2", &Muon_InnerTrack_NormalizedChi2, &b_Muon_InnerTrack_NormalizedChi2);
+  fChain->SetBranchAddress("Muon_InnerTrack_Pt"            , &Muon_InnerTrack_Pt            , &b_Muon_InnerTrack_Pt);
+  fChain->SetBranchAddress("Muon_InnerTrack_Eta"           , &Muon_InnerTrack_Eta           , &b_Muon_InnerTrack_Eta);
+  fChain->SetBranchAddress("Muon_InnerTrack_Phi"           , &Muon_InnerTrack_Phi           , &b_Muon_InnerTrack_Phi);
+  fChain->SetBranchAddress("Muon_InnerTrack_PtError"       , &Muon_InnerTrack_PtError       , &b_Muon_InnerTrack_PtError);
+  fChain->SetBranchAddress("Muon_InnerTrack_EtaError"      , &Muon_InnerTrack_EtaError      , &b_Muon_InnerTrack_EtaError);
+  fChain->SetBranchAddress("Muon_InnerTrack_PhiError"      , &Muon_InnerTrack_PhiError      , &b_Muon_InnerTrack_PhiError);
+  fChain->SetBranchAddress("Muon_InnerTrack_Charge"        , &Muon_InnerTrack_Charge        , &b_Muon_InnerTrack_Charge);
 
-  
+  fChain->SetBranchAddress("Muon_HasBestTrack"            , &Muon_HasBestTrack            , &b_Muon_HasBestTrack);
+  fChain->SetBranchAddress("Muon_BestTrackType"           , &Muon_BestTrackType           , &b_Muon_BestTrackType);
+  fChain->SetBranchAddress("Muon_BestTrack_D0"            , &Muon_BestTrack_D0            , &b_Muon_BestTrack_D0);
+  fChain->SetBranchAddress("Muon_BestTrack_Z0"            , &Muon_BestTrack_Z0            , &b_Muon_BestTrack_Z0);
+  fChain->SetBranchAddress("Muon_BestTrack_D0Error"       , &Muon_BestTrack_D0Error       , &b_Muon_BestTrack_D0Error);
+  fChain->SetBranchAddress("Muon_BestTrack_Z0Error"       , &Muon_BestTrack_Z0Error       , &b_Muon_BestTrack_Z0Error);
+  fChain->SetBranchAddress("Muon_BestTrack_PV_Dxy"        , &Muon_BestTrack_PV_Dxy        , &b_Muon_BestTrack_PV_Dxy);
+  fChain->SetBranchAddress("Muon_BestTrack_PV_Z0"         , &Muon_BestTrack_PV_Z0         , &b_Muon_BestTrack_PV_Z0);
+  fChain->SetBranchAddress("Muon_BestTrack_RP_Dxy"        , &Muon_BestTrack_RP_Dxy        , &b_Muon_BestTrack_RP_Dxy);
+  fChain->SetBranchAddress("Muon_BestTrack_RP_Z0"         , &Muon_BestTrack_RP_Z0         , &b_Muon_BestTrack_RP_Z0);
+  fChain->SetBranchAddress("Muon_BestTrack_BS_Dxy"        , &Muon_BestTrack_BS_Dxy        , &b_Muon_BestTrack_BS_Dxy);
+  fChain->SetBranchAddress("Muon_BestTrack_BS_Z0"         , &Muon_BestTrack_BS_Z0         , &b_Muon_BestTrack_BS_Z0);
+  fChain->SetBranchAddress("Muon_BestTrack_DxyError"      , &Muon_BestTrack_DxyError      , &b_Muon_BestTrack_DxyError);
+  //std::vector<Double_t> *Muon_BestTrack_Z0Error"               , &               , &b_);
+  fChain->SetBranchAddress("Muon_BestTrack_NormalizedChi2", &Muon_BestTrack_NormalizedChi2, &b_Muon_BestTrack_NormalizedChi2);
+  fChain->SetBranchAddress("Muon_BestTrack_Pt"            , &Muon_BestTrack_Pt            , &b_Muon_BestTrack_Pt);
+  fChain->SetBranchAddress("Muon_BestTrack_Eta"           , &Muon_BestTrack_Eta           , &b_Muon_BestTrack_Eta);
+  fChain->SetBranchAddress("Muon_BestTrack_Phi"           , &Muon_BestTrack_Phi           , &b_Muon_BestTrack_Phi);
+  fChain->SetBranchAddress("Muon_BestTrack_PtError"       , &Muon_BestTrack_PtError       , &b_Muon_BestTrack_PtError);
+  fChain->SetBranchAddress("Muon_BestTrack_EtaError"      , &Muon_BestTrack_EtaError      , &b_Muon_BestTrack_EtaError);
+  fChain->SetBranchAddress("Muon_BestTrack_PhiError"      , &Muon_BestTrack_PhiError      , &b_Muon_BestTrack_PhiError);
+  fChain->SetBranchAddress("Muon_BestTrack_Charge"        , &Muon_BestTrack_Charge        , &b_Muon_BestTrack_Charge);
+
+
+  std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting Tau addresses." << std::endl;
   //Taus
-  fChain->SetBranchAddress("Tau_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_M"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_E"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_Id"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_Charge"               , &               , &b_);
+  fChain->SetBranchAddress("Tau_Pt"                      , &Tau_Pt                     , &b_Tau_Pt);
+  fChain->SetBranchAddress("Tau_Eta"                     , &Tau_Eta                    , &b_Tau_Eta);
+  fChain->SetBranchAddress("Tau_Phi"                     , &Tau_Phi                    , &b_Tau_Phi);
+  fChain->SetBranchAddress("Tau_M"                       , &Tau_M                      , &b_Tau_M);
+  fChain->SetBranchAddress("Tau_E"                       , &Tau_E                      , &b_Tau_E);
+  fChain->SetBranchAddress("Tau_Id"                      , &Tau_Id                     , &b_Tau_Id);
+  fChain->SetBranchAddress("Tau_Charge"                  , &Tau_Charge                 , &b_Tau_Charge);
   
-  fChain->SetBranchAddress("Tau_DecayMode"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_IsCaloTau"               , &               , &b_);
+  fChain->SetBranchAddress("Tau_DecayMode"               , &Tau_DecayMode              , &b_Tau_DecayMode);
+  fChain->SetBranchAddress("Tau_IsCaloTau"               , &Tau_IsCaloTau              , &b_Tau_IsCaloTau);
 
-  fChain->SetBranchAddress("Tau_hasLeadChargedHadrCand"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCPt"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCEta"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCPhi"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCM"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCE"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCEt"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCId"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCCharge"               , &               , &b_);
+  fChain->SetBranchAddress("Tau_hasLeadChargedHadrCand"  , &Tau_hasLeadChargedHadrCand , &b_Tau_hasLeadChargedHadrCand);
+  fChain->SetBranchAddress("Tau_LeadingCHCPt"            , &Tau_LeadingCHCPt           , &b_Tau_LeadingCHCPt);
+  fChain->SetBranchAddress("Tau_LeadingCHCEta"           , &Tau_LeadingCHCEta          , &b_Tau_LeadingCHCEta);
+  fChain->SetBranchAddress("Tau_LeadingCHCPhi"           , &Tau_LeadingCHCPhi          , &b_Tau_LeadingCHCPhi);
+  fChain->SetBranchAddress("Tau_LeadingCHCM"             , &Tau_LeadingCHCM            , &b_Tau_LeadingCHCM);
+  fChain->SetBranchAddress("Tau_LeadingCHCE"             , &Tau_LeadingCHCE            , &b_Tau_LeadingCHCE);
+  fChain->SetBranchAddress("Tau_LeadingCHCEt"            , &Tau_LeadingCHCEt           , &b_Tau_LeadingCHCEt);
+  fChain->SetBranchAddress("Tau_LeadingCHCId"            , &Tau_LeadingCHCId           , &b_Tau_LeadingCHCId);
+  fChain->SetBranchAddress("Tau_LeadingCHCCharge"        , &Tau_LeadingCHCCharge       , &b_Tau_LeadingCHCCharge);
   
-  fChain->SetBranchAddress("Tau_LeadingCHCVx"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCVy"               , &               , &b_);
-  fChain->SetBranchAddress("Tau_LeadingCHCVz"               , &               , &b_);
+  fChain->SetBranchAddress("Tau_LeadingCHCVx"            , &Tau_LeadingCHCVx           , &b_Tau_LeadingCHCVx);
+  fChain->SetBranchAddress("Tau_LeadingCHCVy"            , &Tau_LeadingCHCVy           , &b_Tau_LeadingCHCVy);
+  fChain->SetBranchAddress("Tau_LeadingCHCVz"            , &Tau_LeadingCHCVz           , &b_Tau_LeadingCHCVz);
   
+
+  std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting Jet addresses." << std::endl;
   //Jets
-  fChain->SetBranchAddress("Jet_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_M"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_E"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_JetArea"               , &               , &b_);
+  fChain->SetBranchAddress("Jet_Pt"                        , &Jet_Pt                        , &b_Jet_Pt);
+  fChain->SetBranchAddress("Jet_Eta"                       , &Jet_Eta                       , &b_Jet_Eta);
+  fChain->SetBranchAddress("Jet_Phi"                       , &Jet_Phi                       , &b_Jet_Phi);
+  fChain->SetBranchAddress("Jet_M"                         , &Jet_M                         , &b_Jet_M);
+  fChain->SetBranchAddress("Jet_E"                         , &Jet_E                         , &b_Jet_E);
+  fChain->SetBranchAddress("Jet_JetArea"                   , &Jet_JetArea                   , &b_Jet_JetArea);
   
-  fChain->SetBranchAddress("Jet_ChargedMultiplicity"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ChargedHadronMultiplicity"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_NeutralMultiplicity"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_NeutralHadronMultiplicity"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ElectronMultiplicity"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_MuonMultiplicity"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_PhotonMultiplicity"               , &               , &b_);
+  fChain->SetBranchAddress("Jet_ChargedMultiplicity"       , &Jet_ChargedMultiplicity       , &b_Jet_ChargedMultiplicity);
+  fChain->SetBranchAddress("Jet_ChargedHadronMultiplicity" , &Jet_ChargedHadronMultiplicity , &b_Jet_ChargedHadronMultiplicity);
+  fChain->SetBranchAddress("Jet_NeutralMultiplicity"       , &Jet_NeutralMultiplicity       , &b_Jet_NeutralMultiplicity);
+  fChain->SetBranchAddress("Jet_NeutralHadronMultiplicity" , &Jet_NeutralHadronMultiplicity , &b_Jet_NeutralHadronMultiplicity);
+  fChain->SetBranchAddress("Jet_ElectronMultiplicity"      , &Jet_ElectronMultiplicity      , &b_Jet_ElectronMultiplicity);
+  fChain->SetBranchAddress("Jet_MuonMultiplicity"          , &Jet_MuonMultiplicity          , &b_Jet_MuonMultiplicity);
+  fChain->SetBranchAddress("Jet_PhotonMultiplicity"        , &Jet_PhotonMultiplicity        , &b_Jet_PhotonMultiplicity);
   
-  fChain->SetBranchAddress("Jet_NeutralEmEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_NeutralEmEnergyFraction"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_NeutralHadEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_NeutralHadEnergyFraction"               , &               , &b_);
+  fChain->SetBranchAddress("Jet_NeutralEmEnergy"           , &Jet_NeutralEmEnergy           , &b_Jet_NeutralEmEnergy);
+  fChain->SetBranchAddress("Jet_NeutralEmEnergyFraction"   , &Jet_NeutralEmEnergyFraction   , &b_Jet_NeutralEmEnergyFraction);
+  fChain->SetBranchAddress("Jet_NeutralHadEnergy"          , &Jet_NeutralHadEnergy          , &b_Jet_NeutralHadEnergy);
+  fChain->SetBranchAddress("Jet_NeutralHadEnergyFraction"  , &Jet_NeutralHadEnergyFraction  , &b_Jet_NeutralHadEnergyFraction);
   
-  fChain->SetBranchAddress("Jet_ChargedEmEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ChargedEmEnergyFraction"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ChargedHadEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ChargedHadEnergyFraction"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ChargedMuEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ChargedMuEnergyFraction"               , &               , &b_);
+  fChain->SetBranchAddress("Jet_ChargedEmEnergy"           , &Jet_ChargedEmEnergy           , &b_Jet_ChargedEmEnergy);
+  fChain->SetBranchAddress("Jet_ChargedEmEnergyFraction"   , &Jet_ChargedEmEnergyFraction   , &b_Jet_ChargedEmEnergyFraction);
+  fChain->SetBranchAddress("Jet_ChargedHadEnergy"          , &Jet_ChargedHadEnergy          , &b_Jet_ChargedHadEnergy);
+  fChain->SetBranchAddress("Jet_ChargedHadEnergyFraction"  , &Jet_ChargedHadEnergyFraction  , &b_Jet_ChargedHadEnergyFraction);
+  fChain->SetBranchAddress("Jet_ChargedMuEnergy"           , &Jet_ChargedMuEnergy           , &b_Jet_ChargedMuEnergy);
+  fChain->SetBranchAddress("Jet_ChargedMuEnergyFraction"   , &Jet_ChargedMuEnergyFraction   , &b_Jet_ChargedMuEnergyFraction);
   
-  fChain->SetBranchAddress("Jet_ElectronEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_ElectronEnergyFraction"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_MuonEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_MuonEnergyFraction"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_PhotonEnergy"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_PhotonEnergyFraction"               , &               , &b_);
+  fChain->SetBranchAddress("Jet_ElectronEnergy"            , &Jet_ElectronEnergy            , &b_Jet_ElectronEnergy);
+  fChain->SetBranchAddress("Jet_ElectronEnergyFraction"    , &Jet_ElectronEnergyFraction    , &b_Jet_ElectronEnergyFraction);
+  fChain->SetBranchAddress("Jet_MuonEnergy"                , &Jet_MuonEnergy                , &b_Jet_MuonEnergy);
+  fChain->SetBranchAddress("Jet_MuonEnergyFraction"        , &Jet_MuonEnergyFraction        , &b_Jet_MuonEnergyFraction);
+  fChain->SetBranchAddress("Jet_PhotonEnergy"              , &Jet_PhotonEnergy              , &b_Jet_PhotonEnergy);
+  fChain->SetBranchAddress("Jet_PhotonEnergyFraction"      , &Jet_PhotonEnergyFraction      , &b_Jet_PhotonEnergyFraction);
   
-  fChain->SetBranchAddress("Jet_bDis_JBP"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_bDis_JP"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_bDis_TCHP"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_bDis_TCHE"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_bDis_SVHP"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_bDis_SVHE"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_bDis_CMVA"               , &               , &b_);
+  fChain->SetBranchAddress("Jet_bDis_JBP"                  , &Jet_bDis_JBP                  , &b_Jet_bDis_JBP);
+  fChain->SetBranchAddress("Jet_bDis_JP"                   , &Jet_bDis_JP                   , &b_Jet_bDis_JP);
+  fChain->SetBranchAddress("Jet_bDis_TCHP"                 , &Jet_bDis_TCHP                 , &b_Jet_bDis_TCHP);
+  fChain->SetBranchAddress("Jet_bDis_TCHE"                 , &Jet_bDis_TCHE                 , &b_Jet_bDis_TCHE);
+  fChain->SetBranchAddress("Jet_bDis_SVHP"                 , &Jet_bDis_SVHP                 , &b_Jet_bDis_SVHP);
+  fChain->SetBranchAddress("Jet_bDis_SVHE"                 , &Jet_bDis_SVHE                 , &b_Jet_bDis_SVHE);
+  fChain->SetBranchAddress("Jet_bDis_CMVA"                 , &Jet_bDis_CMVA                 , &b_Jet_bDis_CMVA);
+   
+  fChain->SetBranchAddress("Jet_HasGenJet"                 , &Jet_HasGenJet                 , &b_Jet_HasGenJet);
+  fChain->SetBranchAddress("Jet_GenJet_Pt"                 , &Jet_GenJet_Pt                 , &b_Jet_GenJet_Pt);
+  fChain->SetBranchAddress("Jet_GenJet_Eta"                , &Jet_GenJet_Eta                , &b_Jet_GenJet_Eta);
+  fChain->SetBranchAddress("Jet_GenJet_Phi"                , &Jet_GenJet_Phi                , &b_Jet_GenJet_Phi);
+  fChain->SetBranchAddress("Jet_GenJet_M"                  , &Jet_GenJet_M                  , &b_Jet_GenJet_M);
+  fChain->SetBranchAddress("Jet_GenJet_E"                  , &Jet_GenJet_E                  , &b_Jet_GenJet_E);
+  fChain->SetBranchAddress("Jet_GenJet_emE"                , &Jet_GenJet_emE                , &b_Jet_GenJet_emE);
+  fChain->SetBranchAddress("Jet_GenJet_hadE"               , &Jet_GenJet_hadE               , &b_Jet_GenJet_hadE);
+  fChain->SetBranchAddress("Jet_GenJet_invisibleE"         , &Jet_GenJet_invisibleE         , &b_Jet_GenJet_invisibleE);
+  fChain->SetBranchAddress("Jet_GenPartonFlavour"          , &Jet_GenPartonFlavour          , &b_Jet_GenPartonFlavour);
+  fChain->SetBranchAddress("Jet_GenHadronFlavour"          , &Jet_GenHadronFlavour          , &b_Jet_GenHadronFlavour);
   
-  fChain->SetBranchAddress("Jet_HasGenJet"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_Pt"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_Eta"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_Phi"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_M"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_E"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_emE"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_hadE"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenJet_invisibleE"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenPartonFlavour"               , &               , &b_);
-  fChain->SetBranchAddress("Jet_GenHadronFlavour"               , &               , &b_);
-  
+
+  std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting Vertex addresses." << std::endl;
   //Vertex and Primary Vertex
-  fChain->SetBranchAddress("PV_X"               , &               , &b_);
-  fChain->SetBranchAddress("PV_Y"               , &               , &b_);
-  fChain->SetBranchAddress("PV_Z"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_X"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_ErrorX"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_Y"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_ErrorY"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_Z"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_ErrorZ"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_Chi2"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_DOF"               , &               , &b_);
-  fChain->SetBranchAddress("Vertex_ReducedChi2"               , &               , &b_);
+  fChain->SetBranchAddress("PV_X"               , &PV_X               , &b_PV_X);
+  fChain->SetBranchAddress("PV_Y"               , &PV_Y               , &b_PV_Y);
+  fChain->SetBranchAddress("PV_Z"               , &PV_Z               , &b_PV_Z);
+  fChain->SetBranchAddress("Vertex_X"           , &Vertex_X           , &b_Vertex_X);
+  fChain->SetBranchAddress("Vertex_ErrorX"      , &Vertex_ErrorX      , &b_Vertex_ErrorX);
+  fChain->SetBranchAddress("Vertex_Y"           , &Vertex_Y           , &b_Vertex_Y);
+  fChain->SetBranchAddress("Vertex_ErrorY"      , &Vertex_ErrorY      , &b_Vertex_ErrorY);
+  fChain->SetBranchAddress("Vertex_Z"           , &Vertex_Z           , &b_Vertex_Z);
+  fChain->SetBranchAddress("Vertex_ErrorZ"      , &Vertex_ErrorZ      , &b_Vertex_ErrorZ);
+  fChain->SetBranchAddress("Vertex_Chi2"        , &Vertex_Chi2        , &b_Vertex_Chi2);
+  fChain->SetBranchAddress("Vertex_DOF"         , &Vertex_DOF         , &b_Vertex_DOF);
+  fChain->SetBranchAddress("Vertex_ReducedChi2" , &Vertex_ReducedChi2 , &b_Vertex_ReducedChi2);
 
 
-
-   std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting L1 Calo Tau addresses." << std::endl;
-
-
-   std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting L1 Jet addresses." << std::endl;
 
 
    Notify();
