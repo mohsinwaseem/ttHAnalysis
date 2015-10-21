@@ -242,9 +242,12 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<Int_t> *Jet_GenHadronFlavour;
 
   //Vertex and Primary Vertex
-  float PV_X;
-  float PV_Y;
-  float PV_Z;
+  /* float PV_X; */
+  /* float PV_Y; */
+  /* float PV_Z; */
+  std::vector<float> *PV_X;
+  std::vector<float> *PV_Y;
+  std::vector<float> *PV_Z;
   std::vector<float> *Vertex_X;
   std::vector<float> *Vertex_ErrorX;
   std::vector<float> *Vertex_Y;
