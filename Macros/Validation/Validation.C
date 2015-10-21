@@ -30,7 +30,8 @@ void Validation::Loop()
     //--------------------------------------------------------------------Kinematics--------------------------------------------------------------------
     //**************************************************************************************************************************************************
     //**************************************************************************************************************************************************
-
+    
+    
     //*************************************************************************
     // ---------------------Electrons-----------------------------------------
     //*************************************************************************
@@ -64,7 +65,14 @@ void Validation::Loop()
 	hElec_IP3dError -> Fill(Elec_IP3dError ->at(iElec));
 	hElec_IP2d      -> Fill(Elec_IP2d      ->at(iElec));
 	hElec_IP2dError -> Fill(Elec_IP2dError ->at(iElec));
-	
+
+	Double_t dPhi = auxTools_.DeltaPhi(Elec_Phi   ->at(iElec), MET_Phi);
+	hdPhi_Elec_MET ->Fill(dPhi);
+
+	Double_t RIso = RIsoLepton(Elec_Pt->at(iElec),Elec_Eta->at(iElec),Elec_Phi->at(iElec)); 
+	hElec_RIso->Fill(RIso);
+	//	cout<< Elec_Id->at(iElec)<<endl;
+	//	cout<< sumPtC<<"\t\t"<<sumPtN<<endl;
       }//end loop on Electons
     //*************************************************************************
 
@@ -106,6 +114,12 @@ void Validation::Loop()
 	hMuon_IP2d      -> Fill(Muon_IP2d      ->at(iMuon));
 	hMuon_IP2dError -> Fill(Muon_IP2dError ->at(iMuon));
 
+	Double_t dPhi = auxTools_.DeltaPhi(Muon_Phi   ->at(iMuon), MET_Phi);
+	hdPhi_Muon_MET ->Fill(dPhi);
+	
+	Double_t RIso = RIsoLepton(Muon_Pt->at(iMuon),Muon_Eta->at(iMuon),Muon_Phi->at(iMuon)); 
+	hMuon_RIso->Fill(RIso);
+
       }//end loop on Muons
     //*************************************************************************
 
@@ -138,6 +152,8 @@ void Validation::Loop()
 	    hTau_LeadChHadCand_Vz             -> Fill(Tau_LeadingCHCVz             -> at(iTau));
 	  
 	  }
+	float dPhi = auxTools_.DeltaPhi(Tau_Phi   ->at(iTau), MET_Phi);
+	hdPhi_Tau_MET ->Fill(dPhi);
 
       }//end loop on Taus
     //*************************************************************************
@@ -159,6 +175,11 @@ void Validation::Loop()
     //-----------------------------Jets---------------------------------------
     //*************************************************************************
     Size_t nJet = Jet_Pt->size();
+    hJet_Multiplicity->Fill(nJet);
+    Size_t nbJPLwp=0;
+    Size_t nbJPMwp=0;
+    Size_t nbJPTwp=0;
+    Size_t nbJParFl=0;
     for(Size_t iJet=0; iJet<nJet; iJet++)
       {
 	hJet_Pt     ->Fill(Jet_Pt      ->at(iJet));
@@ -182,10 +203,48 @@ void Validation::Loop()
 	hJet_ParFl_bDisCMVA->Fill(Jet_GenPartonFlavour->at(iJet),Jet_bDis_CMVA->at(iJet));
 	hJet_HadFl_bDisCMVA->Fill(Jet_GenHadronFlavour->at(iJet),Jet_bDis_CMVA->at(iJet));
 	
+	if(abs(Jet_GenPartonFlavour->at(iJet)) == 5)
+	  {
+	    hbJet_Pt->Fill(Jet_Pt->at(iJet));
+	    hbJet_Eta->Fill(Jet_Eta->at(iJet));
+	    hbJet_Phi->Fill(Jet_Phi->at(iJet));
+	    hbJet_E->Fill(Jet_E->at(iJet));
+	    hbJet_JetArea-> Fill(Jet_JetArea->at(iJet));
+
+	    hbJet_ChMulti    -> Fill(Jet_ChargedMultiplicity->at(iJet));
+	    hbJet_ChHadMulti -> Fill(Jet_ChargedHadronMultiplicity->at(iJet));
+	    hbJet_NMulti     -> Fill(Jet_NeutralMultiplicity->at(iJet));
+	    hbJet_NHadMulti  -> Fill(Jet_NeutralHadronMultiplicity->at(iJet));
+	    
+	    hbJet_ElecMulti   -> Fill(Jet_ElectronMultiplicity->at(iJet));
+	    hbJet_MuonMulti   -> Fill(Jet_MuonMultiplicity->at(iJet));
+	    hbJet_PhotonMulti -> Fill(Jet_PhotonMultiplicity->at(iJet));
+
+	    float dPhib = auxTools_.DeltaPhi(Jet_Phi   ->at(iJet), MET_Phi);
+	    hdPhi_bJet_MET ->Fill(dPhib);
+
+	    nbJParFl++;
+	  }
+	if(Jet_bDis_JP->at(iJet)> 0.275)
+	  nbJPLwp++;
+	if(Jet_bDis_JP->at(iJet)> 0.545)
+	  nbJPMwp++;
+	if(Jet_bDis_JP->at(iJet)> 0.790)
+	  nbJPTwp++;
+
+	float dPhi = auxTools_.DeltaPhi(Jet_Phi   ->at(iJet), MET_Phi);
+	hdPhi_Jet_MET ->Fill(dPhi);
+
       }//end loop on Jets
+    hbJetParFl_Multiplicity->Fill(nbJParFl);
+    hbJetL_Multiplicity->Fill(nbJPLwp);
+    hbJetM_Multiplicity->Fill(nbJPMwp);
+    hbJetT_Multiplicity->Fill(nbJPTwp);
+
+
     //*************************************************************************
-
-
+    
+    
     // Update the progress bar
     //    tools.ProgressBar(jentry, nentries, 100, 150);
   
@@ -231,7 +290,10 @@ void Validation::MakeHisto(void)
   hElec_IP3dError               = new TH1D ("hElec_IP3dError","hElec_IP3dError",100,0,1);
   hElec_IP2d                    = new TH1D ("hElec_IP2d","hElec_IP2d",100,-5,5);
   hElec_IP2dError               = new TH1D ("hElec_IP2dError","hElec_IP2dError",100,0,1);
- 
+
+  hdPhi_Elec_MET                = new TH1D ("hdPhi_Elec_MET","hdPhi_Elec_MET", 100,-4,4);
+
+  hElec_RIso                    = new TH1D ("hElec_RIso","hElec_RIso", 100,0,5);
 
   //Muon***************************************************************************
   hMuon_Pt                         = new TH1D ("hMuon_Pt","hMuon_Pt",200,0,200);
@@ -257,7 +319,10 @@ void Validation::MakeHisto(void)
   hMuon_IP2d                       = new TH1D ("hMuon_IP2d","hMuon_IP2d",100,-5,5);
   hMuon_IP2dError                  = new TH1D ("hMuon_IP2dError","hMuon_IP2dError",100,0,1);
 
-  
+  hdPhi_Muon_MET                = new TH1D ("hdPhi_Muon_MET","hdPhi_Muon_MET", 100,-4,4);
+
+  hMuon_RIso                    = new TH1D ("hMuon_RIso","hMuon_RIso", 100,0,5);
+
   //Tau***************************************************************************
   hTau_Pt                   = new TH1D ("hTau_Pt","hTau_Pt",200,0,200);
   hTau_Eta                  = new TH1D ("hTau_Eta","hTau_Eta",100,-4,4);
@@ -277,6 +342,7 @@ void Validation::MakeHisto(void)
   hTau_LeadChHadCand_Vy     = new TH1D ("hTau_LeadChHadCand_Vy","hTau_LeadChHadCand_Vy",100,-1,1);
   hTau_LeadChHadCand_Vz     = new TH1D ("hTau_LeadChHadCand_Vz","hTau_LeadChHadCand_Vz",100,-25,25);
 
+  hdPhi_Tau_MET                = new TH1D ("hdPhi_Tau_MET","hdPhi_Tau_MET", 100,-4,4);
 
   //MET***************************************************************************
   hMET_Pt    = new TH1D ("hMET_Pt","hMET_Pt",200,0,200);
@@ -297,12 +363,38 @@ void Validation::MakeHisto(void)
   hJet_ElecMulti   = new TH1D("hJet_ElecMulti"   ,"hJet_ElecMulti"   ,50,0,50);
   hJet_MuonMulti   = new TH1D("hJet_MuonMulti"   ,"hJet_MuonMulti"   ,50,0,50);
   hJet_PhotonMulti = new TH1D("hJet_PhotonMulti" ,"hJet_PhotonMulti" ,50,0,50);
-  
+
+  hdPhi_Jet_MET    = new TH1D ("hdPhi_Jet_MET","hdPhi_Jet_MET", 100,-4,4);
+
   hJet_ParFl_bDisJP = new TProfile ("hJet_ParFl_bDisJP","hJet_ParFl_bDisJP",11,-5.5,5.5,-100,100);
   hJet_HadFl_bDisJP = new TProfile ("hJet_HadFl_bDisJP","hJet_HadFl_bDisJP",6,-0.5,5.5,-100,100);
     
   hJet_ParFl_bDisCMVA = new TProfile ("hJet_ParFl_bDisCMVA","hJet_ParFl_bDisCMVA",11,-5.5,5.5,-100,100);
   hJet_HadFl_bDisCMVA = new TProfile ("hJet_HadFl_bDisCMVA","hJet_HadFl_bDisCMVA",6,-0.5,5.5,-100,100);
+
+  hJet_Multiplicity       = new TH1D ("hJet_Multiplicity"      ,"hJet_Multiplicity"      ,40,0,40);
+  hbJetParFl_Multiplicity = new TH1D ("hbJetParFl_Multiplicity","hbJetParFl_Multiplicity",10,0,10);
+  hbJetL_Multiplicity     = new TH1D ("hbJetL_Multiplicity"    ,"hbJetL_Multiplicity"    ,10,0,10);
+  hbJetM_Multiplicity     = new TH1D ("hbJetM_Multiplicity"    ,"hbJetM_Multiplicity"    ,10,0,10);
+  hbJetT_Multiplicity     = new TH1D ("hbJetT_Multiplicity"    ,"hbJetT_Multiplicity"    ,10,0,10);
+
+
+  hbJet_Pt          = new TH1D("hbJet_Pt"     ,"hbJet_Pt"     ,200,0,200);
+  hbJet_Eta         = new TH1D("hbJet_Eta"    ,"hbJet_Eta"    ,100,-4,4);
+  hbJet_Phi         = new TH1D("hbJet_Phi"    ,"hbJet_Phi"    ,200,-4,4);
+  hbJet_E           = new TH1D("hbJet_E"      ,"hbJet_E"      ,200,0,200);
+  hbJet_JetArea     = new TH1D("hbJet_JetArea","hbJet_JetArea",100,-4,4);
+  
+  hbJet_ChMulti     = new TH1D("hbJet_ChMulti"     ,"hbJet_ChMulti"     ,50,0,50);
+  hbJet_ChHadMulti  = new TH1D("hbJet_ChHadMulti"  ,"hbJet_ChHadMulti"  ,50,0,50);
+  hbJet_NMulti      = new TH1D("hbJet_NMulti"      ,"hbJet_NMulti"      ,50,0,50);
+  hbJet_NHadMulti   = new TH1D("hbJet_NHadMulti"   ,"hbJet_NHadMulti"   ,50,0,50);
+  hbJet_ElecMulti   = new TH1D("hbJet_ElecMulti"   ,"hbJet_ElecMulti"   ,50,0,50);
+  hbJet_MuonMulti   = new TH1D("hbJet_MuonMulti"   ,"hbJet_MuonMulti"   ,50,0,50);
+  hbJet_PhotonMulti = new TH1D("hbJet_PhotonMulti" ,"hbJet_PhotonMulti" ,50,0,50);
+  
+  hdPhi_bJet_MET    = new TH1D ("hdPhi_bJet_MET","hdPhi_bJet_MET", 100,-4,4);
+
 }
 
 //****************************************************************************
@@ -323,6 +415,39 @@ Bool_t Validation::IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug)
     }// end loop on daughters
   return true;
 }
+
+//****************************************************************************
+Double_t Validation::RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep_Phi)
+//****************************************************************************
+{
+  Double_t sumPtC = 0;
+  Double_t sumPtN = 0;
+
+  for(Size_t iGenp=0; iGenp<GenP_Pt->size(); iGenp++)
+    {
+      if(abs(GenP_PdgId->at(iGenp)) != 11 && abs(GenP_PdgId->at(iGenp)) != 13 && 
+	 abs(GenP_PdgId->at(iGenp)) != 12 && abs(GenP_PdgId->at(iGenp)) != 14 && abs(GenP_PdgId->at(iGenp)) != 16)
+	{
+	  if(GenP_Status->at(iGenp) == 1 )
+	    {
+	      Double_t GenEta = GenP_Eta->at(iGenp);
+	      Double_t GenPhi = GenP_Phi->at(iGenp);
+	      
+	      Double_t dR = auxTools_.DeltaR(GenEta,GenPhi,
+					     Lep_Eta,Lep_Phi);
+	      //	cout<<"\tDR\t"<<dR<<endl;
+	      if(dR <0.4)
+		{
+		  if(GenP_Charge->at(iGenp) != 0) sumPtC += GenP_Pt->at(iGenp);
+		  if(GenP_Charge->at(iGenp) == 0)sumPtN += GenP_Pt->at(iGenp);
+		}//	  
+	    }//status 1
+	}//if not electron genp
+    }// end loop on Genp
+  Double_t RIso = (sumPtC+sumPtN)/Lep_Pt;
+  return RIso;
+}
+
 
 #endif // Validation_cxx
 

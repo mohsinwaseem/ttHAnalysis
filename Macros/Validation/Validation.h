@@ -37,6 +37,9 @@ class Validation : public TreeAnalyserMC
 
     Bool_t IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug);
     
+    Double_t RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep_Phi);
+
+
     //Histograms
     //Electron
     TH1D *hElec_Pt;
@@ -63,6 +66,9 @@ class Validation : public TreeAnalyserMC
     TH1D *hElec_IP2d;
     TH1D *hElec_IP2dError;
 
+    TH1D *hdPhi_Elec_MET;
+    TH1D *hElec_RIso;
+
     //Muon
     TH1D *hMuon_Pt;
     TH1D *hMuon_Eta;
@@ -87,6 +93,10 @@ class Validation : public TreeAnalyserMC
     TH1D *hMuon_IP2d;
     TH1D *hMuon_IP2dError;
 
+    TH1D *hdPhi_Muon_MET;
+
+    TH1D *hMuon_RIso;
+
     //Tau
     TH1D *hTau_Pt;
     TH1D *hTau_Eta;
@@ -106,6 +116,7 @@ class Validation : public TreeAnalyserMC
     TH1D *hTau_LeadChHadCand_Vy;
     TH1D *hTau_LeadChHadCand_Vz;
   
+    TH1D *hdPhi_Tau_MET;
   
     //MET
     TH1D *hMET_Pt;
@@ -131,9 +142,33 @@ class Validation : public TreeAnalyserMC
     TH1D *hJet_ParFl_bDisJP;
     TH1D *hJet_HadFl_bDisJP;
     
+    TH1D *hdPhi_Jet_MET;
+
     TProfile *hJet_ParFl_bDisCMVA;
     TProfile *hJet_HadFl_bDisCMVA;
   
+    TH1D *hJet_Multiplicity;
+    TH1D *hbJetParFl_Multiplicity;
+    TH1D *hbJetL_Multiplicity;
+    TH1D *hbJetM_Multiplicity;
+    TH1D *hbJetT_Multiplicity;
+
+    TH1D *hbJet_Pt;
+    TH1D *hbJet_Eta;
+    TH1D *hbJet_Phi;
+    TH1D *hbJet_E;
+    TH1D *hbJet_JetArea;
+    
+    TH1D *hbJet_ChMulti;
+    TH1D *hbJet_ChHadMulti;
+    TH1D *hbJet_NMulti;
+    TH1D *hbJet_NHadMulti;
+
+    TH1D *hbJet_ElecMulti;
+    TH1D *hbJet_MuonMulti;
+    TH1D *hbJet_PhotonMulti;
+
+    TH1D *hdPhi_bJet_MET;
 };
 
 #endif // Validation_h
