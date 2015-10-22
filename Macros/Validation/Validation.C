@@ -24,7 +24,9 @@ void Validation::Loop()
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     // if (Cut(ientry) < 0) continue;
-    
+
+    Int_t DM = DecayMode();
+        
     //**************************************************************************************************************************************************
     //**************************************************************************************************************************************************
     //--------------------------------------------------------------------Kinematics--------------------------------------------------------------------
@@ -417,6 +419,27 @@ Bool_t Validation::IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug)
 }
 
 //****************************************************************************
+Int_t Validation::GetFinalGenpIndx (Size_t MotIndx, vector<unsigned short>& Daug)
+//****************************************************************************
+{
+  Int_t MotId = GenP_PdgId->at(MotIndx);
+  
+  Int_t FinalGenpIndx = MotIndx;
+
+  if(Daug.size()==0) return FinalGenpIndx;
+  
+  for(Size_t iDau=0; iDau<Daug.size(); iDau++)
+    {
+      Int_t DauIndx = Daug.at(iDau);
+      Int_t DauId   = GenP_PdgId->at(DauIndx);
+      
+      if(MotId == DauId)
+	FinalGenpIndx = GetFinalGenpIndx(DauIndx,GenP_Daughters->at(DauIndx));
+    }// end loop on daughters
+  return FinalGenpIndx;
+}
+
+//****************************************************************************
 Double_t Validation::RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep_Phi)
 //****************************************************************************
 {
@@ -448,10 +471,229 @@ Double_t Validation::RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep
   return RIso;
 }
 
+//****************************************************************************
+Int_t Validation::DecayMode ()
+//****************************************************************************
+{
+  Int_t tIndx = -1;
+  Int_t tbarIndx = -1;
+  Int_t HIndx = -1;
+  
+  Int_t WptIndx=-1;
+  Int_t WmtbarIndx=-1;
+  Int_t WpHIndx=-1;
+  Int_t WmHIndx=-1;
+  Int_t TpHIndx=-1;
+  Int_t TmHIndx=-1;
+  Int_t Z1HIndx=-1;
+  Int_t Z2HIndx=-1;
+
+  //  cout<<"\tEvtNumber\t"<<EvtNumber<<endl;
+  
+  for (Size_t iGenp=0; iGenp<GenP_Pt->size(); iGenp++)
+    {
+      //*********************************************
+      // TOP QUARK
+      //*********************************************
+      if (GenP_PdgId->at(iGenp) == 6)
+	{
+	  vector<unsigned short> tDau = GenP_Daughters->at(iGenp);
+	  if(IsFinalGenp(iGenp, tDau ))
+	    {
+	      tIndx = iGenp;
+	      for(Size_t iDau=0; iDau<tDau.size(); iDau++)
+		{
+		  Size_t DauIndx = tDau.at(iDau);
+		  if(GenP_PdgId->at(DauIndx) == 24)
+		    {
+		      WptIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if W
+		}// loop on t dau
+	    }//final top
+	}//end if Top
+      //*********************************************
+
+      //*********************************************
+      // Anti TOP QUARK
+      //*********************************************
+      if (GenP_PdgId->at(iGenp) == -6)
+	{
+	  vector<unsigned short> tbarDau = GenP_Daughters->at(iGenp);
+	  if(IsFinalGenp(iGenp, tbarDau ))
+	    {
+	      tbarIndx = iGenp;
+	      for(Size_t iDau=0; iDau<tbarDau.size(); iDau++)
+		{
+		  Size_t DauIndx = tbarDau.at(iDau);
+		  if(GenP_PdgId->at(DauIndx) == -24)
+		    {
+		      WmtbarIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if W
+		}// loop on t dau
+	    }//final Antitop
+	}//end if AntiTop
+      //*********************************************
+
+      //*********************************************
+      // Higgs
+      //*********************************************
+      if (GenP_PdgId->at(iGenp) == 25)
+	{
+	  vector<unsigned short> HDau = GenP_Daughters->at(iGenp);
+	  Bool_t bhasZ1 = false;
+	  if(IsFinalGenp(iGenp, HDau ))
+	    {
+	      HIndx = iGenp;
+	      for(Size_t iDau=0; iDau<HDau.size(); iDau++)
+		{
+		  Size_t DauIndx = HDau.at(iDau);
+		  if(GenP_PdgId->at(DauIndx) == -24)
+		    {
+		      WmHIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if W
+		  if(GenP_PdgId->at(DauIndx) == +24)
+		    {
+		      WpHIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if W
+		  if(GenP_PdgId->at(DauIndx) == -15)
+		    {
+		      TmHIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if T
+		  if(GenP_PdgId->at(DauIndx) == 15)
+		    {
+		      TpHIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if T
+		  if(GenP_PdgId->at(DauIndx) == 23)
+		    {
+		      if(!bhasZ1)
+			{
+			  Z1HIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+			  bhasZ1 = true;
+			}
+		      else 
+			Z2HIndx = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		    }// if Z
+		}// loop on t dau
+	    }//final Higgs
+	}//end if Higgs
+      //*********************************************
+    }//end loop on Genp
+  
+
+  // if(TpHIndx!=-1){
+    
+    // cout<< "W+ from Top\t"<<WptIndx<<"\tW- from AntiTop\t"<<WmtbarIndx<<endl;
+    // cout<<"\tFrom Higgs\t"<<HIndx<<"\t\t"<<GenP_Pt->at(HIndx)<<endl;
+    // cout<< "W+\t"<<WpHIndx<<"\tW-\t"<<WmHIndx<< "\tT+\t"<<TpHIndx<<"\tT-\t"<<TmHIndx<< "\tZ1\t"<<Z1HIndx<<"\tZ2\t"<<Z2HIndx<<endl;
+  //  }
+  //    cout<<"\n_________________________________________________________________________________________________________\n\n";
+  
+}
+
+
+//****************************************************************************
+Bool_t Validation::IsDecayLeptonic (Size_t Index)
+//****************************************************************************
+{								
+  Bool_t isLeptonic = false;
+  vector<unsigned short> vDau = GenP_Daughters->at(Index);
+  for(Size_t iDau=0; iDau<vDau.size(); iDau++)
+    {
+      Size_t DauIndx = vDau.at(iDau);
+      if(abs(GenP_PdgId->at(DauIndx)) == 11 || abs(GenP_PdgId->at(DauIndx)) == 13)
+	{
+	  isLeptonic = true;
+	  break;
+	}
+    }
+
+  return isLeptonic;
+}
+
+
+//**************************************************
+void Validation::myPrintGenp(Size_t Indx, bool bPrintHeaders)
+//**************************************************
+{
+  unsigned int moth1 = 0;
+  unsigned int moth2 = 0;
+  unsigned int daug1 = 0;
+  unsigned int daug2 = 0;
+  unsigned int NDaug;
+  static Int_t evOld = 0;
+
+  ofstream myfile;
+  myfile.open ("PrintGenp.txt", ios::app);
+
+  if ( (evOld != EvtNumber) || (Indx == 0) ) {
+    myfile << std::endl;
+    evOld = EvtNumber;
+
+    if (bPrintHeaders)
+      {
+	myfile //<< std::setw(10)  << ">>> Run"
+	       << std::setw(10)  << "Event"
+	       << std::setw(10)  << "Indx"  
+	       << std::setw(10) << "Id" 
+	       << std::setw(10)  << "Status"
+	       << std::setw(10)  << "Mot1"
+	       << std::setw(10)  << "Mot2"
+	       << std::setw(10)  << "Dau1"
+	       << std::setw(10)  << "Dau2"
+	       << std::setw(10)  << "px"
+	       << std::setw(10) << "py"
+	       << std::setw(10) << "pz"
+	       << std::setw(10) << "E"
+	       << std::setw(10) << "Eta"
+	       << std::setw(10) << "Phi"
+	       << std::setw(10) << "M"
+	       << std::setw(10) << "Vtx-Z"
+	       << std::endl;
+      }
+  }
+  if (GenP_Mothers->at(Indx).size() > 0) moth1 = GenP_Mothers->at(Indx).at(0);
+  if (GenP_Mothers->at(Indx).size() > 1) moth2 = GenP_Mothers->at(Indx).at(1);
+  NDaug = GenP_Daughters->at(Indx).size();
+  if (NDaug > 0){
+    daug1 = GenP_Daughters->at(Indx).at(0); // First Daughter index
+    if (NDaug > 1) {
+      daug2 = daug1 + NDaug -1;          // Last Daughter index 
+      if (GenP_Daughters->at(Indx).at(NDaug-1) != daug2) daug2 -=1;
+    }
+  }
+  double mass = GenP_M->at(Indx);
+  double pt   = GenP_Pt->at(Indx);
+  double phi  = GenP_Phi->at(Indx);
+  double eta  = GenP_Eta->at(Indx);
+
+  TLorentzVector pGen;
+  pGen.SetPtEtaPhiM(pt,eta,phi,mass);
+  double ene = pGen.E();
+  double px  = pGen.Px();
+  double py  = pGen.Py();
+  double pz  = pGen.Pz();
+  myfile << std::fixed;
+  myfile //<< std::setw(10) << std::setprecision(0) << RunNumber
+	 << std::setw(10) << std::setprecision(0) << EvtNumber
+	 << std::setw(10) << std::setprecision(0) << Indx
+	 << std::setw(10) << std::setprecision(0) << GenP_PdgId->at(Indx)
+	 << std::setw(10) << std::setprecision(0) << GenP_Status->at(Indx)
+	 << std::setw(10) << std::setprecision(0) << moth1
+	 << std::setw(10) << std::setprecision(0) << moth2
+	 << std::setw(10) << std::setprecision(0) << daug1
+	 << std::setw(10) << std::setprecision(0) << daug2
+	 << std::setw(10) << std::setprecision(3) << px
+	 << std::setw(10) << std::setprecision(3) << py
+	 << std::setw(10) << std::setprecision(3) << pz
+	 << std::setw(10) << std::setprecision(3) << ene
+	 << std::setw(10) << std::setprecision(3) << eta
+	 << std::setw(10) << std::setprecision(3) << phi
+	 << std::setw(10) << std::setprecision(3) << mass
+	 << std::setw(10) << std::setprecision(3) << GenP_VertexZ->at(Indx)
+	 << std::endl;
+}
 
 #endif // Validation_cxx
-
-
 //Dump
 	// //************************************************
 	// //Genp Check for decay mode

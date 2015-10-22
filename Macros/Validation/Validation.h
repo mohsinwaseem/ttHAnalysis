@@ -37,8 +37,15 @@ class Validation : public TreeAnalyserMC
 
     Bool_t IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug);
     
+    Int_t GetFinalGenpIndx (Size_t MotIndx, vector<unsigned short>& Daug);
+    
+    Bool_t IsDecayLeptonic (Size_t Index);
+    
     Double_t RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep_Phi);
 
+    void myPrintGenp(Size_t Indx, bool bPrintHeaders);
+
+    Int_t DecayMode();
 
     //Histograms
     //Electron
