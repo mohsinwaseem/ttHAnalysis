@@ -1,0 +1,856 @@
+###############################################################
+### Author .........: Alexandros X. Attikis 
+### Institute ......: University Of Cyprus (UCY)
+### Email ..........: attikis@cern.ch
+###############################################################
+
+###############################################################
+### All imported modules
+###############################################################
+import ROOT
+import os
+import sys
+import numpy
+import math
+import tools.plotter as m_plotter
+import tools.histos as m_histos
+import tools.styles as m_styles
+import tools.aux as m_aux
+
+###############################################################
+### Histogram Options
+###############################################################
+yMin       = 1
+yMax       = None
+yMinRatio  = 0.0
+yMaxRatio  = 4.9 #22.0
+bRatio     = False
+bInvRatio  = True
+ratioLabel = "1/Ratio"
+normFactor = None
+
+###############################################################
+### Histogram Attributes
+###############################################################
+kwargs   = {}
+
+Et     = {"xLabel": "E_{T}"           , "xUnits": "GeV", "xMin": 0.00 , "xMax": 100.0, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], "gridX": False, "logX": False, "logXRatio": False,
+          "yLabel": "Entries / %0.0f" , "yUnits": ""   , "yMin": yMin , "yMax": yMax , "binWidthY": None, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": True , "logYRatio": False,
+          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, "drawOptions": "P", "legOptions": "LP" ,
+          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+LdgEt  = {"xLabel": "E_{T}^{ldg}"     , "xUnits": "GeV", "xMin": 0.00 , "xMax": 200.0, "binWidthX": 5.0 , "xCutBoxes": [[0.0, 15.0, ROOT.kBlack]], "gridX": True, "logX": False, "logXRatio": False,
+          "yLabel": "Entries / %0.0f" , "yUnits": ""   , "yMin": 1E-3 , "yMax": None , "binWidthY": None, "yCutBoxes": []                        , "gridY": True, "logY": False , "logYRatio": False,
+          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": None, "drawOptions": "P", "legOptions": "LP" ,
+          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+VisEt  = {"xLabel": "E_{T}^{vis}"     , "xUnits": "GeV", "xMin": 0.00 , "xMax": 100.0, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], "gridX": False, "logX": False, "logXRatio": False,
+          "yLabel": "Entries / %0.0f" , "yUnits": ""   , "yMin": yMin , "yMax": yMax , "binWidthY": None, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": True , "logYRatio": False,
+          "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, "drawOptions": "P", "legOptions": "LP" ,
+          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+### For Producer Comparison
+#Rate   = {"xLabel": "E_{T}"             , "xUnits": "GeV", "xMin": 0.0 , "xMax": +100.0, "binWidthX": None, "xCutLines": []  , "xCutBoxes": [], "gridX": True, "logX": False,
+#          "yLabel": "Rate (kHz) / %0.0f", "yUnits": ""   , "yMin": 1E+1, "yMax": 5E+04 , "binWidthY": None, "yCutLines": [50], "yCutBoxes": []                        , "gridY": True, "logY": True ,
+#          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": 11.9, "normaliseTo": normFactor, "drawOptions": "PF", "legOptions": "LP",
+#          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+Rate   = {"xLabel": "E_{T}"             , "xUnits": "GeV", "xMin": 0.0 , "xMax": +100.0, "binWidthX": None, "xCutLines": []  , "xCutBoxes": [[0.0, 15.0, ROOT.kBlack]], "gridX": True, "logX": False,
+          "yLabel": "Rate (kHz) / %0.0f", "yUnits": ""   , "yMin": 1E+1, "yMax": 5E+04 , "binWidthY": None, "yCutLines": [50], "yCutBoxes": []                        , "gridY": True, "logY": True ,
+          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": 11.9, "normaliseTo": normFactor, "drawOptions": "PF", "legOptions": "LP",
+          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+Rate_2D   = {"xLabel": "E_{T}^{Ldg} / %0.0f"   , "xUnits": "GeV", "xMin": 0.0 , "xMax": +100.0, "binWidthX": 1, "xCutLines": [], "xCutBoxes": [], "gridX": False, "logX": False,
+             "yLabel": "E_{T}^{subLdg} / %0.0f", "yUnits": "GeV", "yMin": 0.0 , "yMax": +100.0, "binWidthY": 1, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": False ,
+             "zLabel": "Rate"             , "zUnits": "kHz", "zMin": 1E+0, "zMax": 5E+04 , "zCutLinesErrors": True, "zCutLines": [50.0], "zCutBoxes": [], "gridZ": False, "logZ": True ,
+             "drawOptions": "COLZ", "xLegMin": 0.62, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+EvtEff = {"xLabel": "E_{T}"             , "xUnits": "GeV", "xMin": 0.0 , "xMax": +100.0, "binWidthX": None, "xCutLines": [], "xCutBoxes": [[0.0, 15.0, ROOT.kBlack]], "gridX": True, "logX": False,
+          "yLabel": "Signal Efficiency / %0.0f", "yUnits": ""   , "yMin": 0.0 , "yMax": +1.09 , "binWidthY": None, "yCutLines": [], "yCutBoxes":  [], "gridY": True, "logY": False,
+          "ratioLabel": "Ratio", "ratio": True, "invRatio": False, "yMinRatio": 0.35, "yMaxRatio": 1.1, "normaliseTo": normFactor, "drawOptions": "P", "legOptions": "LP",
+          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+#EvtEff = {"xLabel": "E_{T}"             , "xUnits": "GeV", "xMin": 0.0 , "xMax": +100.0, "binWidthX": None, "xCutLines": [], "xCutBoxes": [[44.0, 50.0, ROOT.kRed]], "gridX": True, "logX": False,
+#          "yLabel": "Signal Efficiency / %0.0f", "yUnits": ""   , "yMin": 0.0 , "yMax": +1.09 , "binWidthY": None, "yCutLines": [], "yCutBoxes": [[0.48, 0.55, ROOT.kRed]], "gridY": True, "logY": False,
+#          "ratioLabel": "Ratio", "ratio": True, "invRatio": False, "yMinRatio": 0.35, "yMaxRatio": 1.1, "normaliseTo": normFactor, "drawOptions": "P", "legOptions": "LP",
+#          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+EvtEff_2D = {"xLabel": "E_{T}^{Ldg} / %0.0f"   , "xUnits": "GeV", "xMin": 0.0, "xMax": +100.0, "binWidthX": 1, "xCutLines": [], "xCutBoxes": [], "gridX": False, "logX": False,
+             "yLabel": "E_{T}^{subLdg} / %0.0f", "yUnits": "GeV", "yMin": 0.0, "yMax": +100.0, "binWidthY": 1, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": False ,
+             "zLabel": "Signal Efficiency"            , "zUnits": ""   , "zMin": 0.0, "zMax": 1.0   , "zCutLinesErrors": False, "zCutLines": [], "zCutBoxes": [], "gridZ": False, "logZ": False,
+             "drawOptions": "COLZ", "xLegMin": 0.62, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+Purity = {"xLabel": "E_{T}"         , "xUnits": "GeV", "xMin": 0.0, "xMax": +100.0, "binWidthX": None, "xCutLines": [], "xCutBoxes": [[0.0, 15.0, ROOT.kBlack]], "gridX": True, "logX": False,
+          "yLabel": "Purity / %0.0f", "yUnits": ""   , "yMin": 0.0, "yMax": +1.09 , "binWidthY": None, "yCutLines": [], "yCutBoxes": [], "gridY": True, "logY": False,
+          "ratioLabel": "Ratio", "ratio": True  , "invRatio": False, "yMinRatio": 0.7, "yMaxRatio": 1.95, "normaliseTo": normFactor, "drawOptions": "P", "legOptions": "LP",
+          "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.28, "yLegMax": 0.42 }
+
+SingleTauEff = {"xLabel": "#tau_{MC} E_{T}^{vis}", "xUnits": "GeV", "xMin": 0.0 , "xMax": 200.0, "binWidthX": None, "xCutLines": [50], "xCutBoxes": [], "gridX": True, "logX": False,
+                "yLabel": "Signal Efficiency / %0.0f"   , "yUnits": ""   , "yMin": 0.0 , "yMax": +1.17 , "binWidthY": None, "yCutLines": []  , "yCutBoxes": [], "gridY": True, "logY": False,
+                "ratioLabel": "Ratio", "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": 1.1, "normaliseTo": None, "drawOptions": "P", "legOptions": "LP",
+                "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.26, "yLegMax": 0.40 }
+
+DiTauEff = {"xLabel": "E_{T}^{vis}", "xUnits": "GeV", "xMin": 0.0 , "xMax": +200.0, "binWidthX": None, "xCutLines": [25], "xCutBoxes": [], "gridX": True, "logX": False,
+            "yLabel": "Signal Efficiency / %0.0f"   , "yUnits": ""   , "yMin": 0.0 , "yMax": +1.17 , "binWidthY": None, "yCutLines": []  , "yCutBoxes": [], "gridY": True, "logY": False,
+            "ratioLabel": "Ratio", "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": 1.1, "normaliseTo": None, "drawOptions": "P", "legOptions": "LP",
+            "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.26, "yLegMax": 0.40 }
+
+### See:http://root.cern.ch/root/html/TGraphPainter.html
+ROC    = {"xLabel": "Signal Efficiency"      , "xUnits": ""   , "xMin": 0.00, "xMax": +0.6 , "binWidthX": None, "xCutLines": []     , "xCutBoxes": [], "gridX": True, "logX": False,
+          "yLabel": "Rate" , "yUnits": "kHz", "yMin": 1E+0, "yMax": +0.5E+03, "binWidthY": None, "yCutLines": [50.0], "yCutBoxes": [], "gridY": True, "logY": True,
+          "legOptions": "FL", "drawOptions": "ACE3", "xLegMin": 0.60, "xLegMax": 0.80, "yLegMin": 0.20, "yLegMax": 0.46}
+
+### CaloTkBasedCorrection
+EtMinusCorrEt = {"xLabel": "E_{T} - E_{T, corr}", "xUnits": "GeV", "xMin": -10.0 , "xMax": +10.0, "binWidthX": 0.1, "xCutLines": [0], "xCutBoxes": [], "gridX": False, "logX": False, "logXRatio": False,
+                 "yLabel": "Entries / %0.1f"    , "yUnits": ""   , "yMin": +1e-5 , "yMax": + 1.0, "binWidthY": None, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": True , "logYRatio": False,
+                 "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP" ,
+                 "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+EtaMinusCorrEta = {"xLabel": "#eta - #eta_{corr}", "xUnits": "", "xMin": -0.4 , "xMax": +0.4, "binWidthX": 0.005 , "xCutLines": [0], "xCutBoxes": [], "gridX": False, "logX": False, "logXRatio": False,
+                   "yLabel": "Entries / %0.3f"   , "yUnits": "", "yMin": +1e-5, "yMax": +1.0, "binWidthY": None, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": True , "logYRatio": False,
+                   "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP" ,
+                   "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+EtVsCorrEt = {"xLabel": "E_{T} / %0.0f"      , "xUnits": "GeV", "xMin": 0.00 , "xMax": +150.0, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], "gridX": False, "logX": False,
+              "yLabel": "E_{T, corr} / %0.0f", "yUnits": "GeV", "yMin": 0.00 , "yMax": +150.0, "binWidthY": 2.0 , "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": False ,
+              "zLabel": "Entries"            , "zUnits": ""   , "zMin": +1e+0, "zMax": None  , "zCutLines": [], "zCutBoxes": [], "gridZ": False, "logZ": True, "drawOptions": "COLZ", "legOptions": "",
+              "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+EtaVsCorrEta = {"xLabel": "#eta / %0.2f"       , "xUnits": "", "xMin": -3.0, "xMax": +3.0, "binWidthX": 0.05, "xCutLines": [], "xCutBoxes": [], "gridX": False, "logX": False,
+                "yLabel": "#eta_{corr} / %0.2f", "yUnits": "", "yMin": -3.0, "yMax": +3.0, "binWidthY": 0.05, "yCutLines": [], "yCutBoxes": [], "gridY": False, "logY": False ,
+                "zLabel": "Entries"            , "zUnits": ""   , "zMin": +1e0, "zMax": 2e+5, "zCutLines": [] , "zCutBoxes": [], "gridZ": False, "logZ": True, "drawOptions": "COLZ", "legOptions": "",
+                "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+#VertexZ = {"xLabel": "z_{vtx}"         , "xUnits": "cm", "xMin": -20.0, "xMax": +20.0, "binWidthX": 0.5 , "xCutLines": [0], "xCutBoxes": [], "gridX": True, "logX": False, "logXRatio": False, 
+#           "yLabel": "Entries / %0.1f" , "yUnits": ""  , "yMin": 0.0 , "yMax": +0.10, "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], "gridY": True, "logY": False, "logYRatio": False, 
+#           "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+#           "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+VertexZ = {"xLabel": "z_{vtx}"         , "xUnits": "cm", "xMin": -20.0, "xMax": +20.0, "binWidthX": 0.5 , "xCutLines": [0], "xCutBoxes": [], "gridX": True, "logX": False, "logXRatio": False, 
+           "yLabel": "Entries / %0.1f" , "yUnits": ""  , "yMin": 1e-3 , "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], "gridY": True, "logY": False, "logYRatio": False, 
+           "ratioLabel": ratioLabel, "ratio": True, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+           "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+VertexZ_Eff = {"xLabel": "z_{vtx}"         , "xUnits": "cm", "xMin": -20.0, "xMax": +20.0, "binWidthX": 0.5 , "xCutLines": [], "xCutBoxes": [], "gridX": True, "logX": False, "logXRatio": False, 
+               "yLabel": "Entries / %0.1f" , "yUnits": ""  , "yMin": 0.0 , "yMax": +0.10, "binWidthY": None, "yCutLines": [] , "gridY": True, "logY": False, 
+               "yCutBoxes": [[0.025, 0.16, ROOT.kYellow], [0.16, 0.84, ROOT.kGreen-3], [0.84, 0.975, ROOT.kYellow]], 
+               "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+               "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+VertexDeltaZ = {"xLabel": "z_{vtx, tk} - z_{vtx, mc}" , "xUnits": "cm", "xMin": -5.0, "xMax": +5.0, "binWidthX": 0.1 , "xCutLines": [0], "xCutBoxes": [], "gridX": True, "logX": False,
+                "yLabel": "Entries / %0.2f" , "yUnits": ""  , "yMin": 0.5e-3 , "yMax": 1e0, "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], "gridY": True, "logY": True, "logYRatio": False, 
+                "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+                "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+VertexDeltaZ_Eff = {"xLabel": "z_{vtx, tk} - z_{vtx, mc}", "xUnits": "cm", "xMin": -2.0, "xMax": +2.0, "binWidthX": 0.1 , "xCutLines": [], "xCutBoxes": [], "gridX": True, "logX": False, 
+                    "yLabel": "Entries / %0.1f" , "yUnits": ""  , "yMin": 0.0 , "yMax": +0.10, "binWidthY": None, "yCutLines": [] , "gridY": True, "logY": False, 
+                    #"yCutBoxes": [[0.025, 0.16, ROOT.kYellow], [0.16, 0.84, ROOT.kGreen-3], [0.84, 0.975, ROOT.kYellow]], 
+                    "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+                    "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+VertexAbsDeltaZ = {"xLabel": "|z_{vtx, tk} - z_{vtx, mc}|" , "xUnits": "cm", "xMin": +0.0, "xMax": +1.0, "binWidthX": 0.05, "xCutLines": [], "xCutBoxes": [], "gridX": True, "logX": False,
+                   "yLabel": "Entries / %0.2f"             , "yUnits": ""  , "yMin": 1e-4, "yMax": 1e+0, "binWidthY": None, "yCutLines": [], "yCutBoxes": [], "gridY": True, "logY": True,
+                   "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+                   "xLegMin": 0.68, "xLegMax": 0.85, "yLegMin": 0.70, "yLegMax": 0.82 }
+
+
+VertexAbsDeltaZ_Eff = {"xLabel": "|z_{vtx, tk} - z_{vtx, mc}|", "xUnits": "cm", "xMin": +0.00, "xMax": +2.0, "binWidthX": 0.05, "xCutLines": [0.1, 0.3, 0.5], "gridX": True, "logX": False, 
+                       "yLabel": "Entries / %0.1f"            , "yUnits": ""  , "yMin": +0.00, "yMax": +0.1, "binWidthY": None, "yCutLines": [1.0], "yCutBoxes": [], "gridY": True, "logY": False, 
+                       "ratioLabel": ratioLabel, "ratio": False, "invRatio": False, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": "One", "drawOptions": "P", "legOptions": "LP",
+                       "xLegMin": 0.75, "xLegMax": 0.85, "yLegMin": 0.65, "yLegMax": 0.75 }
+
+
+###############################################################
+### Histograms
+###############################################################
+histoFolder    = ""
+
+# Various Event-Type Histograms
+hHepMCEvt_VtxZ        = m_histos.TH1orTH2( histoFolder, "HepMCEvt_VtxZ", "Truth"       , None, **VertexZ  )
+hL1TkPV_VtxZ          = m_histos.TH1orTH2( histoFolder, "L1TkPV_VtxZ"  , "PV Producer" , None, **VertexZ  ) 
+hHepMCEvt_VtxZ_Eff    = m_histos.TH1orTH2( histoFolder, "HepMCEvt_VtxZ", "Truth"       , None, **VertexZ_Eff  ) 
+hPrimaryVertex_DeltaZ = m_histos.TH1orTH2( histoFolder, "PrimaryVertex_DeltaZ", "PV Producer", None, **VertexDeltaZ ) 
+hPrimaryVertex_DeltaZ_Eff    = m_histos.TH1orTH2( histoFolder, "PrimaryVertex_DeltaZ", ""    , None, **VertexDeltaZ_Eff ) 
+hPrimaryVertex_AbsDeltaZ     = m_histos.TH1orTH2( histoFolder, "PrimaryVertex_AbsDeltaZ", "" , None, **VertexAbsDeltaZ ) 
+hPrimaryVertex_AbsDeltaZ_Eff = m_histos.TH1orTH2( histoFolder, "PrimaryVertex_AbsDeltaZ", "" , None, **VertexAbsDeltaZ_Eff ) 
+
+hCalo_LdgEt        = m_histos.TH1orTH2( histoFolder, "Calo_LdgEt"        , "Calo"             , None, **LdgEt )
+hTkConfirmed_LdgEt = m_histos.TH1orTH2( histoFolder, "TkConfirmed_LdgEt" , "+Tk"              , None, **LdgEt )
+hVtxIso0p10_LdgEt  = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_LdgEt"  , "+VtxIso (0.10 cm)", None, **LdgEt )
+hVtxIso0p30_LdgEt  = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_LdgEt"  , "+VtxIso (0.30 cm)", None, **LdgEt )
+hVtxIso0p50_LdgEt  = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_LdgEt"  , "+VtxIso (0.50 cm)", None, **LdgEt )
+hVtxIso1p00_LdgEt  = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_LdgEt"  , "+VtxIso (1.00 cm)", None, **LdgEt )
+hVtxIso2p00_LdgEt  = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_LdgEt"  , "+VtxIso (2.00 cm)", None, **LdgEt )
+hVtxIso3p00_LdgEt  = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_LdgEt"  , "+VtxIso (3.00 cm)", None, **LdgEt )
+hRelIso0p05_LdgEt  = m_histos.TH1orTH2( histoFolder, "RelIso0p05_LdgEt"  , "+RelIso (0.05)"   , None, **LdgEt )
+hRelIso0p10_LdgEt  = m_histos.TH1orTH2( histoFolder, "RelIso0p10_LdgEt"  , "+RelIso (0.10)"   , None, **LdgEt )
+hRelIso0p20_LdgEt  = m_histos.TH1orTH2( histoFolder, "RelIso0p20_LdgEt"  , "+RelIso (0.20)"   , None, **LdgEt )
+hRelIso0p30_LdgEt  = m_histos.TH1orTH2( histoFolder, "RelIso0p30_LdgEt"  , "+RelIso (0.30)"   , None, **LdgEt )
+hRelIso0p40_LdgEt  = m_histos.TH1orTH2( histoFolder, "RelIso0p40_LdgEt"  , "+RelIso (0.40)"   , None, **LdgEt )
+hRelIso0p50_LdgEt  = m_histos.TH1orTH2( histoFolder, "RelIso0p50_LdgEt"  , "+RelIso (0.50)"   , None, **LdgEt )
+
+hCalo_Rate         = m_histos.TH1orTH2( histoFolder, "Calo_Rate"        , "Calo"             , "SingleTau_Rate_Calo"      , **Rate )
+hTkConfirmed_Rate  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_Rate" , "+Tk"              , "SingleTau_Rate_Tk"        , **Rate )
+hVtxIso0p10_Rate   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_Rate"  , "+VtxIso (0.10 cm)", "SingleTau_Rate_VtxIso0p10", **Rate )
+hVtxIso0p30_Rate   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_Rate"  , "+VtxIso (0.30 cm)", "SingleTau_Rate_VtxIso0p30", **Rate )
+hVtxIso0p50_Rate   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_Rate"  , "+VtxIso (0.50 cm)", "SingleTau_Rate_VtxIso0p50", **Rate )
+hVtxIso1p00_Rate   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_Rate"  , "+VtxIso (1.00 cm)", "SingleTau_Rate_VtxIso1p00", **Rate )
+hVtxIso2p00_Rate   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_Rate"  , "+VtxIso (2.00 cm)", "SingleTau_Rate_VtxIso2p00", **Rate )
+hVtxIso3p00_Rate   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_Rate"  , "+VtxIso (3.00 cm)", "SingleTau_Rate_VtxIso3p00", **Rate )
+hRelIso0p05_Rate   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_Rate"  , "+RelIso (0.05)"   , "SingleTau_Rate_RelIso0p05", **Rate )
+hRelIso0p10_Rate   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_Rate"  , "+RelIso (0.10)"   , "SingleTau_Rate_RelIso0p10", **Rate )
+hRelIso0p20_Rate   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_Rate"  , "+RelIso (0.20)"   , "SingleTau_Rate_RelIso0p20", **Rate )
+hRelIso0p30_Rate   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_Rate"  , "+RelIso (0.30)"   , "SingleTau_Rate_RelIso0p30", **Rate )
+hRelIso0p40_Rate   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_Rate"  , "+RelIso (0.40)"   , "SingleTau_Rate_RelIso0p40", **Rate )
+hRelIso0p50_Rate   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_Rate"  , "+RelIso (0.50)"   , "SingleTau_Rate_RelIso0p50", **Rate )
+
+hCalo_Rate_2D         = m_histos.TH1orTH2( histoFolder, "Calo_Rate_2D"        , "Calo"             , "DiTau_Rate_Calo"      , **Rate_2D )
+hTkConfirmed_Rate_2D  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_Rate_2D" , "+Tk"              , "DiTau_Rate_Tk"        , **Rate_2D )
+hVtxIso0p10_Rate_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_Rate_2D"  , "+VtxIso (0.10 cm)", "DiTau_Rate_VtxIso0p10", **Rate_2D )
+hVtxIso0p30_Rate_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_Rate_2D"  , "+VtxIso (0.30 cm)", "DiTau_Rate_VtxIso0p30", **Rate_2D )
+hVtxIso0p50_Rate_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_Rate_2D"  , "+VtxIso (0.50 cm)", "DiTau_Rate_VtxIso0p50", **Rate_2D )
+hVtxIso1p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_Rate_2D"  , "+VtxIso (1.00 cm)", "DiTau_Rate_VtxIso1p00", **Rate_2D )
+hVtxIso2p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_Rate_2D"  , "+VtxIso (2.00 cm)", "DiTau_Rate_VtxIso2p00", **Rate_2D )
+hVtxIso3p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_Rate_2D"  , "+VtxIso (3.00 cm)", "DiTau_Rate_VtxIso3p00", **Rate_2D )
+hRelIso0p05_Rate_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_Rate_2D"  , "+RelIso (0.05)"   , "DiTau_Rate_RelIso0p05", **Rate_2D )
+hRelIso0p10_Rate_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_Rate_2D"  , "+RelIso (0.10)"   , "DiTau_Rate_RelIso0p10", **Rate_2D )
+hRelIso0p20_Rate_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_Rate_2D"  , "+RelIso (0.20)"   , "DiTau_Rate_RelIso0p20", **Rate_2D )
+hRelIso0p30_Rate_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_Rate_2D"  , "+RelIso (0.30)"   , "DiTau_Rate_RelIso0p30", **Rate_2D )
+hRelIso0p40_Rate_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_Rate_2D"  , "+RelIso (0.40)"   , "DiTau_Rate_RelIso0p40", **Rate_2D )
+hRelIso0p50_Rate_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_Rate_2D"  , "+RelIso (0.50)"   , "DiTau_Rate_RelIso0p50", **Rate_2D )
+
+hCalo_EvtEff         = m_histos.TH1orTH2( histoFolder, "Calo_EvtEff"        , "Calo"             , "SingleTau_PerEvtEff_Calo"      , **EvtEff )
+hTkConfirmed_EvtEff  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_EvtEff" , "+Tk"              , "SingleTau_PerEvtEff_Tk"        , **EvtEff )
+hVtxIso0p10_EvtEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_EvtEff"  , "+VtxIso (0.10 cm)", "SingleTau_PerEvtEff_VtxIso0p10", **EvtEff )
+hVtxIso0p30_EvtEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_EvtEff"  , "+VtxIso (0.30 cm)", "SingleTau_PerEvtEff_VtxIso0p30", **EvtEff )
+hVtxIso0p50_EvtEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_EvtEff"  , "+VtxIso (0.50 cm)", "SingleTau_PerEvtEff_VtxIso0p50", **EvtEff )
+hVtxIso1p00_EvtEff   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_EvtEff"  , "+VtxIso (1.00 cm)", "SingleTau_PerEvtEff_VtxIso1p00", **EvtEff )
+hVtxIso2p00_EvtEff   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_EvtEff"  , "+VtxIso (2.00 cm)", "SingleTau_PerEvtEff_VtxIso2p00", **EvtEff )
+hVtxIso3p00_EvtEff   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_EvtEff"  , "+VtxIso (3.00 cm)", "SingleTau_PerEvtEff_VtxIso3p00", **EvtEff )
+hRelIso0p05_EvtEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_EvtEff"  , "+RelIso (0.05)"   , "SingleTau_PerEvtEff_RelIso0p05", **EvtEff )
+hRelIso0p10_EvtEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_EvtEff"  , "+RelIso (0.10)"   , "SingleTau_PerEvtEff_RelIso0p10", **EvtEff )
+hRelIso0p20_EvtEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_EvtEff"  , "+RelIso (0.20)"   , "SingleTau_PerEvtEff_RelIso0p20", **EvtEff )
+hRelIso0p30_EvtEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_EvtEff"  , "+RelIso (0.30)"   , "SingleTau_PerEvtEff_RelIso0p30", **EvtEff )
+hRelIso0p40_EvtEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_EvtEff"  , "+RelIso (0.40)"   , "SingleTau_PerEvtEff_RelIso0p40", **EvtEff )
+hRelIso0p50_EvtEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_EvtEff"  , "+RelIso (0.50)"   , "SingleTau_PerEvtEff_RelIso0p50", **EvtEff )
+
+hCalo_EvtEffMatched         = m_histos.TH1orTH2( histoFolder, "Calo_EvtEffMatched"        , "Calo"             , "SingleTau_PerEvtEffMatched_Calo"      , **EvtEff )
+hTkConfirmed_EvtEffMatched  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_EvtEffMatched" , "+Tk"              , "SingleTau_PerEvtEffMatched_Tk"        , **EvtEff )
+hVtxIso0p10_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_EvtEffMatched"  , "+VtxIso (0.10 cm)", "SingleTau_PerEvtEffMatched_VtxIso0p10", **EvtEff )
+hVtxIso0p30_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_EvtEffMatched"  , "+VtxIso (0.30 cm)", "SingleTau_PerEvtEffMatched_VtxIso0p30", **EvtEff )
+hVtxIso0p50_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_EvtEffMatched"  , "+VtxIso (0.50 cm)", "SingleTau_PerEvtEffMatched_VtxIso0p50", **EvtEff )
+hVtxIso1p00_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_EvtEffMatched"  , "+VtxIso (1.00 cm)", "SingleTau_PerEvtEffMatched_VtxIso1p00", **EvtEff )
+hVtxIso2p00_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_EvtEffMatched"  , "+VtxIso (2.00 cm)", "SingleTau_PerEvtEffMatched_VtxIso2p00", **EvtEff )
+hVtxIso3p00_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_EvtEffMatched"  , "+VtxIso (3.00 cm)", "SingleTau_PerEvtEffMatched_VtxIso3p00", **EvtEff )
+hRelIso0p05_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_EvtEffMatched"  , "+RelIso (0.05)"   , "SingleTau_PerEvtEffMatched_RelIso0p05", **EvtEff )
+hRelIso0p10_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_EvtEffMatched"  , "+RelIso (0.10)"   , "SingleTau_PerEvtEffMatched_RelIso0p10", **EvtEff )
+hRelIso0p20_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_EvtEffMatched"  , "+RelIso (0.20)"   , "SingleTau_PerEvtEffMatched_RelIso0p20", **EvtEff )
+hRelIso0p30_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_EvtEffMatched"  , "+RelIso (0.30)"   , "SingleTau_PerEvtEffMatched_RelIso0p30", **EvtEff )
+hRelIso0p40_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_EvtEffMatched"  , "+RelIso (0.40)"   , "SingleTau_PerEvtEffMatched_RelIso0p40", **EvtEff )
+hRelIso0p50_EvtEffMatched   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_EvtEffMatched"  , "+RelIso (0.50)"   , "SingleTau_PerEvtEffMatched_RelIso0p50", **EvtEff )
+
+hCalo_EvtEff_2D         = m_histos.TH1orTH2( histoFolder, "Calo_EvtEff_2D"        , "Calo"             , "DiTau_PerEvtEff_Calo"      , **EvtEff_2D )
+hTkConfirmed_EvtEff_2D  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_EvtEff_2D" , "+Tk"              , "DiTau_PerEvtEff_Tk"        , **EvtEff_2D )
+hVtxIso0p10_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_EvtEff_2D"  , "+VtxIso (0.10 cm)", "DiTau_PerEvtEff_VtxIso0p10", **EvtEff_2D )
+hVtxIso0p30_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_EvtEff_2D"  , "+VtxIso (0.30 cm)", "DiTau_PerEvtEff_VtxIso0p30", **EvtEff_2D )
+hVtxIso0p50_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_EvtEff_2D"  , "+VtxIso (0.50 cm)", "DiTau_PerEvtEff_VtxIso0p50", **EvtEff_2D )
+hVtxIso1p00_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_EvtEff_2D"  , "+VtxIso (1.00 cm)", "DiTau_PerEvtEff_VtxIso1p00", **EvtEff_2D )
+hVtxIso2p00_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_EvtEff_2D"  , "+VtxIso (2.00 cm)", "DiTau_PerEvtEff_VtxIso2p00", **EvtEff_2D )
+hVtxIso3p00_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_EvtEff_2D"  , "+VtxIso (3.00 cm)", "DiTau_PerEvtEff_VtxIso3p00", **EvtEff_2D )
+hRelIso0p05_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_EvtEff_2D"  , "+RelIso (0.05)"   , "DiTau_PerEvtEff_RelIso0p05", **EvtEff_2D )
+hRelIso0p10_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_EvtEff_2D"  , "+RelIso (0.10)"   , "DiTau_PerEvtEff_RelIso0p10", **EvtEff_2D )
+hRelIso0p20_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_EvtEff_2D"  , "+RelIso (0.20)"   , "DiTau_PerEvtEff_RelIso0p20", **EvtEff_2D )
+hRelIso0p30_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_EvtEff_2D"  , "+RelIso (0.30)"   , "DiTau_PerEvtEff_RelIso0p30", **EvtEff_2D )
+hRelIso0p40_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_EvtEff_2D"  , "+RelIso (0.40)"   , "DiTau_PerEvtEff_RelIso0p40", **EvtEff_2D )
+hRelIso0p50_EvtEff_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_EvtEff_2D"  , "+RelIso (0.50)"   , "DiTau_PerEvtEff_RelIso0p50", **EvtEff_2D )
+
+hCalo_EvtEffMatched_2D         = m_histos.TH1orTH2( histoFolder, "Calo_EvtEffMatched_2D"        , "Calo"             , "DiTau_PerEvtEffMatched_Calo"      , **EvtEff_2D )
+hTkConfirmed_EvtEffMatched_2D  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_EvtEffMatched_2D" , "+Tk"              , "DiTau_PerEvtEffMatched_Tk"        , **EvtEff_2D )
+hVtxIso0p10_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_EvtEffMatched_2D"  , "+VtxIso (0.10 cm)", "DiTau_PerEvtEffMatched_VtxIso0p10", **EvtEff_2D )
+hVtxIso0p30_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_EvtEffMatched_2D"  , "+VtxIso (0.30 cm)", "DiTau_PerEvtEffMatched_VtxIso0p30", **EvtEff_2D )
+hVtxIso0p50_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_EvtEffMatched_2D"  , "+VtxIso (0.50 cm)", "DiTau_PerEvtEffMatched_VtxIso0p50", **EvtEff_2D )
+hVtxIso1p00_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_EvtEffMatched_2D"  , "+VtxIso (1.00 cm)", "DiTau_PerEvtEffMatched_VtxIso1p00", **EvtEff_2D )
+hVtxIso2p00_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_EvtEffMatched_2D"  , "+VtxIso (2.00 cm)", "DiTau_PerEvtEffMatched_VtxIso2p00", **EvtEff_2D )
+hVtxIso3p00_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_EvtEffMatched_2D"  , "+VtxIso (3.00 cm)", "DiTau_PerEvtEffMatched_VtxIso3p00", **EvtEff_2D )
+hRelIso0p05_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_EvtEffMatched_2D"  , "+RelIso (0.05)"   , "DiTau_PerEvtEffMatched_RelIso0p05", **EvtEff_2D )
+hRelIso0p10_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_EvtEffMatched_2D"  , "+RelIso (0.10)"   , "DiTau_PerEvtEffMatched_RelIso0p10", **EvtEff_2D )
+hRelIso0p20_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_EvtEffMatched_2D"  , "+RelIso (0.20)"   , "DiTau_PerEvtEffMatched_RelIso0p20", **EvtEff_2D )
+hRelIso0p30_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_EvtEffMatched_2D"  , "+RelIso (0.30)"   , "DiTau_PerEvtEffMatched_RelIso0p30", **EvtEff_2D )
+hRelIso0p40_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_EvtEffMatched_2D"  , "+RelIso (0.40)"   , "DiTau_PerEvtEffMatched_RelIso0p40", **EvtEff_2D )
+hRelIso0p50_EvtEffMatched_2D   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_EvtEffMatched_2D"  , "+RelIso (0.50)"   , "DiTau_PerEvtEffMatched_RelIso0p50", **EvtEff_2D )
+
+hCalo_RocPurity         = m_histos.TH1orTH2( histoFolder, "Calo_RocPurity"        , "Calo"             , "SingleTau_RocPurity"           , **Purity )
+hTkConfirmed_RocPurity  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RocPurity" , "+Tk"              , "SingleTau_RocPurity_Tk"        , **Purity )
+hVtxIso0p10_RocPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_RocPurity"  , "+VtxIso (0.10 cm)", "SingleTau_RocPurity_VtxIso0p10", **Purity )
+hVtxIso0p30_RocPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_RocPurity"  , "+VtxIso (0.30 cm)", "SingleTau_RocPurity_VtxIso0p30", **Purity )
+hVtxIso0p50_RocPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_RocPurity"  , "+VtxIso (0.50 cm)", "SingleTau_RocPurity_VtxIso0p50", **Purity )
+hVtxIso1p00_RocPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_RocPurity"  , "+VtxIso (1.00 cm)", "SingleTau_RocPurity_VtxIso1p00", **Purity )
+hVtxIso2p00_RocPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_RocPurity"  , "+VtxIso (2.00 cm)", "SingleTau_RocPurity_VtxIso2p00", **Purity )
+hVtxIso3p00_RocPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_RocPurity"  , "+VtxIso (3.00 cm)", "SingleTau_RocPurity_VtxIso3p00", **Purity )
+hRelIso0p05_RocPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_RocPurity"  , "+RelIso (0.05)"   , "SingleTau_RocPurity_RelIso0p05", **Purity )
+hRelIso0p10_RocPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_RocPurity"  , "+RelIso (0.10)"   , "SingleTau_RocPurity_RelIso0p10", **Purity )
+hRelIso0p20_RocPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_RocPurity"  , "+RelIso (0.20)"   , "SingleTau_RocPurity_RelIso0p20", **Purity )
+hRelIso0p30_RocPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_RocPurity"  , "+RelIso (0.30)"   , "SingleTau_RocPurity_RelIso0p30", **Purity )
+hRelIso0p40_RocPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_RocPurity"  , "+RelIso (0.40)"   , "SingleTau_RocPurity_RelIso0p40", **Purity )
+hRelIso0p50_RocPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_RocPurity"  , "+RelIso (0.50)"   , "SingleTau_RocPurity_RelIso0p50", **Purity )
+
+hCalo_RealPurity         = m_histos.TH1orTH2( histoFolder, "Calo_RealPurity"        , "Calo"             , "SingleTau_RealPurity"           , **Purity )
+hTkConfirmed_RealPurity  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RealPurity" , "+Tk"              , "SingleTau_RealPurity_Tk"        , **Purity )
+hVtxIso0p10_RealPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_RealPurity"  , "+VtxIso (0.10 cm)", "SingleTau_RealPurity_VtxIso0p10", **Purity )
+hVtxIso0p30_RealPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_RealPurity"  , "+VtxIso (0.30 cm)", "SingleTau_RealPurity_VtxIso0p30", **Purity )
+hVtxIso0p50_RealPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_RealPurity"  , "+VtxIso (0.50 cm)", "SingleTau_RealPurity_VtxIso0p50", **Purity )
+hVtxIso1p00_RealPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_RealPurity"  , "+VtxIso (1.00 cm)", "SingleTau_RealPurity_VtxIso1p00", **Purity )
+hVtxIso2p00_RealPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_RealPurity"  , "+VtxIso (2.00 cm)", "SingleTau_RealPurity_VtxIso2p00", **Purity )
+hVtxIso3p00_RealPurity   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_RealPurity"  , "+VtxIso (3.00 cm)", "SingleTau_RealPurity_VtxIso3p00", **Purity )
+hRelIso0p05_RealPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_RealPurity"  , "+RelIso (0.05)"   , "SingleTau_RealPurity_RelIso0p05", **Purity )
+hRelIso0p10_RealPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_RealPurity"  , "+RelIso (0.10)"   , "SingleTau_RealPurity_RelIso0p10", **Purity )
+hRelIso0p20_RealPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_RealPurity"  , "+RelIso (0.20)"   , "SingleTau_RealPurity_RelIso0p20", **Purity )
+hRelIso0p30_RealPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_RealPurity"  , "+RelIso (0.30)"   , "SingleTau_RealPurity_RelIso0p30", **Purity )
+hRelIso0p40_RealPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_RealPurity"  , "+RelIso (0.40)"   , "SingleTau_RealPurity_RelIso0p40", **Purity )
+hRelIso0p50_RealPurity   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_RealPurity"  , "+RelIso (0.50)"   , "SingleTau_RealPurity_RelIso0p50", **Purity )
+
+hCalo_SingleTauEff         = m_histos.TH1orTH2( histoFolder, "Calo_SingleTauEff"        , "Calo"             , "SingleTau_TurnOn"           , **SingleTauEff )
+hTkConfirmed_SingleTauEff  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_SingleTauEff" , "+Tk"              , "SingleTau_TurnOn_Tk"        , **SingleTauEff )
+hVtxIso0p10_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_SingleTauEff"  , "+VtxIso (0.10 cm)", "SingleTau_TurnOn_VtxIso0p10", **SingleTauEff )
+hVtxIso0p30_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_SingleTauEff"  , "+VtxIso (0.30 cm)", "SingleTau_TurnOn_VtxIso0p30", **SingleTauEff )
+hVtxIso0p50_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_SingleTauEff"  , "+VtxIso (0.50 cm)", "SingleTau_TurnOn_VtxIso0p50", **SingleTauEff )
+hVtxIso1p00_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_SingleTauEff"  , "+VtxIso (1.00 cm)", "SingleTau_TurnOn_VtxIso1p00", **SingleTauEff )
+hVtxIso2p00_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_SingleTauEff"  , "+VtxIso (2.00 cm)", "SingleTau_TurnOn_VtxIso2p00", **SingleTauEff )
+hVtxIso3p00_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_SingleTauEff"  , "+VtxIso (3.00 cm)", "SingleTau_TurnOn_VtxIso3p00", **SingleTauEff )
+hRelIso0p05_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_SingleTauEff"  , "+RelIso (0.05)"   , "SingleTau_TurnOn_RelIso0p05", **SingleTauEff )
+hRelIso0p10_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_SingleTauEff"  , "+RelIso (0.10)"   , "SingleTau_TurnOn_RelIso0p10", **SingleTauEff )
+hRelIso0p20_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_SingleTauEff"  , "+RelIso (0.20)"   , "SingleTau_TurnOn_RelIso0p20", **SingleTauEff )
+hRelIso0p30_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_SingleTauEff"  , "+RelIso (0.30)"   , "SingleTau_TurnOn_RelIso0p30", **SingleTauEff )
+hRelIso0p40_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_SingleTauEff"  , "+RelIso (0.40)"   , "SingleTau_TurnOn_RelIso0p40", **SingleTauEff )
+hRelIso0p50_SingleTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_SingleTauEff"  , "+RelIso (0.50)"   , "SingleTau_TurnOn_RelIso0p50", **SingleTauEff )
+
+hCalo_DiTauEff         = m_histos.TH1orTH2( histoFolder, "Calo_DiTauEff"        , "Calo"             , "DiTau_TurnOn"           , **DiTauEff )
+hTkConfirmed_DiTauEff  = m_histos.TH1orTH2( histoFolder, "TkConfirmed_DiTauEff" , "+Tk"              , "DiTau_TurnOn_Tk"        , **DiTauEff )
+hVtxIso0p10_DiTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p10_DiTauEff"  , "+VtxIso (0.10 cm)", "DiTau_TurnOn_VtxIso0p10", **DiTauEff )
+hVtxIso0p30_DiTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p30_DiTauEff"  , "+VtxIso (0.30 cm)", "DiTau_TurnOn_VtxIso0p30", **DiTauEff )
+hVtxIso0p50_DiTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso0p50_DiTauEff"  , "+VtxIso (0.50 cm)", "DiTau_TurnOn_VtxIso0p50", **DiTauEff )
+hVtxIso1p00_DiTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso1p00_DiTauEff"  , "+VtxIso (1.00 cm)", "DiTau_TurnOn_VtxIso1p00", **DiTauEff )
+hVtxIso2p00_DiTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso2p00_DiTauEff"  , "+VtxIso (2.00 cm)", "DiTau_TurnOn_VtxIso2p00", **DiTauEff )
+hVtxIso3p00_DiTauEff   = m_histos.TH1orTH2( histoFolder, "VtxIso3p00_DiTauEff"  , "+VtxIso (3.00 cm)", "DiTau_TurnOn_VtxIso3p00", **DiTauEff )
+hRelIso0p05_DiTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p05_DiTauEff"  , "+RelIso (0.05)"   , "DiTau_TurnOn_RelIso0p05", **DiTauEff )
+hRelIso0p10_DiTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p10_DiTauEff"  , "+RelIso (0.10)"   , "DiTau_TurnOn_RelIso0p10", **DiTauEff )
+hRelIso0p20_DiTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p20_DiTauEff"  , "+RelIso (0.20)"   , "DiTau_TurnOn_RelIso0p20", **DiTauEff )
+hRelIso0p30_DiTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p30_DiTauEff"  , "+RelIso (0.30)"   , "DiTau_TurnOn_RelIso0p30", **DiTauEff )
+hRelIso0p40_DiTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p40_DiTauEff"  , "+RelIso (0.40)"   , "DiTau_TurnOn_RelIso0p40", **DiTauEff )
+hRelIso0p50_DiTauEff   = m_histos.TH1orTH2( histoFolder, "RelIso0p50_DiTauEff"  , "+RelIso (0.50)"   , "DiTau_TurnOn_RelIso0p50", **DiTauEff )
+
+### DiTau Assymmetric Triggers: Calo-Iso
+hCalo_VtxIso0p10_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p10_Rate_2D"  , "Calo, +VtxIso (0.10 cm)", "DiTau_Rate_Calo_VtxIso0p10", **Rate_2D )
+hCalo_VtxIso0p30_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p30_Rate_2D"  , "Calo, +VtxIso (0.30 cm)", "DiTau_Rate_Calo_VtxIso0p30", **Rate_2D )
+hCalo_VtxIso0p50_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p50_Rate_2D"  , "Calo, +VtxIso (0.50 cm)", "DiTau_Rate_Calo_VtxIso0p50", **Rate_2D )
+hCalo_VtxIso1p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso1p00_Rate_2D"  , "Calo, +VtxIso (1.00 cm)", "DiTau_Rate_Calo_VtxIso1p00", **Rate_2D )
+hCalo_VtxIso2p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso2p00_Rate_2D"  , "Calo, +VtxIso (2.00 cm)", "DiTau_Rate_Calo_VtxIso2p00", **Rate_2D )
+hCalo_VtxIso3p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso3p00_Rate_2D"  , "Calo, +VtxIso (3.00 cm)", "DiTau_Rate_Calo_VtxIso3p00", **Rate_2D )
+hCalo_RelIso0p05_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p05_Rate_2D"  , "Calo, +RelIso (0.05)", "DiTau_Rate_Calo_RelIso0p05", **Rate_2D )
+hCalo_RelIso0p10_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p10_Rate_2D"  , "Calo, +RelIso (0.10)", "DiTau_Rate_Calo_RelIso0p10", **Rate_2D )
+hCalo_RelIso0p20_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p20_Rate_2D"  , "Calo, +RelIso (0.20)", "DiTau_Rate_Calo_RelIso0p20", **Rate_2D )
+hCalo_RelIso0p30_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p30_Rate_2D"  , "Calo, +RelIso (0.30)", "DiTau_Rate_Calo_RelIso0p30", **Rate_2D )
+hCalo_RelIso0p40_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p40_Rate_2D"  , "Calo, +RelIso (0.40)", "DiTau_Rate_Calo_RelIso0p40", **Rate_2D )
+hCalo_RelIso0p50_Rate_2D   = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p50_Rate_2D"  , "Calo, +RelIso (0.50)", "DiTau_Rate_Calo_RelIso0p50", **Rate_2D )
+
+hCalo_VtxIso0p10_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p10_EvtEff_2D", "Calo, +VtxIso (0.10 cm)", "DiTau_PerEvtEff_Calo_VtxIso0p10", **EvtEff_2D )
+hCalo_VtxIso0p30_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p30_EvtEff_2D", "Calo, +VtxIso (0.30 cm)", "DiTau_PerEvtEff_Calo_VtxIso0p30", **EvtEff_2D )
+hCalo_VtxIso0p50_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p50_EvtEff_2D", "Calo, +VtxIso (0.50 cm)", "DiTau_PerEvtEff_Calo_VtxIso0p50", **EvtEff_2D )
+hCalo_VtxIso1p00_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso1p00_EvtEff_2D", "Calo, +VtxIso (1.00 cm)", "DiTau_PerEvtEff_Calo_VtxIso1p00", **EvtEff_2D )
+hCalo_VtxIso2p00_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso2p00_EvtEff_2D", "Calo, +VtxIso (2.00 cm)", "DiTau_PerEvtEff_Calo_VtxIso2p00", **EvtEff_2D )
+hCalo_VtxIso3p00_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso3p00_EvtEff_2D", "Calo, +VtxIso (3.00 cm)", "DiTau_PerEvtEff_Calo_VtxIso3p00", **EvtEff_2D )
+hCalo_RelIso0p05_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p05_EvtEff_2D", "Calo, +RelIso (0.05)", "DiTau_PerEvtEff_Calo_RelIso0p05", **EvtEff_2D )
+hCalo_RelIso0p10_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p10_EvtEff_2D", "Calo, +RelIso (0.10)", "DiTau_PerEvtEff_Calo_RelIso0p10", **EvtEff_2D )
+hCalo_RelIso0p20_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p20_EvtEff_2D", "Calo, +RelIso (0.20)", "DiTau_PerEvtEff_Calo_RelIso0p20", **EvtEff_2D )
+hCalo_RelIso0p30_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p30_EvtEff_2D", "Calo, +RelIso (0.30)", "DiTau_PerEvtEff_Calo_RelIso0p30", **EvtEff_2D )
+hCalo_RelIso0p40_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p40_EvtEff_2D", "Calo, +RelIso (0.40)", "DiTau_PerEvtEff_Calo_RelIso0p40", **EvtEff_2D )
+hCalo_RelIso0p50_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p50_EvtEff_2D", "Calo, +RelIso (0.50)", "DiTau_PerEvtEff_Calo_RelIso0p50", **EvtEff_2D )
+
+hCalo_VtxIso0p10_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p10_EvtEffMatched_2D", "Calo, +VtxIso (0.10 cm)", "DiTau_PerEvtEffMatched_Calo_VtxIso0p10", **EvtEff_2D )
+hCalo_VtxIso0p30_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p30_EvtEffMatched_2D", "Calo, +VtxIso (0.30 cm)", "DiTau_PerEvtEffMatched_Calo_VtxIso0p30", **EvtEff_2D )
+hCalo_VtxIso0p50_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso0p50_EvtEffMatched_2D", "Calo, +VtxIso (0.50 cm)", "DiTau_PerEvtEffMatched_Calo_VtxIso0p50", **EvtEff_2D )
+hCalo_VtxIso1p00_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso1p00_EvtEffMatched_2D", "Calo, +VtxIso (1.00 cm)", "DiTau_PerEvtEffMatched_Calo_VtxIso1p00", **EvtEff_2D )
+hCalo_VtxIso2p00_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso2p00_EvtEffMatched_2D", "Calo, +VtxIso (2.00 cm)", "DiTau_PerEvtEffMatched_Calo_VtxIso2p00", **EvtEff_2D )
+hCalo_VtxIso3p00_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_VtxIso3p00_EvtEffMatched_2D", "Calo, +VtxIso (3.00 cm)", "DiTau_PerEvtEffMatched_Calo_VtxIso3p00", **EvtEff_2D )
+hCalo_RelIso0p05_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p05_EvtEffMatched_2D", "Calo, +RelIso (0.05)", "DiTau_PerEvtEffMatched_Calo_RelIso0p05", **EvtEff_2D )
+hCalo_RelIso0p10_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p10_EvtEffMatched_2D", "Calo, +RelIso (0.10)", "DiTau_PerEvtEffMatched_Calo_RelIso0p10", **EvtEff_2D )
+hCalo_RelIso0p20_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p20_EvtEffMatched_2D", "Calo, +RelIso (0.20)", "DiTau_PerEvtEffMatched_Calo_RelIso0p20", **EvtEff_2D )
+hCalo_RelIso0p30_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p30_EvtEffMatched_2D", "Calo, +RelIso (0.30)", "DiTau_PerEvtEffMatched_Calo_RelIso0p30", **EvtEff_2D )
+hCalo_RelIso0p40_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p40_EvtEffMatched_2D", "Calo, +RelIso (0.40)", "DiTau_PerEvtEffMatched_Calo_RelIso0p40", **EvtEff_2D )
+hCalo_RelIso0p50_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder, "Calo_RelIso0p50_EvtEffMatched_2D", "Calo, +RelIso (0.50)", "DiTau_PerEvtEffMatched_Calo_RelIso0p50", **EvtEff_2D )
+
+### DiTau Assymmetric Triggers: TkConfirmed-Iso
+hTkConfirmed_VtxIso0p10_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso0p10_Rate_2D"  , "+Tk, +VtxIso (0.10 cm)", "DiTau_Rate_TkConfirmed_VtxIso0p10", **Rate_2D )
+hTkConfirmed_VtxIso0p30_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso0p30_Rate_2D"  , "+Tk, +VtxIso (0.30 cm)", "DiTau_Rate_TkConfirmed_VtxIso0p30", **Rate_2D )
+hTkConfirmed_VtxIso0p50_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso0p50_Rate_2D"  , "+Tk, +VtxIso (0.50 cm)", "DiTau_Rate_TkConfirmed_VtxIso0p50", **Rate_2D )
+hTkConfirmed_VtxIso1p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso1p00_Rate_2D"  , "+Tk, +VtxIso (1.00 cm)", "DiTau_Rate_TkConfirmed_VtxIso1p00", **Rate_2D )
+hTkConfirmed_VtxIso2p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso2p00_Rate_2D"  , "+Tk, +VtxIso (2.00 cm)", "DiTau_Rate_TkConfirmed_VtxIso2p00", **Rate_2D )
+hTkConfirmed_VtxIso3p00_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso3p00_Rate_2D"  , "+Tk, +VtxIso (3.00 cm)", "DiTau_Rate_TkConfirmed_VtxIso3p00", **Rate_2D )
+hTkConfirmed_RelIso0p05_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p05_Rate_2D"  , "+Tk, +RelIso (0.05)", "DiTau_Rate_TkConfirmed_RelIso0p05", **Rate_2D )
+hTkConfirmed_RelIso0p10_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p10_Rate_2D"  , "+Tk, +RelIso (0.10)", "DiTau_Rate_TkConfirmed_RelIso0p10", **Rate_2D )
+hTkConfirmed_RelIso0p20_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p20_Rate_2D"  , "+Tk, +RelIso (0.20)", "DiTau_Rate_TkConfirmed_RelIso0p20", **Rate_2D )
+hTkConfirmed_RelIso0p30_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p30_Rate_2D"  , "+Tk, +RelIso (0.30)", "DiTau_Rate_TkConfirmed_RelIso0p30", **Rate_2D )
+hTkConfirmed_RelIso0p40_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p40_Rate_2D"  , "+Tk, +RelIso (0.40)", "DiTau_Rate_TkConfirmed_RelIso0p40", **Rate_2D )
+hTkConfirmed_RelIso0p50_Rate_2D   = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p50_Rate_2D"  , "+Tk, +RelIso (0.50)", "DiTau_Rate_TkConfirmed_RelIso0p50", **Rate_2D )
+
+hTkConfirmed_VtxIso0p10_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso0p10_EvtEff_2D", "+Tk, +VtxIso (0.10 cm)", "DiTau_PerEvtEff_TkConfirmed_VtxIso0p10", **EvtEff_2D )
+hTkConfirmed_VtxIso0p30_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso0p30_EvtEff_2D", "+Tk, +VtxIso (0.30 cm)", "DiTau_PerEvtEff_TkConfirmed_VtxIso0p30", **EvtEff_2D )
+hTkConfirmed_VtxIso0p50_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso0p50_EvtEff_2D", "+Tk, +VtxIso (0.50 cm)", "DiTau_PerEvtEff_TkConfirmed_VtxIso0p50", **EvtEff_2D )
+hTkConfirmed_VtxIso1p00_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso1p00_EvtEff_2D", "+Tk, +VtxIso (1.00 cm)", "DiTau_PerEvtEff_TkConfirmed_VtxIso1p00", **EvtEff_2D )
+hTkConfirmed_VtxIso2p00_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso2p00_EvtEff_2D", "+Tk, +VtxIso (2.00 cm)", "DiTau_PerEvtEff_TkConfirmed_VtxIso2p00", **EvtEff_2D )
+hTkConfirmed_VtxIso3p00_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_VtxIso3p00_EvtEff_2D", "+Tk, +VtxIso (3.00 cm)", "DiTau_PerEvtEff_TkConfirmed_VtxIso3p00", **EvtEff_2D )
+hTkConfirmed_RelIso0p05_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p05_EvtEff_2D", "+Tk, +RelIso (0.05)", "DiTau_PerEvtEff_TkConfirmed_RelIso0p05", **EvtEff_2D )
+hTkConfirmed_RelIso0p10_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p10_EvtEff_2D", "+Tk, +RelIso (0.10)", "DiTau_PerEvtEff_TkConfirmed_RelIso0p10", **EvtEff_2D )
+hTkConfirmed_RelIso0p20_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p20_EvtEff_2D", "+Tk, +RelIso (0.20)", "DiTau_PerEvtEff_TkConfirmed_RelIso0p20", **EvtEff_2D )
+hTkConfirmed_RelIso0p30_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p30_EvtEff_2D", "+Tk, +RelIso (0.30)", "DiTau_PerEvtEff_TkConfirmed_RelIso0p30", **EvtEff_2D )
+hTkConfirmed_RelIso0p40_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p40_EvtEff_2D", "+Tk, +RelIso (0.40)", "DiTau_PerEvtEff_TkConfirmed_RelIso0p40", **EvtEff_2D )
+hTkConfirmed_RelIso0p50_EvtEff_2D = m_histos.TH1orTH2( histoFolder, "TkConfirmed_RelIso0p50_EvtEff_2D", "+Tk, +RelIso (0.50)", "DiTau_PerEvtEff_TkConfirmed_RelIso0p50", **EvtEff_2D )
+
+hTkConfirmed_VtxIso0p10_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_VtxIso0p10_EvtEffMatched_2D","+Tk, +VtxIso (0.10 cm)","DiTau_PerEvtEffMatched_TkConfirmed_VtxIso0p10",**EvtEff_2D )
+hTkConfirmed_VtxIso0p30_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_VtxIso0p30_EvtEffMatched_2D","+Tk, +VtxIso (0.30 cm)","DiTau_PerEvtEffMatched_TkConfirmed_VtxIso0p30",**EvtEff_2D )
+hTkConfirmed_VtxIso0p50_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_VtxIso0p50_EvtEffMatched_2D","+Tk, +VtxIso (0.50 cm)","DiTau_PerEvtEffMatched_TkConfirmed_VtxIso0p50",**EvtEff_2D )
+hTkConfirmed_VtxIso1p00_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_VtxIso1p00_EvtEffMatched_2D","+Tk, +VtxIso (1.00 cm)","DiTau_PerEvtEffMatched_TkConfirmed_VtxIso1p00",**EvtEff_2D )
+hTkConfirmed_VtxIso2p00_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_VtxIso2p00_EvtEffMatched_2D","+Tk, +VtxIso (2.00 cm)","DiTau_PerEvtEffMatched_TkConfirmed_VtxIso2p00",**EvtEff_2D )
+hTkConfirmed_VtxIso3p00_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_VtxIso3p00_EvtEffMatched_2D","+Tk, +VtxIso (3.00 cm)","DiTau_PerEvtEffMatched_TkConfirmed_VtxIso3p00",**EvtEff_2D )
+hTkConfirmed_RelIso0p05_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_RelIso0p05_EvtEffMatched_2D","+Tk, +RelIso (0.05)","DiTau_PerEvtEffMatched_TkConfirmed_RelIso0p05",**EvtEff_2D )
+hTkConfirmed_RelIso0p10_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_RelIso0p10_EvtEffMatched_2D","+Tk, +RelIso (0.10)","DiTau_PerEvtEffMatched_TkConfirmed_RelIso0p10",**EvtEff_2D )
+hTkConfirmed_RelIso0p20_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_RelIso0p20_EvtEffMatched_2D","+Tk, +RelIso (0.20)","DiTau_PerEvtEffMatched_TkConfirmed_RelIso0p20",**EvtEff_2D )
+hTkConfirmed_RelIso0p30_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_RelIso0p30_EvtEffMatched_2D","+Tk, +RelIso (0.30)","DiTau_PerEvtEffMatched_TkConfirmed_RelIso0p30",**EvtEff_2D )
+hTkConfirmed_RelIso0p40_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_RelIso0p40_EvtEffMatched_2D","+Tk, +RelIso (0.40)","DiTau_PerEvtEffMatched_TkConfirmed_RelIso0p40",**EvtEff_2D )
+hTkConfirmed_RelIso0p50_EvtEffMatched_2D = m_histos.TH1orTH2( histoFolder,"TkConfirmed_RelIso0p50_EvtEffMatched_2D","+Tk, +RelIso (0.50)","DiTau_PerEvtEffMatched_TkConfirmed_RelIso0p50",**EvtEff_2D )
+
+### CaloTkBasedCorrection
+hCaloTkBasedCorrections_EtMinusCorrEt   = m_histos.TH1orTH2( histoFolder, "CaloTkBasedCorrections_EtMinusCorrEt"  , None, None, **EtMinusCorrEt)
+hCaloTkBasedCorrections_EtaMinusCorrEta = m_histos.TH1orTH2( histoFolder, "CaloTkBasedCorrections_EtaMinusCorrEta", None, None, **EtaMinusCorrEta)
+
+hCaloTkBasedCorrections_EtVsCorrEt   = m_histos.TH1orTH2( histoFolder, "CaloTkBasedCorrections_EtVsCorrEt"  , "", None, **EtVsCorrEt)
+hCaloTkBasedCorrections_EtaVsCorrEta = m_histos.TH1orTH2( histoFolder, "CaloTkBasedCorrections_EtaVsCorrEta", "", None, **EtaVsCorrEta)
+
+### TF1
+f1Args = {"lineColour": ROOT.kBlack, "lineStyle": ROOT.kSolid, "lineWidth": 3, "fillColour": ROOT.kBlack, "fillStyle": 0}
+#f1Args = {"lineColour": ROOT.kBlack, "lineStyle": ROOT.kSolid, "lineWidth": 3, "fillColour": ROOT.kBlack, "fillStyle": 3001}
+
+############################################################### 
+### SingleTau
+############################################################### 
+LdgEt = []
+LdgEt.append(hCalo_LdgEt)
+LdgEt.append(hTkConfirmed_LdgEt)
+#LdgEt.append(hVtxIso0p10_LdgEt)
+#LdgEt.append(hVtxIso0p30_LdgEt)
+#LdgEt.append(hVtxIso0p50_LdgEt)
+LdgEt.append(hVtxIso1p00_LdgEt)
+#LdgEt.append(hVtxIso2p00_LdgEt)
+#LdgEt.append(hVtxIso3p00_LdgEt)
+#LdgEt.append(hRelIso0p05_LdgEt)
+LdgEt.append(hRelIso0p10_LdgEt)
+#LdgEt.append(hRelIso0p20_LdgEt)
+#LdgEt.append(hRelIso0p30_LdgEt)
+#LdgEt.append(hRelIso0p40_LdgEt)
+#LdgEt.append(hRelIso0p50_LdgEt)
+
+### For Producer Comparison
+SingleTau_Rate = []
+SingleTau_Rate.append(hCalo_Rate)
+SingleTau_Rate.append(hTkConfirmed_Rate)
+#SingleTau_Rate.append(hVtxIso0p10_Rate)
+#SingleTau_Rate.append(hVtxIso0p30_Rate)
+#SingleTau_Rate.append(hVtxIso0p50_Rate)
+SingleTau_Rate.append(hVtxIso1p00_Rate)
+#SingleTau_Rate.append(hVtxIso2p00_Rate)
+#SingleTau_Rate.append(hVtxIso3p00_Rate)
+#SingleTau_Rate.append(hRelIso0p05_Rate)
+SingleTau_Rate.append(hRelIso0p10_Rate)
+#SingleTau_Rate.append(hRelIso0p20_Rate)
+#SingleTau_Rate.append(hRelIso0p30_Rate)
+#SingleTau_Rate.append(hRelIso0p40_Rate)
+#SingleTau_Rate.append(hRelIso0p50_Rate)
+
+SingleTau_EvtEff = []
+SingleTau_EvtEff.append(hCalo_EvtEff)
+SingleTau_EvtEff.append(hTkConfirmed_EvtEff)
+#SingleTau_EvtEff.append(hVtxIso0p10_EvtEff)
+#SingleTau_EvtEff.append(hVtxIso0p30_EvtEff)
+#SingleTau_EvtEff.append(hVtxIso0p50_EvtEff)
+SingleTau_EvtEff.append(hVtxIso1p00_EvtEff)
+#SingleTau_EvtEff.append(hVtxIso2p00_EvtEff)
+#SingleTau_EvtEff.append(hVtxIso3p00_EvtEff)
+#SingleTau_EvtEff.append(hRelIso0p05_EvtEff)
+SingleTau_EvtEff.append(hRelIso0p10_EvtEff)
+#SingleTau_EvtEff.append(hRelIso0p20_EvtEff)
+#SingleTau_EvtEff.append(hRelIso0p30_EvtEff)
+#SingleTau_EvtEff.append(hRelIso0p40_EvtEff)
+#SingleTau_EvtEff.append(hRelIso0p50_EvtEff)
+
+SingleTau_EvtEffMatched = []
+SingleTau_EvtEffMatched.append(hCalo_EvtEffMatched)
+SingleTau_EvtEffMatched.append(hTkConfirmed_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hVtxIso0p10_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hVtxIso0p30_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hVtxIso0p50_EvtEffMatched)
+SingleTau_EvtEffMatched.append(hVtxIso1p00_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hVtxIso2p00_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hVtxIso3p00_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hRelIso0p05_EvtEffMatched)
+SingleTau_EvtEffMatched.append(hRelIso0p10_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hRelIso0p20_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hRelIso0p30_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hRelIso0p40_EvtEffMatched)
+#SingleTau_EvtEffMatched.append(hRelIso0p50_EvtEffMatched)
+
+PerTau_RocPurity = []
+PerTau_RocPurity.append(hCalo_RocPurity)
+PerTau_RocPurity.append(hTkConfirmed_RocPurity)
+#PerTau_RocPurity.append(hVtxIso0p10_RocPurity)
+#PerTau_RocPurity.append(hVtxIso0p30_RocPurity)
+#PerTau_RocPurity.append(hVtxIso0p50_RocPurity)
+PerTau_RocPurity.append(hVtxIso1p00_RocPurity)
+#PerTau_RocPurity.append(hVtxIso2p00_RocPurity)
+#PerTau_RocPurity.append(hVtxIso3p00_RocPurity)
+#PerTau_RocPurity.append(hRelIso0p05_RocPurity)
+PerTau_RocPurity.append(hRelIso0p10_RocPurity)
+#PerTau_RocPurity.append(hRelIso0p20_RocPurity)
+#PerTau_RocPurity.append(hRelIso0p30_RocPurity)
+#PerTau_RocPurity.append(hRelIso0p40_RocPurity)
+#PerTau_RocPurity.append(hRelIso0p50_RocPurity)
+
+PerTau_RealPurity = []
+PerTau_RealPurity.append(hCalo_RealPurity)
+PerTau_RealPurity.append(hTkConfirmed_RealPurity)
+#PerTau_RealPurity.append(hVtxIso0p10_RealPurity)
+#PerTau_RealPurity.append(hVtxIso0p30_RealPurity)
+#PerTau_RealPurity.append(hVtxIso0p50_RealPurity)
+PerTau_RealPurity.append(hVtxIso1p00_RealPurity)
+#PerTau_RealPurity.append(hVtxIso2p00_RealPurity)
+#PerTau_RealPurity.append(hVtxIso3p00_RealPurity)
+#PerTau_RealPurity.append(hRelIso0p05_RealPurity)
+PerTau_RealPurity.append(hRelIso0p10_RealPurity)
+#PerTau_RealPurity.append(hRelIso0p20_RealPurity)
+#PerTau_RealPurity.append(hRelIso0p30_RealPurity)
+#PerTau_RealPurity.append(hRelIso0p40_RealPurity)
+#PerTau_RealPurity.append(hRelIso0p50_RealPurity)
+
+SingleTau_TurnOn = []
+SingleTau_TurnOn.append(hCalo_SingleTauEff)
+SingleTau_TurnOn.append(hTkConfirmed_SingleTauEff)
+#SingleTau_TurnOn.append(hVtxIso0p10_SingleTauEff)
+#SingleTau_TurnOn.append(hVtxIso0p30_SingleTauEff)
+#SingleTau_TurnOn.append(hVtxIso0p50_SingleTauEff)
+SingleTau_TurnOn.append(hVtxIso1p00_SingleTauEff)
+#SingleTau_TurnOn.append(hVtxIso2p00_SingleTauEff)
+#SingleTau_TurnOn.append(hVtxIso3p00_SingleTauEff)
+#SingleTau_TurnOn.append(hRelIso0p05_SingleTauEff)
+SingleTau_TurnOn.append(hRelIso0p10_SingleTauEff)
+#SingleTau_TurnOn.append(hRelIso0p20_SingleTauEff)
+#SingleTau_TurnOn.append(hRelIso0p30_SingleTauEff)
+#SingleTau_TurnOn.append(hRelIso0p40_SingleTauEff)
+#SingleTau_TurnOn.append(hRelIso0p50_SingleTauEff)
+
+### SingleTau Triggers: ROCs
+SingleTau_ROCs = {}
+SingleTau_ROCs[hCalo_Rate]        = hCalo_EvtEff
+SingleTau_ROCs[hTkConfirmed_Rate] = hTkConfirmed_EvtEff
+#SingleTau_ROCs[hVtxIso0p10_Rate]  = hVtxIso0p10_EvtEff
+#SingleTau_ROCs[hVtxIso0p30_Rate]  = hVtxIso0p30_EvtEff
+#SingleTau_ROCs[hVtxIso0p50_Rate]  = hVtxIso0p50_EvtEff
+SingleTau_ROCs[hVtxIso1p00_Rate]  = hVtxIso1p00_EvtEff
+#SingleTau_ROCs[hVtxIso2p00_Rate]  = hVtxIso2p00_EvtEff
+#SingleTau_ROCs[hVtxIso3p00_Rate]  = hVtxIso3p00_EvtEff
+#SingleTau_ROCs[hRelIso0p05_Rate]  = hRelIso0p05_EvtEff
+SingleTau_ROCs[hRelIso0p10_Rate]  = hRelIso0p10_EvtEff
+#SingleTau_ROCs[hRelIso0p20_Rate]  = hRelIso0p20_EvtEff
+#SingleTau_ROCs[hRelIso0p30_Rate]  = hRelIso0p30_EvtEff
+#SingleTau_ROCs[hRelIso0p40_Rate]  = hRelIso0p40_EvtEff
+#SingleTau_ROCs[hRelIso0p50_Rate]  = hRelIso0p50_EvtEff
+
+SingleTau_ROCs_Matched = {}
+SingleTau_ROCs_Matched[hCalo_Rate]        = hCalo_EvtEffMatched
+SingleTau_ROCs_Matched[hTkConfirmed_Rate] = hTkConfirmed_EvtEffMatched
+#SingleTau_ROCs_Matched[hVtxIso0p10_Rate]  = hVtxIso0p10_EvtEffMatched
+#SingleTau_ROCs_Matched[hVtxIso0p30_Rate]  = hVtxIso0p30_EvtEffMatched
+#SingleTau_ROCs_Matched[hVtxIso0p50_Rate]  = hVtxIso0p50_EvtEffMatched
+SingleTau_ROCs_Matched[hVtxIso1p00_Rate]  = hVtxIso1p00_EvtEffMatched
+#SingleTau_ROCs_Matched[hVtxIso2p00_Rate]  = hVtxIso2p00_EvtEffMatched
+#SingleTau_ROCs_Matched[hVtxIso3p00_Rate]  = hVtxIso3p00_EvtEffMatched
+#SingleTau_ROCs_Matched[hRelIso0p05_Rate]  = hRelIso0p05_EvtEffMatched
+SingleTau_ROCs_Matched[hRelIso0p10_Rate]  = hRelIso0p10_EvtEffMatched
+#SingleTau_ROCs_Matched[hRelIso0p20_Rate]  = hRelIso0p20_EvtEffMatched
+#SingleTau_ROCs_Matched[hRelIso0p30_Rate]  = hRelIso0p30_EvtEffMatched
+#SingleTau_ROCs_Matched[hRelIso0p40_Rate]  = hRelIso0p40_EvtEffMatched
+#SingleTau_ROCs_Matched[hRelIso0p50_Rate]  = hRelIso0p50_EvtEffMatched
+
+############################################################### 
+### DiTau
+############################################################### 
+### Symmetric Triggers
+DiTau_TurnOn = []
+DiTau_TurnOn.append(hCalo_DiTauEff)
+DiTau_TurnOn.append(hTkConfirmed_DiTauEff)
+#DiTau_TurnOn.append(hVtxIso0p10_DiTauEff)
+#DiTau_TurnOn.append(hVtxIso0p30_DiTauEff)
+DiTau_TurnOn.append(hVtxIso0p50_DiTauEff)
+#DiTau_TurnOn.append(hVtxIso1p00_DiTauEff)
+#DiTau_TurnOn.append(hVtxIso2p00_DiTauEff)
+#DiTau_TurnOn.append(hVtxIso3p00_DiTauEff)
+#DiTau_TurnOn.append(hRelIso0p05_DiTauEff)
+#DiTau_TurnOn.append(hRelIso0p10_DiTauEff)
+#DiTau_TurnOn.append(hRelIso0p20_DiTauEff)
+DiTau_TurnOn.append(hRelIso0p30_DiTauEff)
+#DiTau_TurnOn.append(hRelIso0p40_DiTauEff)
+#DiTau_TurnOn.append(hRelIso0p50_DiTauEff)
+
+DiTau_Rate = []
+DiTau_Rate.append(hCalo_Rate_2D)
+DiTau_Rate.append(hTkConfirmed_Rate_2D)
+DiTau_Rate.append(hVtxIso0p10_Rate_2D)
+DiTau_Rate.append(hVtxIso0p30_Rate_2D)
+DiTau_Rate.append(hVtxIso0p50_Rate_2D)
+DiTau_Rate.append(hVtxIso1p00_Rate_2D)
+#DiTau_Rate.append(hVtxIso2p00_Rate_2D)
+#DiTau_Rate.append(hVtxIso3p00_Rate_2D)
+#DiTau_Rate.append(hRelIso0p05_Rate_2D)
+#DiTau_Rate.append(hRelIso0p10_Rate_2D)
+#DiTau_Rate.append(hRelIso0p20_Rate_2D)
+#DiTau_Rate.append(hRelIso0p30_Rate_2D)
+#DiTau_Rate.append(hRelIso0p40_Rate_2D)
+DiTau_Rate.append(hRelIso0p50_Rate_2D)
+
+DiTau_Eff = []
+DiTau_Eff.append(hCalo_EvtEff_2D)
+DiTau_Eff.append(hTkConfirmed_EvtEff_2D)
+DiTau_Eff.append(hVtxIso0p10_EvtEff_2D)
+DiTau_Eff.append(hVtxIso0p30_EvtEff_2D)
+DiTau_Eff.append(hVtxIso0p50_EvtEff_2D)
+DiTau_Eff.append(hVtxIso1p00_EvtEff_2D)
+#DiTau_Eff.append(hVtxIso2p00_EvtEff_2D)
+#DiTau_Eff.append(hVtxIso3p00_EvtEff_2D)
+#DiTau_Eff.append(hRelIso0p05_EvtEff_2D)
+#DiTau_Eff.append(hRelIso0p10_EvtEff_2D)
+#DiTau_Eff.append(hRelIso0p20_EvtEff_2D)
+#DiTau_Eff.append(hRelIso0p30_EvtEff_2D)
+#DiTau_Eff.append(hRelIso0p40_EvtEff_2D)
+DiTau_Eff.append(hRelIso0p50_EvtEff_2D)
+
+DiTau_EffMatched = []
+DiTau_EffMatched.append(hCalo_EvtEffMatched_2D)
+DiTau_EffMatched.append(hTkConfirmed_EvtEffMatched_2D)
+DiTau_EffMatched.append(hVtxIso0p10_EvtEffMatched_2D)
+DiTau_EffMatched.append(hVtxIso0p30_EvtEffMatched_2D)
+DiTau_EffMatched.append(hVtxIso0p50_EvtEffMatched_2D)
+DiTau_EffMatched.append(hVtxIso1p00_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hVtxIso2p00_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hVtxIso3p00_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hRelIso0p05_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hRelIso0p10_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hRelIso0p20_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hRelIso0p30_EvtEffMatched_2D)
+#DiTau_EffMatched.append(hRelIso0p40_EvtEffMatched_2D)
+DiTau_EffMatched.append(hRelIso0p50_EvtEffMatched_2D)
+
+DiTau_ROCs = {}
+DiTau_ROCs[hCalo_Rate_2D]        = hCalo_EvtEff_2D
+DiTau_ROCs[hTkConfirmed_Rate_2D] = hTkConfirmed_EvtEff_2D
+#DiTau_ROCs[hVtxIso0p10_Rate_2D]  = hVtxIso0p10_EvtEff_2D
+#DiTau_ROCs[hVtxIso0p30_Rate_2D]  = hVtxIso0p30_EvtEff_2D
+DiTau_ROCs[hVtxIso0p50_Rate_2D]  = hVtxIso0p50_EvtEff_2D
+#DiTau_ROCs[hVtxIso1p00_Rate_2D]  = hVtxIso1p00_EvtEff_2D
+#DiTau_ROCs[hVtxIso2p00_Rate_2D]  = hVtxIso2p00_EvtEff_2D
+#DiTau_ROCs[hVtxIso3p00_Rate_2D]  = hVtxIso3p00_EvtEff_2D
+#DiTau_ROCs[hRelIso0p05_Rate_2D]  = hRelIso0p05_EvtEff_2D
+#DiTau_ROCs[hRelIso0p10_Rate_2D]  = hRelIso0p10_EvtEff_2D
+#DiTau_ROCs[hRelIso0p20_Rate_2D]  = hRelIso0p20_EvtEff_2D
+#DiTau_ROCs[hRelIso0p30_Rate_2D]  = hRelIso0p30_EvtEff_2D
+DiTau_ROCs[hRelIso0p40_Rate_2D]  = hRelIso0p40_EvtEff_2D
+#DiTau_ROCs[hRelIso0p50_Rate_2D]  = hRelIso0p50_EvtEff_2D
+
+DiTau_ROCs_Matched = {}
+DiTau_ROCs_Matched[hCalo_Rate_2D]        = hCalo_EvtEffMatched_2D
+DiTau_ROCs_Matched[hTkConfirmed_Rate_2D] = hTkConfirmed_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hVtxIso0p10_Rate_2D]  = hVtxIso0p10_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hVtxIso0p30_Rate_2D]  = hVtxIso0p30_EvtEffMatched_2D
+DiTau_ROCs_Matched[hVtxIso0p50_Rate_2D]  = hVtxIso0p50_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hVtxIso1p00_Rate_2D]  = hVtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hVtxIso2p00_Rate_2D]  = hVtxIso2p00_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hVtxIso3p00_Rate_2D]  = hVtxIso3p00_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hRelIso0p05_Rate_2D]  = hRelIso0p05_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hRelIso0p10_Rate_2D]  = hRelIso0p10_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hRelIso0p20_Rate_2D]  = hRelIso0p20_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hRelIso0p30_Rate_2D]  = hRelIso0p30_EvtEffMatched_2D
+DiTau_ROCs_Matched[hRelIso0p40_Rate_2D]  = hRelIso0p40_EvtEffMatched_2D
+#DiTau_ROCs_Matched[hRelIso0p50_Rate_2D]  = hRelIso0p50_EvtEffMatched_2D
+
+### Assymmetric Triggers: Calo, Iso
+DiTau_Rate_CaloIso = []
+DiTau_Rate_CaloIso.append(hCalo_VtxIso0p10_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_VtxIso0p30_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_VtxIso0p50_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_VtxIso1p00_Rate_2D)
+#DiTau_Rate_CaloIso.append(hCalo_VtxIso2p00_Rate_2D)
+#DiTau_Rate_CaloIso.append(hCalo_VtxIso3p00_Rate_2D)
+#DiTau_Rate_CaloIso.append(hCalo_RelIso0p05_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_RelIso0p10_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_RelIso0p20_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_RelIso0p30_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_RelIso0p40_Rate_2D)
+DiTau_Rate_CaloIso.append(hCalo_RelIso0p50_Rate_2D)
+
+DiTau_Eff_CaloIso = []
+DiTau_Eff_CaloIso.append(hCalo_VtxIso0p10_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_VtxIso0p30_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_VtxIso0p50_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_VtxIso1p00_EvtEff_2D)
+#DiTau_Eff_CaloIso.append(hCalo_VtxIso2p00_EvtEff_2D)
+#DiTau_Eff_CaloIso.append(hCalo_VtxIso3p00_EvtEff_2D)
+#DiTau_Eff_CaloIso.append(hCalo_RelIso0p05_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_RelIso0p10_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_RelIso0p20_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_RelIso0p30_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_RelIso0p40_EvtEff_2D)
+DiTau_Eff_CaloIso.append(hCalo_RelIso0p50_EvtEff_2D)
+
+DiTau_EffMatched_CaloIso = []
+DiTau_EffMatched_CaloIso.append(hCalo_VtxIso0p10_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_VtxIso0p30_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_VtxIso0p50_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_VtxIso1p00_EvtEffMatched_2D)
+#DiTau_EffMatched_CaloIso.append(hCalo_VtxIso2p00_EvtEffMatched_2D)
+#DiTau_EffMatched_CaloIso.append(hCalo_VtxIso3p00_EvtEffMatched_2D)
+#DiTau_EffMatched_CaloIso.append(hCalo_RelIso0p05_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_RelIso0p10_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_RelIso0p20_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_RelIso0p30_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_RelIso0p40_EvtEffMatched_2D)
+DiTau_EffMatched_CaloIso.append(hCalo_RelIso0p50_EvtEffMatched_2D)
+
+DiTau_ROCs_CaloIso = {}
+DiTau_ROCs_CaloIso[hCalo_Rate_2D]             = hCalo_EvtEff_2D
+DiTau_ROCs_CaloIso[hTkConfirmed_Rate_2D]      = hTkConfirmed_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_VtxIso0p10_Rate_2D] = hCalo_VtxIso0p10_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_VtxIso0p30_Rate_2D] = hCalo_VtxIso0p30_EvtEff_2D
+DiTau_ROCs_CaloIso[hCalo_VtxIso0p50_Rate_2D] = hCalo_VtxIso0p50_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_VtxIso1p00_Rate_2D] = hCalo_VtxIso1p00_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_VtxIso2p00_Rate_2D] = hCalo_VtxIso2p00_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_VtxIso3p00_Rate_2D] = hCalo_VtxIso3p00_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_RelIso0p05_Rate_2D] = hCalo_RelIso0p05_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_RelIso0p10_Rate_2D] = hCalo_RelIso0p10_EvtEff_2D
+DiTau_ROCs_CaloIso[hCalo_RelIso0p20_Rate_2D] = hCalo_RelIso0p20_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_RelIso0p30_Rate_2D] = hCalo_RelIso0p30_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_RelIso0p40_Rate_2D] = hCalo_RelIso0p40_EvtEff_2D
+#DiTau_ROCs_CaloIso[hCalo_RelIso0p50_Rate_2D] = hCalo_RelIso0p50_EvtEff_2D
+
+DiTau_ROCs_CaloIso_Matched = {}
+DiTau_ROCs_CaloIso_Matched[hCalo_Rate_2D]             = hCalo_EvtEffMatched_2D
+DiTau_ROCs_CaloIso_Matched[hTkConfirmed_Rate_2D]      = hTkConfirmed_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_VtxIso0p10_Rate_2D] = hCalo_VtxIso0p10_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_VtxIso0p30_Rate_2D] = hCalo_VtxIso0p30_EvtEffMatched_2D
+DiTau_ROCs_CaloIso_Matched[hCalo_VtxIso0p50_Rate_2D] = hCalo_VtxIso0p50_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_VtxIso1p00_Rate_2D] = hCalo_VtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_VtxIso2p00_Rate_2D] = hCalo_VtxIso2p00_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_VtxIso3p00_Rate_2D] = hCalo_VtxIso3p00_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_RelIso0p05_Rate_2D] = hCalo_RelIso0p05_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_RelIso0p10_Rate_2D] = hCalo_RelIso0p10_EvtEffMatched_2D
+DiTau_ROCs_CaloIso_Matched[hCalo_RelIso0p20_Rate_2D] = hCalo_RelIso0p20_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_RelIso0p30_Rate_2D] = hCalo_RelIso0p30_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_RelIso0p40_Rate_2D] = hCalo_RelIso0p40_EvtEffMatched_2D
+#DiTau_ROCs_CaloIso_Matched[hCalo_RelIso0p50_Rate_2D] = hCalo_RelIso0p50_EvtEffMatched_2D
+
+### Assymmetric Triggers: Tk, Iso
+DiTau_Rate_TkIso = []
+DiTau_Rate_TkIso.append(hTkConfirmed_VtxIso0p10_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_VtxIso0p30_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_VtxIso0p50_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_VtxIso1p00_Rate_2D)
+#DiTau_Rate_TkIso.append(hTkConfirmed_VtxIso2p00_Rate_2D)
+#DiTau_Rate_TkIso.append(hTkConfirmed_VtxIso3p00_Rate_2D)
+#DiTau_Rate_TkIso.append(hTkConfirmed_RelIso0p05_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_RelIso0p10_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_RelIso0p20_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_RelIso0p30_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_RelIso0p40_Rate_2D)
+DiTau_Rate_TkIso.append(hTkConfirmed_RelIso0p50_Rate_2D)
+
+DiTau_Eff_TkIso = []
+DiTau_Eff_TkIso.append(hTkConfirmed_VtxIso0p10_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_VtxIso0p30_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_VtxIso0p50_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_VtxIso1p00_EvtEff_2D)
+#DiTau_Eff_TkIso.append(hTkConfirmed_VtxIso2p00_EvtEff_2D)
+#DiTau_Eff_TkIso.append(hTkConfirmed_VtxIso3p00_EvtEff_2D)
+#DiTau_Eff_TkIso.append(hTkConfirmed_RelIso0p05_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_RelIso0p10_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_RelIso0p20_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_RelIso0p30_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_RelIso0p40_EvtEff_2D)
+DiTau_Eff_TkIso.append(hTkConfirmed_RelIso0p50_EvtEff_2D)
+
+DiTau_EffMatched_TkIso = []
+DiTau_EffMatched_TkIso.append(hTkConfirmed_VtxIso0p10_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_VtxIso0p30_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_VtxIso0p50_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_VtxIso1p00_EvtEffMatched_2D)
+#DiTau_EffMatched_TkIso.append(hTkConfirmed_VtxIso2p00_EvtEffMatched_2D)
+#DiTau_EffMatched_TkIso.append(hTkConfirmed_VtxIso3p00_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_RelIso0p05_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_RelIso0p10_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_RelIso0p20_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_RelIso0p30_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_RelIso0p40_EvtEffMatched_2D)
+DiTau_EffMatched_TkIso.append(hTkConfirmed_RelIso0p50_EvtEffMatched_2D)
+
+DiTau_ROCs_TkIso = {}
+DiTau_ROCs_TkIso[hCalo_Rate_2D]                   = hCalo_EvtEff_2D
+DiTau_ROCs_TkIso[hTkConfirmed_Rate_2D]            = hTkConfirmed_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_VtxIso0p10_Rate_2D] = hTkConfirmed_VtxIso0p10_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_VtxIso0p30_Rate_2D] = hTkConfirmed_VtxIso0p30_EvtEff_2D
+DiTau_ROCs_TkIso[hTkConfirmed_VtxIso0p50_Rate_2D] = hTkConfirmed_VtxIso0p50_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_VtxIso1p00_Rate_2D] = hTkConfirmed_VtxIso1p00_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_VtxIso2p00_Rate_2D] = hTkConfirmed_VtxIso2p00_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_VtxIso3p00_Rate_2D] = hTkConfirmed_VtxIso3p00_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_RelIso0p05_Rate_2D] = hTkConfirmed_RelIso0p05_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_RelIso0p10_Rate_2D] = hTkConfirmed_RelIso0p10_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_RelIso0p20_Rate_2D] = hTkConfirmed_RelIso0p20_EvtEff_2D
+DiTau_ROCs_TkIso[hTkConfirmed_RelIso0p30_Rate_2D] = hTkConfirmed_RelIso0p30_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_RelIso0p40_Rate_2D] = hTkConfirmed_RelIso0p40_EvtEff_2D
+##DiTau_ROCs_TkIso[hTkConfirmed_RelIso0p50_Rate_2D] = hTkConfirmed_RelIso0p50_EvtEff_2D
+
+DiTau_ROCs_TkIso_Matched = {}
+DiTau_ROCs_TkIso_Matched[hCalo_Rate_2D]             = hCalo_EvtEffMatched_2D
+DiTau_ROCs_TkIso_Matched[hTkConfirmed_Rate_2D]      = hTkConfirmed_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_VtxIso0p10_Rate_2D] = hTkConfirmed_VtxIso0p10_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_VtxIso0p30_Rate_2D] = hTkConfirmed_VtxIso0p30_EvtEffMatched_2D
+DiTau_ROCs_TkIso_Matched[hTkConfirmed_VtxIso0p50_Rate_2D] = hTkConfirmed_VtxIso0p50_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_VtxIso1p00_Rate_2D] = hTkConfirmed_VtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_VtxIso2p00_Rate_2D] = hTkConfirmed_VtxIso2p00_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_VtxIso3p00_Rate_2D] = hTkConfirmed_VtxIso3p00_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_RelIso0p05_Rate_2D] = hTkConfirmed_RelIso0p05_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_RelIso0p10_Rate_2D] = hTkConfirmed_RelIso0p10_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_RelIso0p20_Rate_2D] = hTkConfirmed_RelIso0p20_EvtEffMatched_2D
+DiTau_ROCs_TkIso_Matched[hTkConfirmed_RelIso0p30_Rate_2D] = hTkConfirmed_RelIso0p30_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_RelIso0p40_Rate_2D] = hTkConfirmed_RelIso0p40_EvtEffMatched_2D
+#DiTau_ROCs_TkIso_Matched[hTkConfirmed_RelIso0p50_Rate_2D] = hTkConfirmed_RelIso0p50_EvtEffMatched_2D
+
+DiTau_ROCs_BestOf = {}
+DiTau_ROCs_BestOf[hVtxIso0p50_Rate_2D]             = hVtxIso0p50_EvtEff_2D
+DiTau_ROCs_BestOf[hRelIso0p40_Rate_2D]             = hRelIso0p40_EvtEff_2D
+DiTau_ROCs_BestOf[hCalo_VtxIso0p50_Rate_2D]        = hCalo_VtxIso0p50_EvtEff_2D
+DiTau_ROCs_BestOf[hCalo_RelIso0p20_Rate_2D]        = hCalo_RelIso0p20_EvtEff_2D
+DiTau_ROCs_BestOf[hTkConfirmed_VtxIso0p50_Rate_2D] = hTkConfirmed_VtxIso0p50_EvtEff_2D
+DiTau_ROCs_BestOf[hTkConfirmed_RelIso0p30_Rate_2D] = hTkConfirmed_RelIso0p30_EvtEff_2D
+
+DiTau_ROCs_BestOf_Matched = {}
+DiTau_ROCs_BestOf_Matched[hVtxIso0p50_Rate_2D]             = hVtxIso0p50_EvtEffMatched_2D
+DiTau_ROCs_BestOf_Matched[hRelIso0p40_Rate_2D]             = hRelIso0p40_EvtEffMatched_2D
+DiTau_ROCs_BestOf_Matched[hCalo_VtxIso0p50_Rate_2D]        = hCalo_VtxIso0p50_EvtEffMatched_2D
+DiTau_ROCs_BestOf_Matched[hCalo_RelIso0p20_Rate_2D]        = hCalo_RelIso0p20_EvtEffMatched_2D
+DiTau_ROCs_BestOf_Matched[hTkConfirmed_VtxIso0p50_Rate_2D] = hTkConfirmed_VtxIso0p50_EvtEffMatched_2D
+DiTau_ROCs_BestOf_Matched[hTkConfirmed_RelIso0p30_Rate_2D] = hTkConfirmed_RelIso0p30_EvtEffMatched_2D
+
+DiTau_ROCs_TP_Matched = {}
+DiTau_ROCs_TP_Matched[hCalo_Rate_2D]                   = hCalo_EvtEffMatched_2D
+DiTau_ROCs_TP_Matched[hCalo_VtxIso1p00_Rate_2D]        = hCalo_VtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_TP_Matched[hTkConfirmed_VtxIso1p00_Rate_2D] = hTkConfirmed_VtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_TP_Matched[hVtxIso1p00_Rate_2D]             = hVtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_TP_Matched[hTkConfirmed_VtxIso0p50_Rate_2D] = hTkConfirmed_VtxIso0p50_EvtEffMatched_2D
+#DiTau_ROCs_TP_Matched[hVtxIso1p00_Rate_2D]             = hVtxIso1p00_EvtEffMatched_2D
+#DiTau_ROCs_TP_Matched[hCalo_VtxIso1p00_Rate_2D]        = hCalo_VtxIso1p00_EvtEffMatched_2D
+
