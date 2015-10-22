@@ -25,8 +25,15 @@ void Validation::Loop()
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     // if (Cut(ientry) < 0) continue;
 
+    //  cout<<"\n\n\t\tEvtSeparator\n\n";
+
+    vector<ParticleInfo> Lep;
+
+
     Int_t DM = DecayMode();
-        
+    
+    //    hDecayMode -> Fill (DM);
+    
     //**************************************************************************************************************************************************
     //**************************************************************************************************************************************************
     //--------------------------------------------------------------------Kinematics--------------------------------------------------------------------
@@ -75,8 +82,17 @@ void Validation::Loop()
 	hElec_RIso->Fill(RIso);
 	//	cout<< Elec_Id->at(iElec)<<endl;
 	//	cout<< sumPtC<<"\t\t"<<sumPtN<<endl;
+
+	ParticleInfo temp;
+	temp = SetParticleInfo(Elec_Pt->at(iElec), Elec_Eta->at(iElec), Elec_Phi->at(iElec), Elec_E->at(iElec), Elec_Id->at(iElec), Elec_Charge->at(iElec));
+	Lep.push_back(temp);
+
+	//	cout<< Elec_Pt->at(iElec)<<endl;
       }//end loop on Electons
     //*************************************************************************
+    
+    // cout<<"\t"<< Lep.size()<<endl;
+    // if(Lep.size()>0)cout<<"\t\t"<<Lep.at(0).Pt<<endl;
 
 
     //*************************************************************************
@@ -122,10 +138,30 @@ void Validation::Loop()
 	Double_t RIso = RIsoLepton(Muon_Pt->at(iMuon),Muon_Eta->at(iMuon),Muon_Phi->at(iMuon)); 
 	hMuon_RIso->Fill(RIso);
 
+	ParticleInfo temp;
+	temp = SetParticleInfo(Muon_Pt->at(iMuon), Muon_Eta->at(iMuon), Muon_Phi->at(iMuon), Muon_E->at(iMuon), Muon_Id->at(iMuon), Muon_Charge->at(iMuon));
+	Lep.push_back(temp);
+
       }//end loop on Muons
     //*************************************************************************
-
     
+
+    //*************************************************************************
+    // Lep Combined
+    //*************************************************************************
+    SortLepPt(Lep);
+    if (Lep.size()>0)
+      hLeadingLep -> Fill(Lep.at(0).Pt);
+    if (Lep.size()>1)
+      hSubLeadingLep -> Fill(Lep.at(1).Pt);
+    if (Lep.size()>2)
+      hSubSubLeadingLep -> Fill(Lep.at(2).Pt);
+
+
+
+    //*************************************************************************
+
+
     //*************************************************************************
     // ---------------------Tau-----------------------------------------
     //*************************************************************************
@@ -268,12 +304,14 @@ void Validation::MakeHisto(void)
 //#################################################
 {
 
+  hDecayMode  = new TH1D ("hDecayMode","hDecayMode",49,0,49);
+
   //Electron***************************************************************************
   hElec_Pt                      = new TH1D ("hElec_Pt","hElec_Pt",200,0,200);
   hElec_Eta                     = new TH1D ("hElec_Eta","hElec_Eta",100,-4,4);
   hElec_Phi                     = new TH1D ("hElec_Phi","hElec_Phi",100,-4,4);
   hElec_E                       = new TH1D ("hElec_E","hElec_E",200,0,200);
-  hElec_Charge                  = new TH1D ("hElec_Charge","hElec_Charge",5,-2,2);
+  hElec_Charge                  = new TH1D ("hElec_Charge","hElec_Charge",3,-1.5,1.5);
   
   hElec_SCl_Eta                 = new TH1D ("hElec_SCl_Eta","hElec_SCl_Eta",100,-4,4);
   hElec_SCl_EtaWidth            = new TH1D ("hElec_SCl_EtaWidth","hElec_SCl_EtaWidth",100,0,1);
@@ -302,7 +340,7 @@ void Validation::MakeHisto(void)
   hMuon_Eta                        = new TH1D ("hMuon_Eta","hMuon_Eta",100,-4,4);
   hMuon_Phi                        = new TH1D ("hMuon_Phi","hMuon_Phi",100,-4,4);
   hMuon_E                          = new TH1D ("hMuon_E","hMuon_E",200,0,200);
-  hMuon_Charge                     = new TH1D ("hMuon_Charge","hMuon_Charge",5,-2,2);
+  hMuon_Charge                     = new TH1D ("hMuon_Charge","hMuon_Charge",4,-2,2);
   
   hMuon_InnerTrack_D0              = new TH1D ("hMuon_InnerTrack_D0","hMuon_InnerTrack_D0",100,-5,5);
   hMuon_InnerTrack_Z0              = new TH1D ("hMuon_InnerTrack_Z0","hMuon_InnerTrack_Z0",100,-25,25);
@@ -325,12 +363,18 @@ void Validation::MakeHisto(void)
 
   hMuon_RIso                    = new TH1D ("hMuon_RIso","hMuon_RIso", 100,0,5);
 
+  //Lep combined ****************************************************************
+  hLeadingLep       = new TH1D ("hLeadingLep"      ,"hLeadingLep"      ,100,0,100);
+  hSubLeadingLep    = new TH1D ("hSubLeadingLep"   ,"hSubLeadingLep"   ,100,0,100);
+  hSubSubLeadingLep = new TH1D ("hSubSubLeadingLep","hSubSubLeadingLep",100,0,100);
+
+
   //Tau***************************************************************************
   hTau_Pt                   = new TH1D ("hTau_Pt","hTau_Pt",200,0,200);
   hTau_Eta                  = new TH1D ("hTau_Eta","hTau_Eta",100,-4,4);
   hTau_Phi                  = new TH1D ("hTau_Phi","hTau_Phi",100,-4,4);
   hTau_E                    = new TH1D ("hTau_E","hTau_E",200,0,200);
-  hTau_Charge               = new TH1D ("hTau_Charge","hTau_Charge",5,-2,2);
+  hTau_Charge               = new TH1D ("hTau_Charge","hTau_Charge",4,-2,2);
   hTau_DecayMode            = new TH1D ("hTau_DecayMode","hTau_DecayMode",100,0,20);
   
   hTau_LeadChHadCand_Pt     = new TH1D ("hTau_LeadChHadCand_Pt","hTau_LeadChHadCand_Pt",200,0,200);
@@ -358,13 +402,13 @@ void Validation::MakeHisto(void)
   hJet_E           = new TH1D("hJet_E"      ,"hJet_E"      ,200,0,200);
   hJet_JetArea     = new TH1D("hJet_JetArea","hJet_JetArea",100,-4,4);
   
-  hJet_ChMulti     = new TH1D("hJet_ChMulti"     ,"hJet_ChMulti"     ,50,0,50);
-  hJet_ChHadMulti  = new TH1D("hJet_ChHadMulti"  ,"hJet_ChHadMulti"  ,50,0,50);
-  hJet_NMulti      = new TH1D("hJet_NMulti"      ,"hJet_NMulti"      ,50,0,50);
-  hJet_NHadMulti   = new TH1D("hJet_NHadMulti"   ,"hJet_NHadMulti"   ,50,0,50);
-  hJet_ElecMulti   = new TH1D("hJet_ElecMulti"   ,"hJet_ElecMulti"   ,50,0,50);
-  hJet_MuonMulti   = new TH1D("hJet_MuonMulti"   ,"hJet_MuonMulti"   ,50,0,50);
-  hJet_PhotonMulti = new TH1D("hJet_PhotonMulti" ,"hJet_PhotonMulti" ,50,0,50);
+  hJet_ChMulti     = new TH1D("hJet_ChMulti"     ,"hJet_ChMulti"     ,50,-0.5,49.5);
+  hJet_ChHadMulti  = new TH1D("hJet_ChHadMulti"  ,"hJet_ChHadMulti"  ,50,-0.5,49.5);
+  hJet_NMulti      = new TH1D("hJet_NMulti"      ,"hJet_NMulti"      ,50,-0.5,49.5);
+  hJet_NHadMulti   = new TH1D("hJet_NHadMulti"   ,"hJet_NHadMulti"   ,50,-0.5,49.5);
+  hJet_ElecMulti   = new TH1D("hJet_ElecMulti"   ,"hJet_ElecMulti"   ,50,-0.5,49.5);
+  hJet_MuonMulti   = new TH1D("hJet_MuonMulti"   ,"hJet_MuonMulti"   ,50,-0.5,49.5);
+  hJet_PhotonMulti = new TH1D("hJet_PhotonMulti" ,"hJet_PhotonMulti" ,50,-0.5,49.5);
 
   hdPhi_Jet_MET    = new TH1D ("hdPhi_Jet_MET","hdPhi_Jet_MET", 100,-4,4);
 
@@ -374,11 +418,11 @@ void Validation::MakeHisto(void)
   hJet_ParFl_bDisCMVA = new TProfile ("hJet_ParFl_bDisCMVA","hJet_ParFl_bDisCMVA",11,-5.5,5.5,-100,100);
   hJet_HadFl_bDisCMVA = new TProfile ("hJet_HadFl_bDisCMVA","hJet_HadFl_bDisCMVA",6,-0.5,5.5,-100,100);
 
-  hJet_Multiplicity       = new TH1D ("hJet_Multiplicity"      ,"hJet_Multiplicity"      ,40,0,40);
-  hbJetParFl_Multiplicity = new TH1D ("hbJetParFl_Multiplicity","hbJetParFl_Multiplicity",10,0,10);
-  hbJetL_Multiplicity     = new TH1D ("hbJetL_Multiplicity"    ,"hbJetL_Multiplicity"    ,10,0,10);
-  hbJetM_Multiplicity     = new TH1D ("hbJetM_Multiplicity"    ,"hbJetM_Multiplicity"    ,10,0,10);
-  hbJetT_Multiplicity     = new TH1D ("hbJetT_Multiplicity"    ,"hbJetT_Multiplicity"    ,10,0,10);
+  hJet_Multiplicity       = new TH1D ("hJet_Multiplicity"      ,"hJet_Multiplicity"      ,40,-0.5,39.5);
+  hbJetParFl_Multiplicity = new TH1D ("hbJetParFl_Multiplicity","hbJetParFl_Multiplicity",10,-0.5,9.5);
+  hbJetL_Multiplicity     = new TH1D ("hbJetL_Multiplicity"    ,"hbJetL_Multiplicity"    ,10,-0.5,9.5);
+  hbJetM_Multiplicity     = new TH1D ("hbJetM_Multiplicity"    ,"hbJetM_Multiplicity"    ,10,-0.5,9.5);
+  hbJetT_Multiplicity     = new TH1D ("hbJetT_Multiplicity"    ,"hbJetT_Multiplicity"    ,10,-0.5,9.5);
 
 
   hbJet_Pt          = new TH1D("hbJet_Pt"     ,"hbJet_Pt"     ,200,0,200);
@@ -387,16 +431,53 @@ void Validation::MakeHisto(void)
   hbJet_E           = new TH1D("hbJet_E"      ,"hbJet_E"      ,200,0,200);
   hbJet_JetArea     = new TH1D("hbJet_JetArea","hbJet_JetArea",100,-4,4);
   
-  hbJet_ChMulti     = new TH1D("hbJet_ChMulti"     ,"hbJet_ChMulti"     ,50,0,50);
-  hbJet_ChHadMulti  = new TH1D("hbJet_ChHadMulti"  ,"hbJet_ChHadMulti"  ,50,0,50);
-  hbJet_NMulti      = new TH1D("hbJet_NMulti"      ,"hbJet_NMulti"      ,50,0,50);
-  hbJet_NHadMulti   = new TH1D("hbJet_NHadMulti"   ,"hbJet_NHadMulti"   ,50,0,50);
-  hbJet_ElecMulti   = new TH1D("hbJet_ElecMulti"   ,"hbJet_ElecMulti"   ,50,0,50);
-  hbJet_MuonMulti   = new TH1D("hbJet_MuonMulti"   ,"hbJet_MuonMulti"   ,50,0,50);
-  hbJet_PhotonMulti = new TH1D("hbJet_PhotonMulti" ,"hbJet_PhotonMulti" ,50,0,50);
+  hbJet_ChMulti     = new TH1D("hbJet_ChMulti"     ,"hbJet_ChMulti"     ,50,-0.5,49.5);
+  hbJet_ChHadMulti  = new TH1D("hbJet_ChHadMulti"  ,"hbJet_ChHadMulti"  ,50,-0.5,49.5);
+  hbJet_NMulti      = new TH1D("hbJet_NMulti"      ,"hbJet_NMulti"      ,50,-0.5,49.5);
+  hbJet_NHadMulti   = new TH1D("hbJet_NHadMulti"   ,"hbJet_NHadMulti"   ,50,-0.5,49.5);
+  hbJet_ElecMulti   = new TH1D("hbJet_ElecMulti"   ,"hbJet_ElecMulti"   ,50,-0.5,49.5);
+  hbJet_MuonMulti   = new TH1D("hbJet_MuonMulti"   ,"hbJet_MuonMulti"   ,50,-0.5,49.5);
+  hbJet_PhotonMulti = new TH1D("hbJet_PhotonMulti" ,"hbJet_PhotonMulti" ,50,-0.5,49.5);
   
   hdPhi_bJet_MET    = new TH1D ("hdPhi_bJet_MET","hdPhi_bJet_MET", 100,-4,4);
 
+}
+
+//****************************************************************************
+ParticleInfo Validation::SetParticleInfo (Double_t Pt, Double_t Eta, Double_t Phi, Double_t E, Int_t Id, Int_t Charge)
+//****************************************************************************
+{
+  ParticleInfo temp;
+  temp.Pt     = Pt;
+  temp.Eta    = Eta;
+  temp.Phi    = Phi;
+  temp.E      = E;
+  temp.PdgId  = Id;
+  temp.Charge = Charge;
+
+  return temp;
+}
+
+
+//****************************************************************************
+void Validation::SortLepPt(vector<ParticleInfo> &vSort)
+//****************************************************************************
+{
+
+  ParticleInfo temp;
+  for (Size_t i = 0; i < vSort.size(); i++)
+    {
+        for (Size_t j = 0; j < vSort.size()-1; j++)
+	  {
+	    if(vSort.at(j).Pt < vSort.at(j+1).Pt)
+	      {
+		temp          = vSort.at(j);
+		vSort.at(j)   = vSort.at(j+1);
+		vSort.at(j+1) = temp;
+	      }
+	  }// end inner loop
+    }// end outer loop
+  
 }
 
 //****************************************************************************
@@ -475,6 +556,9 @@ Double_t Validation::RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep
 Int_t Validation::DecayMode ()
 //****************************************************************************
 {
+
+  Int_t DecayMode=0;
+
   Int_t tIndx = -1;
   Int_t tbarIndx = -1;
   Int_t HIndx = -1;
@@ -578,8 +662,77 @@ Int_t Validation::DecayMode ()
 	}//end if Higgs
       //*********************************************
     }//end loop on Genp
-  
+  if(TpHIndx != -1)
+    {
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 1;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 2;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 3;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 4;
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 5;
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 6;
+     
 
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 7;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 8;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 9;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 10;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) && !IsLeptonic(TmHIndx)) DecayMode = 11;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 12;
+      
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 13;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 14;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 15;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(TpHIndx) &&  IsLeptonic(TmHIndx)) DecayMode = 16;
+    }
+  
+  if(Z2HIndx != -1)
+    {
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 17;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 18;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 19;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 20;
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 21;
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 22;
+     
+
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 23;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 24;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 25;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 26;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) && !IsLeptonic(Z2HIndx)) DecayMode = 27;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 28;
+      
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 29;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 30;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 31;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(Z1HIndx) &&  IsLeptonic(Z2HIndx)) DecayMode = 32;
+    }
+
+  if(WpHIndx != -1)
+    {
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 33;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 34;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 35;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 36;
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 37;
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 38;
+     
+
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 39;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 40;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 41;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 42;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) && !IsLeptonic(WmHIndx)) DecayMode = 43;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) && !IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 44;
+      
+      if(!IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 45;
+      if(!IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 46;
+      if( IsLeptonic(WptIndx) && !IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 47;
+      if( IsLeptonic(WptIndx) &&  IsLeptonic(WmtbarIndx) &&  IsLeptonic(WpHIndx) &&  IsLeptonic(WmHIndx)) DecayMode = 48;
+    }
+
+
+  return DecayMode;
   // if(TpHIndx!=-1){
     
     // cout<< "W+ from Top\t"<<WptIndx<<"\tW- from AntiTop\t"<<WmtbarIndx<<endl;
@@ -592,7 +745,7 @@ Int_t Validation::DecayMode ()
 
 
 //****************************************************************************
-Bool_t Validation::IsDecayLeptonic (Size_t Index)
+Bool_t Validation::IsLeptonic (Size_t Index)
 //****************************************************************************
 {								
   Bool_t isLeptonic = false;

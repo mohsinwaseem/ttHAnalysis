@@ -10,6 +10,26 @@
 #include "../utilities/Table.C"
 #include "../utilities/Datasets.C"
 
+struct ParticleInfo{
+  Double_t Pt;
+  Double_t Eta;
+  Double_t Phi;
+  Double_t E;
+  Int_t    PdgId;
+  Int_t    Charge;
+
+  void init()
+  {
+    Pt     = -100;
+    Eta    = -100;
+    Phi    = -100;
+    E      = -100;
+    PdgId  = 0;
+    Charge =-100;
+  }
+
+};
+
 class Validation : public TreeAnalyserMC
 {
   public:
@@ -39,15 +59,21 @@ class Validation : public TreeAnalyserMC
     
     Int_t GetFinalGenpIndx (Size_t MotIndx, vector<unsigned short>& Daug);
     
-    Bool_t IsDecayLeptonic (Size_t Index);
+    Bool_t IsLeptonic (Size_t Index);
     
     Double_t RIsoLepton (Double_t Lep_Pt, Double_t Lep_Eta, Double_t Lep_Phi);
 
     void myPrintGenp(Size_t Indx, bool bPrintHeaders);
+    
+    ParticleInfo SetParticleInfo (Double_t Pt, Double_t Eta, Double_t Phi, Double_t E, Int_t Id, Int_t Charge);
+
+    void SortLepPt (vector<ParticleInfo> &vSort);
 
     Int_t DecayMode();
 
     //Histograms
+    TH1D *hDecayMode;
+
     //Electron
     TH1D *hElec_Pt;
     TH1D *hElec_Eta;
@@ -103,6 +129,13 @@ class Validation : public TreeAnalyserMC
     TH1D *hdPhi_Muon_MET;
 
     TH1D *hMuon_RIso;
+
+    //Lep Combined
+    TH1D *hLeadingLep;
+    TH1D *hSubLeadingLep;
+    TH1D *hSubSubLeadingLep;
+
+
 
     //Tau
     TH1D *hTau_Pt;
