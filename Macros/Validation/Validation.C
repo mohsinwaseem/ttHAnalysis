@@ -32,7 +32,7 @@ void Validation::Loop()
 
     Int_t DM = DecayMode();
     
-    //    hDecayMode -> Fill (DM);
+    hDecayMode -> Fill (DM);
     
     //**************************************************************************************************************************************************
     //**************************************************************************************************************************************************
@@ -188,7 +188,16 @@ void Validation::Loop()
 	    hTau_LeadChHadCand_Vx             -> Fill(Tau_LeadingCHCVx             -> at(iTau));
 	    hTau_LeadChHadCand_Vy             -> Fill(Tau_LeadingCHCVy             -> at(iTau));
 	    hTau_LeadChHadCand_Vz             -> Fill(Tau_LeadingCHCVz             -> at(iTau));
-	  
+	 
+	    // if(abs(Tau_LeadingCHCId -> at(iTau)) == 11 || abs(Tau_LeadingCHCId -> at(iTau)) == 13 )
+	    //   {
+	    // 	cout<< "Leptonic Tau Leading Dau\t"<<Tau_LeadingCHCId-> at(iTau)<<endl; 
+	    //   }
+	    // if(Tau_LeadingCHCCharge -> at(iTau) == 0)
+	    //   {
+	    // 	cout<<"Neutral Leading Dau ID \t"<<Tau_LeadingCHCId-> at(iTau)<<endl;
+	    //   }
+ 
 	  }
 	float dPhi = auxTools_.DeltaPhi(Tau_Phi   ->at(iTau), MET_Phi);
 	hdPhi_Tau_MET ->Fill(dPhi);
@@ -237,7 +246,7 @@ void Validation::Loop()
 	
 	hJet_ParFl_bDisJP->Fill(Jet_GenPartonFlavour->at(iJet),Jet_bDis_JP->at(iJet));
 	hJet_HadFl_bDisJP->Fill(Jet_GenHadronFlavour->at(iJet),Jet_bDis_JP->at(iJet));
-	
+
 	hJet_ParFl_bDisCMVA->Fill(Jet_GenPartonFlavour->at(iJet),Jet_bDis_CMVA->at(iJet));
 	hJet_HadFl_bDisCMVA->Fill(Jet_GenHadronFlavour->at(iJet),Jet_bDis_CMVA->at(iJet));
 	
@@ -288,12 +297,18 @@ void Validation::Loop()
   
   }//end loop on entries
 
+	
+
 
   // Keep this line here!
   outFile->cd();
 
   // Create and write canvases here
+  //  hJet_ParFl_bDisJP_ProjX = hJet_ParFl_bDisJP->ProjectionX(); 
+  //hJet_HadFl_bDisJP_ProjX = hJet_HadFl_bDisJP->ProjectionX();
   
+  TH1D *hTest1  = hJet_ParFl_bDisJP ->ProjectionX();
+  TH1D *hTest2  = hJet_HadFl_bDisJP ->ProjectionX();
 
   // Uncomment this line to write also the histograms to the file
   outFile->Write();
@@ -414,7 +429,10 @@ void Validation::MakeHisto(void)
 
   hJet_ParFl_bDisJP = new TProfile ("hJet_ParFl_bDisJP","hJet_ParFl_bDisJP",11,-5.5,5.5,-100,100);
   hJet_HadFl_bDisJP = new TProfile ("hJet_HadFl_bDisJP","hJet_HadFl_bDisJP",6,-0.5,5.5,-100,100);
-    
+
+  // hJet_ParFl_bDisJP_ProjX = new TH1D("hJet_ParFl_bDisJP_ProjX","hJet_ParFl_bDisJP_ProjX",11,-5.5,5.5);
+  // hJet_HadFl_bDisJP_ProjX = new TH1D("hJet_HadFl_bDisJP_ProjX","hJet_HadFl_bDisJP_ProjX",6,-0.5,5.5);
+ 
   hJet_ParFl_bDisCMVA = new TProfile ("hJet_ParFl_bDisCMVA","hJet_ParFl_bDisCMVA",11,-5.5,5.5,-100,100);
   hJet_HadFl_bDisCMVA = new TProfile ("hJet_HadFl_bDisCMVA","hJet_HadFl_bDisCMVA",6,-0.5,5.5,-100,100);
 

@@ -179,9 +179,12 @@ class Validation : public TreeAnalyserMC
     TH1D *hJet_MuonMulti;
     TH1D *hJet_PhotonMulti;
     
-    TH1D *hJet_ParFl_bDisJP;
-    TH1D *hJet_HadFl_bDisJP;
-    
+    TProfile *hJet_ParFl_bDisJP;
+    TProfile *hJet_HadFl_bDisJP;
+
+    /* TH1D* hJet_ParFl_bDisJP_ProjX; */
+    /* TH1D* hJet_HadFl_bDisJP_ProjX; */
+
     TH1D *hdPhi_Jet_MET;
 
     TProfile *hJet_ParFl_bDisCMVA;

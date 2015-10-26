@@ -61,70 +61,70 @@ Pt = {"xLabel": "P_{T}"           , "xUnits": "GeV", "xMin": None , "xMax": 100,
       "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
       "gridY": True, "logY": True , "logYRatio": False,
       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 Eta = {"xLabel": "#eta"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
        "gridX": True, "logX": False, "logXRatio": False, 
        "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": yMin, "yMax": yMax , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
        "gridY": True, "logY": True , "logYRatio": False, 
        "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 E = {"xLabel": "E"           , "xUnits": "GeV", "xMin": None , "xMax": None, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], 
      "gridX": True, "logX": False, "logXRatio": False,
      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
      "gridY": True, "logY": True , "logYRatio": False,
      "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-     "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+     "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 Et = {"xLabel": "Et"           , "xUnits": "GeV", "xMin": None , "xMax": 3000, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
       "gridX": True, "logX": False, "logXRatio": False,
       "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
       "gridY": True, "logY": True , "logYRatio": False,
       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 Charge = {"xLabel": "Charge"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
           "gridX": True, "logX": False, "logXRatio": False,
           "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
           "gridY": True, "logY": True , "logYRatio": False,
           "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-          "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+          "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 X0 = {"xLabel": "X_{0}"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False, 
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": True , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 Y0 = {"xLabel": "Y_{0}"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False, 
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": True , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 Z0 = {"xLabel": "Z_{0}"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False, 
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": True , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 D0 = {"xLabel": "d_{0}"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
       "gridX": True, "logX": False, "logXRatio": False, 
       "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
       "gridY": True, "logY": True , "logYRatio": False, 
       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 IP3d = {"xLabel": "IP3D"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
         "gridX": True, "logX": False, "logXRatio": False, 
         "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
         "gridY": True, "logY": True , "logYRatio": False, 
         "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 
 IP2d = {"xLabel": "IP2D"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
@@ -132,14 +132,14 @@ IP2d = {"xLabel": "IP2D"            , "xUnits": "cm"     , "xMin": None , "xMax"
         "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
         "gridY": True, "logY": True , "logYRatio": False, 
         "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 IP3dError = {"xLabel": "IP3D Err"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
              "gridX": True, "logX": False, "logXRatio": False, 
              "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
              "gridY": True, "logY": True , "logYRatio": False, 
              "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-             "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+             "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 
 IP2dError = {"xLabel": "IP2D Err"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
@@ -147,7 +147,7 @@ IP2dError = {"xLabel": "IP2D Err"            , "xUnits": ""     , "xMin": None ,
              "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
              "gridY": True, "logY": True , "logYRatio": False, 
              "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-             "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+             "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 
 Area = {"xLabel": "JetArea"            , "xUnits": "cm^{2}"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
@@ -155,56 +155,56 @@ Area = {"xLabel": "JetArea"            , "xUnits": "cm^{2}"     , "xMin": None ,
         "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
         "gridY": True, "logY": True , "logYRatio": False, 
         "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.75, "yLegMin":0.85, "yLegMax":0.99}
 
 dPhi = {"xLabel": "#Delta #phi"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
         "gridX": True, "logX": False, "logXRatio": False, 
         "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
         "gridY": True, "logY": True , "logYRatio": False, 
         "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 RIso = {"xLabel": "R^{Iso}"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
         "gridX": True, "logX": False, "logXRatio": False, 
         "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
         "gridY": True, "logY": True , "logYRatio": False, 
         "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 bDisPar = {"xLabel": "Parton Flavour"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
            "gridX": True, "logX": False, "logXRatio": False, 
            "yLabel": "bDis Value / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
            "gridY": True, "logY": True , "logYRatio": False, 
            "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-           "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+           "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 bDisHad = {"xLabel": "Hadron Flavour"            , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
            "gridX": True, "logX": False, "logXRatio": False, 
            "yLabel": "bDis Value / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
            "gridY": True, "logY": True , "logYRatio": False, 
            "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-           "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+           "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 D0sig = {"xLabel": "d_{0}/#sigma d_{0}"  , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False, 
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": True , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.55, "yLegMax":0.69}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.55, "yLegMax":0.69}
 
 Z0sig = {"xLabel": "z_{0}/#sigma z_{0}"  , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": 100 , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False, 
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": True , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.35, "yLegMax":0.49}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.35, "yLegMax":0.49}
 
 Ptsig = {"xLabel": "p_{T}/#sigma R^{-1}"  , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": 2500 , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False, 
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": True , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.55, "yLegMax":0.69}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.55, "yLegMax":0.69}
 
 
 Tknum = {"xLabel": "Track Multiplicity"  , "xUnits": ""     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
@@ -212,35 +212,35 @@ Tknum = {"xLabel": "Track Multiplicity"  , "xUnits": ""     , "xMin": None , "xM
          "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": None, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": False , "logYRatio": False, 
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.55, "yLegMax":0.69}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.55, "yLegMax":0.69}
 
 Chi = {"xLabel": "#chi^{2}"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], 
        "gridX": True, "logX": False, "logXRatio": False,
        "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin":  1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
        "gridY": True, "logY": True , "logYRatio": False,
        "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.55, "yLegMax":0.69}
+       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.55, "yLegMax":0.69}
 
 RedChi = {"xLabel": "#chi^{2}/n d.o.f"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
           "gridX": True, "logX": False, "logXRatio": False,
           "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin":  1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
           "gridY": True, "logY": True , "logYRatio": False,
           "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-          "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+          "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
-Id = {"xLabel": "PdgId"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], 
+Id = {"xLabel": "PdgId"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
       "gridX": True, "logX": False, "logXRatio": False,
       "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": None, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
       "gridY": True, "logY": False , "logYRatio": False,
       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 Multi = {"xLabel": "Multiplicity"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
          "gridX": True, "logX": False, "logXRatio": False,
          "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": None, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
          "gridY": True, "logY": False , "logYRatio": False,
          "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.76, "xLegMax":0.95, "yLegMin":0.85, "yLegMax":0.99}
+         "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
 
 
 SumPT2 = {"xLabel": "#SigmaP_{T}^2"           , "xUnits": "GeV^2", "xMin": None , "xMax": None, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], 
@@ -248,14 +248,14 @@ SumPT2 = {"xLabel": "#SigmaP_{T}^2"           , "xUnits": "GeV^2", "xMin": None 
           "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": None, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
           "gridY": True, "logY": False , "logYRatio": False,
           "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-          "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.55, "yLegMax":0.69}
+          "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.55, "yLegMax":0.69}
 
 SumD0Err = {"xLabel": "#Sigma #sigma d_{0}/d_{0}"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], 
             "gridX": True, "logX": False, "logXRatio": False,
             "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": None, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
             "gridY": True, "logY": False , "logYRatio": False,
             "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
-            "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.66, "xLegMax":0.85, "yLegMin":0.55, "yLegMax":0.69}
+            "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.55, "yLegMax":0.69}
 
 ############################################################### 
 ### Group Histograms
@@ -403,11 +403,11 @@ def DoPlots(histoObjectList, dataset):
     #p.AddDataset( dataset + ":WW"                    , inputPath_WW)
     #p.AddDataset( dataset + ":ZZ"                    , inputPath_ZZ)
     #p.AddDataset( dataset + ":WZ"                    , inputPath_WZ)
-    #p.AddDataset( dataset + ":DY m_{ll} 10-50"       , inputPath_DYLLM10)
-    #p.AddDataset( dataset + ":DY m_{ll} 50"          , inputPath_DYLLM50)
-    p.AddDataset( dataset + ":Single top - tchannel" , inputPath_STtchannel)
-    p.AddDataset( dataset + ":Single top - tW"       , inputPath_STWt)
-    p.AddDataset( dataset + ":Single top - #bar{t}W" , inputPath_STWtbar)
+    p.AddDataset( dataset + ":DY m_{ll} 10-50"       , inputPath_DYLLM10)
+    p.AddDataset( dataset + ":DY m_{ll} 50"          , inputPath_DYLLM50)
+    #p.AddDataset( dataset + ":Single top - tchannel" , inputPath_STtchannel)
+    #p.AddDataset( dataset + ":Single top - tW"       , inputPath_STWt)
+    #p.AddDataset( dataset + ":Single top - #bar{t}W" , inputPath_STWtbar)
     
     p.AddHisto( histoObjectList )
     p.SetBoolUseDatasetAsLegEntry(True)
