@@ -74,6 +74,8 @@ class Validation : public TreeAnalyserMC
     //Histograms
     TH1D *hDecayMode;
 
+    TH1D* hTestPV;
+
     //Electron
     TH1D *hElec_Pt;
     TH1D *hElec_Eta;

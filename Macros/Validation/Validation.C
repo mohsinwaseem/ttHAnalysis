@@ -25,11 +25,20 @@ void Validation::Loop()
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     // if (Cut(ientry) < 0) continue;
 
-    //  cout<<"\n\n\t\tEvtSeparator\n\n";
+    //    cout<<"\n\n\t\tEvtSeparator\n\n";
+
+    //    cout<< PV_Z->at(0);
+    Int_t tempIndx = -1;
+    for(Size_t iGenp=0; iGenp<GenP_Pt->size(); iGenp++)
+      {
+    	if (GenP_PdgId->at(iGenp) == 25)
+    	  if(IsFinalGenp(iGenp, GenP_Daughters->at(iGenp)))
+    	    tempIndx = iGenp;
+      }
+    //cout<<"\t\t\t\t"<< GenP_VertexZ->at(tempIndx)<<endl;
+    hTestPV ->Fill(GenP_VertexZ->at(tempIndx) - PV_Z->at(0));
 
     vector<ParticleInfo> Lep;
-
-
     Int_t DM = DecayMode();
     
     hDecayMode -> Fill (DM);
@@ -310,6 +319,8 @@ void Validation::Loop()
   TH1D *hTest1  = hJet_ParFl_bDisJP ->ProjectionX();
   TH1D *hTest2  = hJet_HadFl_bDisJP ->ProjectionX();
 
+  hTestPV->Scale(1/hTestPV->Integral());
+
   // Uncomment this line to write also the histograms to the file
   outFile->Write();
 }
@@ -320,6 +331,8 @@ void Validation::MakeHisto(void)
 {
 
   hDecayMode  = new TH1D ("hDecayMode","hDecayMode",49,0,49);
+
+  hTestPV = new TH1D ("hTestPV","hTestPV",100, -0.2,0.2);
 
   //Electron***************************************************************************
   hElec_Pt                      = new TH1D ("hElec_Pt","hElec_Pt",200,0,200);
