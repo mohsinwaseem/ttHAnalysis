@@ -57,6 +57,12 @@ class Validation : public TreeAnalyserMC
 
     Bool_t IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug);
     
+    Bool_t IsFinalBHadron(Int_t Index);
+    
+    void GetFinalDaughters(Size_t Indx, 
+			   vector<Size_t> &vFinalDau);
+    
+
     Int_t GetFinalGenpIndx (Size_t MotIndx, vector<unsigned short>& Daug);
     
     Bool_t IsLeptonic (Size_t Index);
@@ -214,6 +220,70 @@ class Validation : public TreeAnalyserMC
     TH1D *hbJet_PhotonMulti;
 
     TH1D *hdPhi_bJet_MET;
+
+    //*****************************
+    // Gen Level Histos
+    
+    TH1D* hGenPV_X;
+    TH1D* hGenPV_Y;
+    TH1D* hGenPV_Z;
+
+    TH1D* hGenMET_Et;
+    TH1D* hGenMET_Pt;
+    TH1D* hGenNuMultiplicity;
+    TH1D* hHT;
+    TH1D* hMHT;
+
+
+
+    TH1D* hGenElec_Pt;
+    TH1D* hGenElec_Eta;
+    TH1D* hGenElec_E;
+    
+    TH1D* hGenElec_RIso;
+    
+    TH1D* hGenElec_Lxy;
+    TH1D* hGenElec_Lxyz;
+    TH1D* hdPhi_GenElec_MET;
+
+    
+    TH1D* hGenMuon_Pt;
+    TH1D* hGenMuon_Eta;
+    TH1D* hGenMuon_E;
+    
+    TH1D* hGenMuon_RIso;
+    
+    TH1D* hGenMuon_Lxy;
+    TH1D* hGenMuon_Lxyz;
+    TH1D* hdPhi_GenMuon_MET;
+
+    
+    TH1D* hGenTau_Pt;
+    TH1D* hGenTau_Eta;
+    TH1D* hGenTau_E;
+    TH1D* hGenTau_RIso;
+    TH1D* hdPhi_GenTau_MET;
+
+    
+    TH1D* hbGenHad_Pt;
+    TH1D* hbGenHad_Eta;
+    TH1D* hbGenHad_E;
+    TH1D* hdPhi_bGenHad_MET;
+    TH1D* hbGenHad_ChMulti;
+    TH1D* hbGenHad_NMulti;
+    TH1D* hbGenHad_Multiplicity;
+
+    TH1D* hDRBJ;
+    
+    TH1D* hGenJet_Pt;
+    TH1D* hGenJet_Eta;
+    TH1D* hGenJet_E;
+    TH1D* hdPhi_GenJet_MET;
+    TH1D* hGenJet_ChMulti;
+    TH1D* hGenJet_NMulti;
+    TH1D* hGenJet_Multiplicity;
+
+
 };
 
 #endif // Validation_h

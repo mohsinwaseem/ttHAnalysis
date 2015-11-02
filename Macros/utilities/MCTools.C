@@ -773,6 +773,32 @@ double MCTools::GetLxy(const Int_t iGenP,
 
 
 //****************************************************************************
+double MCTools::GetLxyz(const Int_t iGenP,
+			double refPoint_X,
+			double refPoint_Y,
+			double refPoint_Z)
+//****************************************************************************
+{
+
+  // The distance traversed by a long-lived particle is Lxy (decay length).
+  // Assuming the origin (0, 0) as the Primary Vertex (the point where the
+  // particle was produced) and  (vtx_X, vtx_Y) as the Secondary Vertex (the
+  // point where the long-lived particle reaches before decaying), then Lxy is
+  // obtained from Pythagoras theorem.
+  // Particles that decay promptly should have Lxy very close to zero.
+  double refP_X = refPoint_X;
+  double refP_Y = refPoint_Y;
+  double refP_Z = refPoint_Z;
+  double vtx_X  = GenP_VertexX->at(iGenP);
+  double vtx_Y  = GenP_VertexY->at(iGenP);
+  double vtx_Z  = GenP_VertexZ->at(iGenP);
+  double Lxyz   = sqrt(pow( (vtx_X - refP_X), 2) + pow( (vtx_Y - refP_Y), 2) + pow( (vtx_Z - refP_Z), 2));
+
+  return Lxyz;
+}
+
+
+//****************************************************************************
 double MCTools::GetD0Mag(const Int_t iGenP,
 			 const Int_t iMom)
 //****************************************************************************

@@ -27,19 +27,21 @@ mySavePath     = ""
 mySaveFormats  = ["png"]
 histoFolder    = ""
 dataset    = ""
+nameExt    = "_NuMulti"
 
-inputPath_ttH125     = inputPath + "ttH125.root"
-inputPath_TTBar      = inputPath + "TTBar.root"
-inputPath_TTW        = inputPath + "TTW.root"
-inputPath_TTZ        = inputPath + "TTZ.root"
-inputPath_WW         = inputPath + "WW.root"
-inputPath_ZZ         = inputPath + "ZZ.root"
-inputPath_WZ         = inputPath + "WZ.root"
-inputPath_DYLLM10    = inputPath + "DYLLM10.root"
-inputPath_DYLLM50    = inputPath + "DYLLM50.root"
-inputPath_STtchannel = inputPath + "STtchannel.root"
-inputPath_STWt       = inputPath + "STWt.root"
-inputPath_STWtbar    = inputPath + "STWtbar.root"
+
+inputPath_ttH125     = inputPath + "ttH125%s.root"     %(nameExt)
+inputPath_TTBar      = inputPath + "TTBar%s.root"      %(nameExt)
+inputPath_TTW        = inputPath + "TTW%s.root"        %(nameExt)
+inputPath_TTZ        = inputPath + "TTZ%s.root"        %(nameExt)
+inputPath_WW         = inputPath + "WW%s.root"         %(nameExt)
+inputPath_ZZ         = inputPath + "ZZ%s.root"         %(nameExt)
+inputPath_WZ         = inputPath + "WZ%s.root"         %(nameExt)
+inputPath_DYLLM10    = inputPath + "DYLLM10%s.root"    %(nameExt)
+inputPath_DYLLM50    = inputPath + "DYLLM50%s.root"    %(nameExt)
+inputPath_STtchannel = inputPath + "STtchannel%s.root" %(nameExt)
+inputPath_STWt       = inputPath + "STWt%s.root"       %(nameExt)
+inputPath_STWtbar    = inputPath + "STWtbar%s.root"    %(nameExt)
 
 
 
@@ -58,7 +60,7 @@ normFactor = "One" #"One" #None
 ############################################################### 
 Pt = {"xLabel": "P_{T}"           , "xUnits": "GeV", "xMin": None , "xMax": 100, "binWidthX": 2.0 , "xCutLines": [], "xCutBoxes": [], 
       "gridX": True, "logX": False, "logXRatio": False,
-      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
+      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-5, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
       "gridY": True, "logY": True , "logYRatio": False,
       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
@@ -79,10 +81,26 @@ E = {"xLabel": "E"           , "xUnits": "GeV", "xMin": None , "xMax": None, "bi
 
 Et = {"xLabel": "Et"           , "xUnits": "GeV", "xMin": None , "xMax": 3000, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
       "gridX": True, "logX": False, "logXRatio": False,
-      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
+      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-5, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
       "gridY": True, "logY": True , "logYRatio": False,
       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
+
+
+Ht = {"xLabel": "H_{T}"           , "xUnits": "GeV", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
+      "gridX": True, "logX": False, "logXRatio": False,
+      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-5, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
+      "gridY": True, "logY": True , "logYRatio": False,
+      "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
+      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
+
+MHt = {"xLabel": "MH_{T}"           , "xUnits": "GeV", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
+      "gridX": True, "logX": False, "logXRatio": False,
+      "yLabel": "Entries / %0.0f" , "yUnits": ""     , "yMin": 1E-5, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
+      "gridY": True, "logY": True , "logYRatio": False,
+      "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
+      "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.5, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
+
 
 Charge = {"xLabel": "Charge"           , "xUnits": "", "xMin": None , "xMax": None, "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
           "gridX": True, "logX": False, "logXRatio": False,
@@ -128,6 +146,20 @@ IP3d = {"xLabel": "IP3D"            , "xUnits": "cm"     , "xMin": None , "xMax"
 
 
 IP2d = {"xLabel": "IP2D"            , "xUnits": "cm"     , "xMin": None , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
+        "gridX": True, "logX": False, "logXRatio": False, 
+        "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
+        "gridY": True, "logY": True , "logYRatio": False, 
+        "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
+        "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
+
+Lxy = {"xLabel": "Lxy"            , "xUnits": "cm"     , "xMin": 0 , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
+       "gridX": True, "logX": False, "logXRatio": False, 
+       "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
+       "gridY": True, "logY": True , "logYRatio": False, 
+       "ratioLabel": ratioLabel, "ratio": bRatio, "invRatio": bInvRatio, "yMinRatio": yMinRatio, "yMaxRatio": yMaxRatio, "normaliseTo": normFactor, 
+       "drawOptions": "P", "legOptions": "LP" ,  "xLegMin":0.63, "xLegMax":0.7, "yLegMin":0.85, "yLegMax":0.99}
+
+Lxyz = {"xLabel": "Lxyz"            , "xUnits": "cm"     , "xMin": 0 , "xMax": None , "binWidthX": None , "xCutLines": [], "xCutBoxes": [], 
         "gridX": True, "logX": False, "logXRatio": False, 
         "yLabel": "Entries / %0.2f" , "yUnits": ""     , "yMin": 1E-4, "yMax": None , "binWidthY": None, "yCutLines": [] , "yCutBoxes": [], 
         "gridY": True, "logY": True , "logYRatio": False, 
@@ -385,6 +417,64 @@ bJetContentsPh    = m_histos.TH1orTH2( histoFolder, "hbJet_PhotonMulti"         
 
 
 
+###
+#Gen Level
+###
+
+
+GenPVX = m_histos.TH1orTH2( histoFolder,"hGenPV_X"      , "Legend Name", None, **X0 )
+GenPVY = m_histos.TH1orTH2( histoFolder,"hGenPV_Y"      , "Legend Name", None, **Y0 )
+GenPVZ = m_histos.TH1orTH2( histoFolder,"hGenPV_Z"      , "Legend Name", None, **Z0 )
+
+GenMETEt   = m_histos.TH1orTH2( histoFolder,"hGenMET_Et"         , "Legend Name", None, **Et )
+GenMETPt   = m_histos.TH1orTH2( histoFolder,"hGenMET_Pt"         , "Legend Name", None, **Pt )
+GenNuMulti = m_histos.TH1orTH2( histoFolder,"hGenNuMultiplicity" , "Legend Name", None, **Multi )
+GenHT      = m_histos.TH1orTH2( histoFolder,"hHT"                , "Legend Name", None, **Ht )
+GenMHT     = m_histos.TH1orTH2( histoFolder,"hMHT"               , "Legend Name", None, **MHt )
+
+
+
+GenElecPt      = m_histos.TH1orTH2( histoFolder,"hGenElec_Pt"        , "Legend Name", None, **Pt )
+GenElecEta     = m_histos.TH1orTH2( histoFolder,"hGenElec_Eta"       , "Legend Name", None, **Eta )
+GenElecE       = m_histos.TH1orTH2( histoFolder,"hGenElec_E"         , "Legend Name", None, **E )
+GenElecRIso    = m_histos.TH1orTH2( histoFolder,"hGenElec_RIso"      , "Legend Name", None, **RIso )
+GenElecLxy     = m_histos.TH1orTH2( histoFolder,"hGenElec_Lxy"       , "Legend Name", None, **Lxy )
+GenElecLxyz    = m_histos.TH1orTH2( histoFolder,"hGenElec_Lxyz"      , "Legend Name", None, **Lxyz )
+GenElecdPhiMET = m_histos.TH1orTH2( histoFolder,"hdPhi_GenElec_MET"  , "Legend Name", None, **dPhi )
+
+GenMuonPt      = m_histos.TH1orTH2( histoFolder,"hGenMuon_Pt"        , "Legend Name", None, **Pt )
+GenMuonEta     = m_histos.TH1orTH2( histoFolder,"hGenMuon_Eta"       , "Legend Name", None, **Eta )
+GenMuonE       = m_histos.TH1orTH2( histoFolder,"hGenMuon_E"         , "Legend Name", None, **E )
+GenMuonRIso    = m_histos.TH1orTH2( histoFolder,"hGenMuon_RIso"      , "Legend Name", None, **RIso )
+GenMuonLxy     = m_histos.TH1orTH2( histoFolder,"hGenMuon_Lxy"       , "Legend Name", None, **Lxy )
+GenMuonLxyz    = m_histos.TH1orTH2( histoFolder,"hGenMuon_Lxyz"      , "Legend Name", None, **Lxyz )
+GenMuondPhiMET = m_histos.TH1orTH2( histoFolder,"hdPhi_GenMuon_MET"  , "Legend Name", None, **dPhi )
+
+
+GenTauPt      = m_histos.TH1orTH2( histoFolder,"hGenTau_Pt"        , "Legend Name", None, **Pt )
+GenTauEta     = m_histos.TH1orTH2( histoFolder,"hGenTau_Eta"       , "Legend Name", None, **Eta )
+GenTauE       = m_histos.TH1orTH2( histoFolder,"hGenTau_E"         , "Legend Name", None, **E )
+GenTauRIso    = m_histos.TH1orTH2( histoFolder,"hGenTau_RIso"      , "Legend Name", None, **RIso )
+GenTaudPhiMET = m_histos.TH1orTH2( histoFolder,"hdPhi_GenTau_MET"  , "Legend Name", None, **dPhi )
+
+
+bGenHadPt         = m_histos.TH1orTH2( histoFolder,"hbGenHad_Pt"          , "Legend Name", None, **Pt )
+bGenHadEta        = m_histos.TH1orTH2( histoFolder,"hbGenHad_Eta"         , "Legend Name", None, **Eta )
+bGenHadE          = m_histos.TH1orTH2( histoFolder,"hbGenHad_E"           , "Legend Name", None, **E )
+bGenHaddPhiMET    = m_histos.TH1orTH2( histoFolder,"hdPhi_bGenHad_MET"    , "Legend Name", None, **dPhi )
+bGenHadContentsCh = m_histos.TH1orTH2( histoFolder,"hbGenHad_ChMulti"     , "Legend Name", None, **Multi )
+bGenHadContentsN  = m_histos.TH1orTH2( histoFolder,"hbGenHad_NMulti"      , "Legend Name", None, **Multi )
+bGenHadMulti      = m_histos.TH1orTH2( histoFolder,"hbGenHad_Multiplicity", "Legend Name", None, **Multi )
+
+
+GenJetPt         = m_histos.TH1orTH2( histoFolder,"hGenJet_Pt"          , "Legend Name", None, **Pt )
+GenJetEta        = m_histos.TH1orTH2( histoFolder,"hGenJet_Eta"         , "Legend Name", None, **Eta )
+GenJetE          = m_histos.TH1orTH2( histoFolder,"hGenJet_E"           , "Legend Name", None, **E )
+GenJetdPhiMET    = m_histos.TH1orTH2( histoFolder,"hdPhi_GenJet_MET"    , "Legend Name", None, **dPhi )
+GenJetContentsCh = m_histos.TH1orTH2( histoFolder,"hGenJet_ChMulti"     , "Legend Name", None, **Multi )
+GenJetContentsN  = m_histos.TH1orTH2( histoFolder,"hGenJet_NMulti"      , "Legend Name", None, **Multi )
+GenJetMulti      = m_histos.TH1orTH2( histoFolder,"hGenJet_Multiplicity", "Legend Name", None, **Multi )
+
 
 #Elec Muon Tau Jet
 ###############################################################
@@ -397,14 +487,14 @@ def DoPlots(histoObjectList, dataset):
     p.EnableColourPalette(True)
    
     p.AddDataset( dataset + ":t#bar{t}H"            , inputPath_ttH125 )
-    #p.AddDataset( dataset + ":t#bar{t}"             , inputPath_TTBar)
-    #p.AddDataset( dataset + ":t#bar{t}W"            , inputPath_TTW)
-    #p.AddDataset( dataset + ":t#bar{t}Z"            , inputPath_TTZ)
+    p.AddDataset( dataset + ":t#bar{t}"             , inputPath_TTBar)
+    p.AddDataset( dataset + ":t#bar{t}W"            , inputPath_TTW)
+    p.AddDataset( dataset + ":t#bar{t}Z"            , inputPath_TTZ)
     #p.AddDataset( dataset + ":WW"                    , inputPath_WW)
     #p.AddDataset( dataset + ":ZZ"                    , inputPath_ZZ)
     #p.AddDataset( dataset + ":WZ"                    , inputPath_WZ)
-    p.AddDataset( dataset + ":DY m_{ll} 10-50"       , inputPath_DYLLM10)
-    p.AddDataset( dataset + ":DY m_{ll} 50"          , inputPath_DYLLM50)
+    #p.AddDataset( dataset + ":DY m_{ll} 10-50"       , inputPath_DYLLM10)
+    #p.AddDataset( dataset + ":DY m_{ll} 50"          , inputPath_DYLLM50)
     #p.AddDataset( dataset + ":Single top - tchannel" , inputPath_STtchannel)
     #p.AddDataset( dataset + ":Single top - tW"       , inputPath_STWt)
     #p.AddDataset( dataset + ":Single top - #bar{t}W" , inputPath_STWtbar)
@@ -420,106 +510,162 @@ def DoPlots(histoObjectList, dataset):
 if __name__ == "__main__":
 
     #Elec
-    DoPlots(ElecPt     , dataset)
-    DoPlots(ElecEta    , dataset)
-    DoPlots(ElecE      , dataset)
-    DoPlots(ElecCharge , dataset)
+    #DoPlots(ElecPt     , dataset)
+    #DoPlots(ElecEta    , dataset)
+    #DoPlots(ElecE      , dataset)
+    #DoPlots(ElecCharge , dataset)
     
-    DoPlots(ElecIP3d      , dataset)
-    DoPlots(ElecIP3dError , dataset)
-    DoPlots(ElecIP2d      , dataset)
-    DoPlots(ElecIP2dError , dataset)
-    DoPlots(ElecdPhiMET   , dataset)
-    DoPlots(ElecIso       , dataset)
+    #DoPlots(ElecIP3d      , dataset)
+    #DoPlots(ElecIP3dError , dataset)
+    #DoPlots(ElecIP2d      , dataset)
+    #DoPlots(ElecIP2dError , dataset)
+    #DoPlots(ElecdPhiMET   , dataset)
+    #DoPlots(ElecIso       , dataset)
     
-    DoPlots(ElecTkD0   , dataset)
-    DoPlots(ElecTkZ0   , dataset)
-    DoPlots(ElecTkChi2 , dataset)
+    #DoPlots(ElecTkD0   , dataset)
+    #DoPlots(ElecTkZ0   , dataset)
+    #DoPlots(ElecTkChi2 , dataset)
 
     #Muon
-    DoPlots(MuonPt     , dataset)
-    DoPlots(MuonEta    , dataset)
-    DoPlots(MuonE      , dataset)
-    DoPlots(MuonCharge , dataset)
+    #DoPlots(MuonPt     , dataset)
+    #DoPlots(MuonEta    , dataset)
+    #DoPlots(MuonE      , dataset)
+    #DoPlots(MuonCharge , dataset)
     
-    DoPlots(MuonIP3d      , dataset)
-    DoPlots(MuonIP3dError , dataset)
-    DoPlots(MuonIP2d      , dataset)
-    DoPlots(MuonIP2dError , dataset)
-    DoPlots(MuondPhiMET   , dataset)
-    DoPlots(MuonIso       , dataset)
+    #DoPlots(MuonIP3d      , dataset)
+    #DoPlots(MuonIP3dError , dataset)
+    #DoPlots(MuonIP2d      , dataset)
+    #DoPlots(MuonIP2dError , dataset)
+    #DoPlots(MuondPhiMET   , dataset)
+    #DoPlots(MuonIso       , dataset)
     
-    DoPlots(MuonITkD0   , dataset)
-    DoPlots(MuonITkZ0   , dataset)
-    DoPlots(MuonITkChi2 , dataset)
+    #DoPlots(MuonITkD0   , dataset)
+    #DoPlots(MuonITkZ0   , dataset)
+    #DoPlots(MuonITkChi2 , dataset)
 
-    DoPlots(MuonGTkD0   , dataset)
-    DoPlots(MuonGTkZ0   , dataset)
-    DoPlots(MuonGTkChi2 , dataset)
+    #DoPlots(MuonGTkD0   , dataset)
+    #DoPlots(MuonGTkZ0   , dataset)
+    #DoPlots(MuonGTkChi2 , dataset)
 
     #Combined
-    DoPlots(LeadLepPt        , dataset)
-    DoPlots(SubLeadLepPt     , dataset)
-    DoPlots(SubSubLeadLepPt  , dataset) 
+    #DoPlots(LeadLepPt        , dataset)
+    #DoPlots(SubLeadLepPt     , dataset)
+    #DoPlots(SubSubLeadLepPt  , dataset) 
 
 
     #Tau
-    DoPlots(TauPt            , dataset)
-    DoPlots(TauEta           , dataset)
-    DoPlots(TauE             , dataset)
-    DoPlots(TauCharge        , dataset)
-    DoPlots(TaudPhiMET       , dataset)
-    DoPlots(TauLdgCHPt       , dataset)
-    DoPlots(TauLdgCHEta      , dataset)
-    DoPlots(TauLdgCHE        , dataset)
-    DoPlots(TauLdgCHEt       , dataset)
-    DoPlots(TauLdgCHId       , dataset)
-    DoPlots(TauLdgCHCharge   , dataset)
-    DoPlots(TauLdgCHX0       , dataset)
-    DoPlots(TauLdgCHY0       , dataset)
-    DoPlots(TauLdgCHZ0       , dataset)
+    #DoPlots(TauPt            , dataset)
+    #DoPlots(TauEta           , dataset)
+    #DoPlots(TauE             , dataset)
+    #DoPlots(TauCharge        , dataset)
+    #DoPlots(TaudPhiMET       , dataset)
+    #DoPlots(TauLdgCHPt       , dataset)
+    #DoPlots(TauLdgCHEta      , dataset)
+    #DoPlots(TauLdgCHE        , dataset)
+    #DoPlots(TauLdgCHEt       , dataset)
+    #DoPlots(TauLdgCHId       , dataset)
+    #DoPlots(TauLdgCHCharge   , dataset)
+    #DoPlots(TauLdgCHX0       , dataset)
+    #DoPlots(TauLdgCHY0       , dataset)
+    #DoPlots(TauLdgCHZ0       , dataset)
 
     #MET
-    DoPlots(METPt          , dataset)
-    DoPlots(METSumEt       , dataset)
+    #DoPlots(METPt          , dataset)
+    #DoPlots(METSumEt       , dataset)
 
     #Jet
-    DoPlots(JetPt                   , dataset)         
-    DoPlots(JetEta                  , dataset)
-    DoPlots(JetE                    , dataset)
-    DoPlots(JetArea                 , dataset)
-    DoPlots(JetdPhiMET              , dataset)
+    #DoPlots(JetPt                   , dataset)         
+    #DoPlots(JetEta                  , dataset)
+    #DoPlots(JetE                    , dataset)
+    #DoPlots(JetArea                 , dataset)
+    #DoPlots(JetdPhiMET              , dataset)
     
-    DoPlots(JetContentsCh           , dataset)
-    DoPlots(JetContentsChHad        , dataset)
-    DoPlots(JetContentsN            , dataset)
-    DoPlots(JetContentsNHad         , dataset)
-    DoPlots(JetContentsEl           , dataset)
-    DoPlots(JetContentsMu           , dataset)
-    DoPlots(JetContentsPh           , dataset)
+    #DoPlots(JetContentsCh           , dataset)
+    #DoPlots(JetContentsChHad        , dataset)
+    #DoPlots(JetContentsN            , dataset)
+    #DoPlots(JetContentsNHad         , dataset)
+    #DoPlots(JetContentsEl           , dataset)
+    #DoPlots(JetContentsMu           , dataset)
+    #DoPlots(JetContentsPh           , dataset)
     
-    #DoPlots(JetBDisParJP            , dataset)
-    #DoPlots(JetBDisHadJP            , dataset)
-    #DoPlots(JetBDisParCMVA          , dataset)
-    #DoPlots(JetBDisHadCMVA          , dataset)
+    ##DoPlots(JetBDisParJP            , dataset)
+    ##DoPlots(JetBDisHadJP            , dataset)
+    ##DoPlots(JetBDisParCMVA          , dataset)
+    ##DoPlots(JetBDisHadCMVA          , dataset)
     
-    DoPlots(JetMulti                , dataset)
-    DoPlots(JetbParMulti            , dataset)
-    DoPlots(JetbDisMultiJPL         , dataset)
-    DoPlots(JetbDisMultiJPM         , dataset)
-    DoPlots(JetbDisMultiJPT         , dataset)
+    #DoPlots(JetMulti                , dataset)
+    #DoPlots(JetbParMulti            , dataset)
+    #DoPlots(JetbDisMultiJPL         , dataset)
+    #DoPlots(JetbDisMultiJPM         , dataset)
+    #DoPlots(JetbDisMultiJPT         , dataset)
     
 
-    DoPlots(bJetPt                  , dataset)
-    DoPlots(bJetEta                 , dataset)
-    DoPlots(bJetE                   , dataset)
-    DoPlots(bJetArea                , dataset)
-    DoPlots(bJetdPhiMET             , dataset)
+    #DoPlots(bJetPt                  , dataset)
+    #DoPlots(bJetEta                 , dataset)
+    #DoPlots(bJetE                   , dataset)
+    #DoPlots(bJetArea                , dataset)
+    #DoPlots(bJetdPhiMET             , dataset)
     
-    DoPlots(bJetContentsCh          , dataset)
-    DoPlots(bJetContentsChHad       , dataset)
-    DoPlots(bJetContentsN           , dataset)
-    DoPlots(bJetContentsNHad        , dataset)
-    DoPlots(bJetContentsEl          , dataset)
-    DoPlots(bJetContentsMu          , dataset)
-    DoPlots(bJetContentsPh          , dataset)
+    #DoPlots(bJetContentsCh          , dataset)
+    #DoPlots(bJetContentsChHad       , dataset)
+    #DoPlots(bJetContentsN           , dataset)
+    #DoPlots(bJetContentsNHad        , dataset)
+    #DoPlots(bJetContentsEl          , dataset)
+    #DoPlots(bJetContentsMu          , dataset)
+    #DoPlots(bJetContentsPh          , dataset)
+
+
+    ######
+    #Gen Level
+    ######
+    
+    #DoPlots(GenPVX                , dataset)
+    #DoPlots(GenPVY                , dataset)
+    #DoPlots(GenPVZ                , dataset)
+    
+    DoPlots(GenMETEt              , dataset)
+    #DoPlots(GenMETPt              , dataset)
+    DoPlots(GenNuMulti            , dataset)
+    DoPlots(GenHT                 , dataset)
+    DoPlots(GenMHT                , dataset)
+    
+    #DoPlots(GenElecPt             , dataset)
+    #DoPlots(GenElecEta            , dataset)
+    #DoPlots(GenElecE              , dataset)
+    #DoPlots(GenElecRIso           , dataset)
+    #DoPlots(GenElecLxy            , dataset)
+    #DoPlots(GenElecLxyz           , dataset)
+    #DoPlots(GenElecdPhiMET        , dataset)
+    
+    #DoPlots(GenMuonPt             , dataset)
+    #DoPlots(GenMuonEta            , dataset)
+    #DoPlots(GenMuonE              , dataset)
+    #DoPlots(GenMuonRIso           , dataset)
+    #DoPlots(GenMuonLxy            , dataset)
+    #DoPlots(GenMuonLxyz           , dataset)
+    #DoPlots(GenMuondPhiMET        , dataset)
+    
+    
+    #DoPlots(GenTauPt              , dataset)
+    #DoPlots(GenTauEta             , dataset)
+    #DoPlots(GenTauE               , dataset)
+    #DoPlots(GenTauRIso            , dataset)
+    #DoPlots(GenTaudPhiMET         , dataset)
+    
+    
+    #DoPlots(bGenHadPt             , dataset)
+    #DoPlots(bGenHadEta            , dataset)
+    #DoPlots(bGenHadE              , dataset)
+    #DoPlots(bGenHaddPhiMET        , dataset)
+    #DoPlots(bGenHadContentsCh     , dataset)
+    #DoPlots(bGenHadContentsN      , dataset)
+    #DoPlots(bGenHadMulti         , dataset)
+    
+    
+    #DoPlots(GenJetPt              , dataset)
+    #DoPlots(GenJetEta             , dataset)
+    #DoPlots(GenJetE               , dataset)
+    #DoPlots(GenJetdPhiMET         , dataset)
+    #DoPlots(GenJetContentsCh      , dataset)
+    #DoPlots(GenJetContentsN       , dataset)
+    #DoPlots(GenJetMulti          , dataset)

@@ -58,7 +58,12 @@ class MCTools : public virtual TreeDefinitionGenP
   double GetLxy(const Int_t iGenP,
 		double refPoint_X = 0.0,
 		double refPoint_Y = 0.0);
-	      
+
+  double GetLxyz(const Int_t iGenP,
+		 double refPoint_X,
+		 double refPoint_Y,
+		 double refPoint_Z);
+    
   double GetD0Mag(const Int_t iGenP,
 		  const Int_t iMom);
   
