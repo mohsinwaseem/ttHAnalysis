@@ -233,7 +233,20 @@ class Validation : public TreeAnalyserMC
     TH1D* hGenNuMultiplicity;
     TH1D* hHT;
     TH1D* hMHT;
+    
+    TH1D* hGenNu_Et;
+    TH1D* hGenNu_E;
+    TH1D* hGenNu_Eta;
+ 
 
+    TH1D* hAltE;
+    TH1D* hAltEt;
+    TH1D* hAltPt;
+    
+    TH2D* hGenMet_EtvsMulti;
+    TProfile* hpGenMet_EtvsMulti;
+
+    TH1D* hDiNudPhi;
 
 
     TH1D* hGenElec_Pt;

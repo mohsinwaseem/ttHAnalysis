@@ -126,7 +126,8 @@ void Validation::Loop()
     Double_t GenMet_E = -100;
     Int_t nNu = 0 ;
     TLorentzVector MET;
-  
+    vector<ParticleInfo> GenNu;
+
     for(Size_t iMet=0; iMet<nGenp; iMet++)
       {
 	if(abs(GenP_PdgId->at(iMet)) == 12 || abs(GenP_PdgId->at(iMet)) == 14 || abs(GenP_PdgId->at(iMet)) == 16 )
@@ -138,19 +139,77 @@ void Validation::Loop()
 				GenP_Eta->at(iMet),
 				GenP_Phi->at(iMet),
 				GenP_E->at(iMet));
+		//		if(abs(Nu.Eta())<2.5)
 		MET += Nu;
 		
+		hGenNu_Et->Fill(Nu.Et());
+		hGenNu_E->Fill(Nu.E());
+
+		Double_t tempEta=GenP_Eta->at(iMet);
+		if(tempEta < -2.4) tempEta = -2.5;
+		if(tempEta > 2.4)  tempEta =  2.5;
+		
+		hGenNu_Eta->Fill(tempEta);
+		
+
+		ParticleInfo tempNu;
+		tempNu = SetParticleInfo(GenP_Pt->at(iMet), GenP_Eta->at(iMet), GenP_Phi->at(iMet), GenP_E->at(iMet), GenP_PdgId->at(iMet), GenP_Charge->at(iMet));
+		GenNu.push_back(tempNu);
+
+		  
 		nNu++;
 	      }
 	  }
       }//end loop for calc of MET
     //  cout<< MET.Et()<<"\t\t"<<MET.E()<<endl;
-  
+    
     hGenNuMultiplicity->Fill(nNu);
-    hGenMET_Et->Fill(MET.Et());
-    hGenMET_Pt->Fill(MET.Pt());
-    //**********************
+    
+    //    if(MET.Et()>0)
+      {
+	hGenMET_Et->Fill(MET.Et());
+	hGenMET_Pt->Fill(MET.Pt());
+	hGenMet_EtvsMulti->Fill(nNu, MET.Et());
+	hpGenMet_EtvsMulti->Fill(nNu, MET.Et());
+      }
 
+    if(GenNu.size()==2)
+      {
+	Double_t FNuPhi = GenNu.at(0).Phi;
+	Double_t SNuPhi = GenNu.at(1).Phi;
+	
+	Double_t DiNudPhi = abs(auxTools_.DeltaPhi(FNuPhi, SNuPhi));
+	hDiNudPhi->Fill  (DiNudPhi);
+      }
+    
+    //**********************
+    // Alternative Approach----and test
+    //**********************
+    TLorentzVector Alt;
+    for(Size_t iAl=0; iAl<GenP_Pt->size(); iAl++)
+      {
+	if(GenP_Status->at(iAl) == 1)
+	  {
+	    // if(abs(GenP_PdgId->at(iAl)) == 12 || abs(GenP_PdgId->at(iAl)) == 14 || abs(GenP_PdgId->at(iAl)) == 16 )
+	    //   {
+	    // 	// do noting.
+	    //   }
+	    // else
+	    //	      {
+	    TLorentzVector Final;
+	    Final.SetPtEtaPhiE(GenP_Pt->at(iAl),
+			       GenP_Eta->at(iAl),
+			       GenP_Phi->at(iAl),
+			       GenP_E->at(iAl));
+	    Alt += Final;
+		//}
+	  }
+      }
+    hAltE  ->Fill(Alt.E());
+    hAltEt->Fill(Alt.Et());
+    hAltPt->Fill(Alt.Pt());
+    //**********************
+    
     //**********************
     // Gen Particles
     //**********************
@@ -425,7 +484,7 @@ void Validation::Loop()
 
 
       }// end loop on Genp
-
+    //   cout<<GenLep.size();
     //Di Lepton trigger pass (20,10) GeV...
     Bool_t bPassTrg2010 = false;
     if(GenLep.size()>=2)
@@ -850,10 +909,24 @@ void Validation::Loop()
   //  hJet_ParFl_bDisJP_ProjX = hJet_ParFl_bDisJP->ProjectionX(); 
   //hJet_HadFl_bDisJP_ProjX = hJet_HadFl_bDisJP->ProjectionX();
   
+
+  hGenMet_EtvsMulti->SetOption("COLZ");
+
+  hGenNuMultiplicity->Scale(1/hGenNuMultiplicity->Integral());
+  hGenMet_EtvsMulti->Scale(1/hGenMet_EtvsMulti->Integral());
+  hGenMET_Et       ->Scale(1/hGenMET_Et->Integral());
+
+  hAltEt->Scale(1/hAltEt->Integral());
+  hAltPt->Scale(1/hAltPt->Integral());
+
+  hGenNu_Et->Scale(1/hGenNu_Et->Integral());
+  hGenNu_E ->Scale(1/hGenNu_E ->Integral());
+
   TH1D *hTest1  = hJet_ParFl_bDisJP ->ProjectionX();
   TH1D *hTest2  = hJet_HadFl_bDisJP ->ProjectionX();
 
   hTestPV->Scale(1/hTestPV->Integral());
+
 
   // Uncomment this line to write also the histograms to the file
   outFile->Write();
@@ -1013,11 +1086,22 @@ void Validation::MakeHisto(void)
   hGenPV_Z   = new TH1D("hGenPV_Z","hGenPV_Z", 100,-25,25);
 
   hGenMET_Et   = new TH1D("hGenMET_Et","hGenMET_Et",200,0,2000);
-  hGenMET_Pt   = new TH1D("hGenMET_Pt","hGenMET_Pt",200,0,200);
+  hGenMET_Pt   = new TH1D("hGenMET_Pt","hGenMET_Pt",100,0,1000);
   hGenNuMultiplicity = new TH1D("hGenNuMultiplicity","hGenNuMultiplicity", 15, -0.5 , 14.5);
   hMHT = new TH1D ("hMHT","hMHT", 200, 0, 2000);
   hHT  = new TH1D ("hHT" ,"hHT" , 200, 0, 2000);
+  hGenMet_EtvsMulti = new TH2D ("hGenMet_EtvsMulti","hGenMet_EtvsMulti",15,-0.5,14.5, 200,0,2000);
+  hpGenMet_EtvsMulti = new TProfile ("hpGenMet_EtvsMulti","hpGenMet_EtvsMulti",15,-0.5,14.5,0,2000);
 
+  hDiNudPhi = new TH1D ("hDiNudPhi","hDiNudPhi",100,0,4);
+
+  hGenNu_Et = new TH1D ("hGenNu_Et","hGenNu_Et",100,0,100);
+  hGenNu_E  = new TH1D ("hGenNu_E" ,"hGenNu_E" ,100,0,100);
+  hGenNu_Eta  = new TH1D ("hGenNu_Eta" ,"hGenNu_Eta" ,100,-5,5);
+  
+  hAltE   = new TH1D ("hAltE"   ,"hAltE"   ,200,0,2000);
+  hAltEt = new TH1D ("hAltEt" ,"hAltEt" ,200,0,2000);
+  hAltPt = new TH1D ("hAltPt" ,"hAltPt" ,200,0,2000);
   
   hGenElec_Pt       = new TH1D("hGenElec_Pt"      ,"hGenElec_Pt"      ,200,0,200);
   hGenElec_Eta      = new TH1D("hGenElec_Eta"     ,"hGenElec_Eta"     , 100,-5,5);
