@@ -1,5 +1,5 @@
-#ifndef TestEventYield_h
-#define TestEventYield_h
+#ifndef EventYield_h
+#define EventYield_h
 
 #include <iostream>
 
@@ -16,7 +16,7 @@ struct ParticleInfo{
   Int_t    PdgId;
   Int_t    Charge;
   Int_t    Indx;
-  void init()
+  ParticleInfo()
   {
     Pt     = -100;
     Eta    = -100;
@@ -29,20 +29,56 @@ struct ParticleInfo{
 
 };
 
-class TestEventYield : public TreeAnalyserMC
+struct ttHParIndx{
+  
+  Int_t t;
+  Int_t tbar;
+  Int_t H;
+
+  Int_t Wpfromt;
+  Int_t Wmfromtbar;
+
+  Int_t WpfromH;
+  Int_t WmfromH;
+  Int_t TpfromH;
+  Int_t TmfromH;
+  Int_t Z1fromH;
+  Int_t Z2fromH;
+
+  ttHParIndx()
+  {
+    t    = -1;
+    tbar = -1;
+    H    = -1;
+    
+    Wpfromt    = -1;
+    Wmfromtbar = -1;
+    
+    WpfromH = -1;
+    WmfromH = -1;
+    TpfromH = -1;
+    TmfromH = -1;
+    Z1fromH = -1;
+    Z2fromH = -1;
+  }
+
+};
+
+
+class EventYield : public TreeAnalyserMC
 {
   public:
-    TestEventYield(const std::string SamplePath,
+    EventYield(const std::string SamplePath,
 	const std::string SampleName,
 	const std::string text_, 
 	const int maxEvents_ = -1, 
 	TTree* tree=0) : 
-    TreeAnalyserMC("TestEventYield", SamplePath, SampleName, text_, maxEvents_, tree) {
+    TreeAnalyserMC("EventYield", SamplePath, SampleName, text_, maxEvents_, tree) {
       auxTools_.StopwatchStart();
       mcSample = SampleName;
     };
 
-    ~TestEventYield() {};
+    ~EventYield() {};
 
     virtual void Loop();
 
@@ -61,6 +97,11 @@ class TestEventYield : public TreeAnalyserMC
     void SortLepPt (vector<ParticleInfo> &vSort);
     
     void myPrintGenp(Size_t Indx, bool bPrintHeaders);
+
+    Int_t GetFinalGenpIndx (Size_t MotIndx, vector<unsigned short>& Daug);
+    
+    ttHParIndx GetttHParIndices();
+
 };
 
-#endif // TestEventYield_h
+#endif // EventYield_h

@@ -193,6 +193,9 @@ void Datasets::CreateMcProductions_(void)
   string CP       = "Central";
 
   // Private Production
+
+  Datasets ttHInclusive_M125 ("ttH8TeVAll" ,"ttHInclusive_M125_8TeV_pythia6_GenPOnly","ttHInclusive_M125_8TeV_pythia6_GenPOnly",CP, "5_3_2_patch4", geometry,   0, 0, 0, 0);
+
   Datasets ttHNonbb_M120 ("ttH120" ,"ttHJetToNonbb_M120_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix","ttHJetToNonbb_M120_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix",CP, cmssw, geometry,   0, 0, 0, 0);
   Datasets ttHNonbb_M125 ("ttH125" ,"ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix","ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix",CP, cmssw, geometry,   0, 0, 0, 0);
   Datasets ttHNonbb_M130 ("ttH130" ,"ttHJetToNonbb_M130_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix","ttHJetToNonbb_M130_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix",CP, cmssw, geometry,   0, 0, 0, 0);
@@ -223,6 +226,7 @@ void Datasets::CreateMcProductions_(void)
   datasets_Spring15MiniAOD.push_back(WW);
   datasets_Spring15MiniAOD.push_back(ZZ);
   datasets_Spring15MiniAOD.push_back(WZ);
+  datasets_Spring15MiniAOD.push_back(ttHInclusive_M125);
 
   return;
 }
