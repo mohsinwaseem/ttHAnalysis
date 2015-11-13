@@ -4,6 +4,8 @@
 #include "EventYield.h"
 #include "../utilities/constants.h"
 
+#include <TRandom3.h>
+
 void EventYield::Loop()
 {
   if (fChain == 0) return;
@@ -12,7 +14,14 @@ void EventYield::Loop()
 
   std::cout << "Analyzing " << nentries << " events.\n";
 
+  
+  //  CalculateEventExpectation();
+
   // Book histograms here
+
+
+
+
 
   Double_t nHtoTT=0.0;
   Double_t nHtoZZ=0.0;
@@ -40,10 +49,43 @@ void EventYield::Loop()
   Double_t n4lbbHZZ=0.0;
   Double_t n4lbbHWW=0.0;
 
+  Double_t totalfucking2lss=0.0;
 
+  Double_t Lumi = 19.6;//fb-1
+  Double_t Sigma = 130.2; //fb  508.5;//
+  Double_t nEvtLumi = Sigma*Lumi;
+  Double_t Weight =  nEvtLumi/nentries;
+
+  Int_t nHiggs=0;
+  Int_t nWplus=0;
+  Int_t nWMinus=0;
+  Int_t nTest=0;
+
+  
+  Double_t nW = 0.0;
+  Double_t nWL = 0.0;
+  
+  Double_t nZ = 0.0;
+  Double_t nZL = 0.0;
+
+  Double_t nT = 0.0;
+  Double_t nTL = 0.0;
+
+  // TH1D* test;
+  // test = new TH1D("test","test",10000,0,1);
+  
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++)
   {
+
+    //    TRandom3 r;
+    //    cout<< r.Rndm(5)<<endl;
+    //  cout<< r.Uniform(rand()%100/100.0)<<endl;
+    //    test->Fill(r.Uniform(rand()%100/100.0));
+
+
+    // float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX); 
+    // cout<<r <<endl;
 
     if(jentry%1000 == 0)
       std::cout << "Loop over entry " << jentry << "/" << nentries << ".\n";
@@ -55,69 +97,99 @@ void EventYield::Loop()
     Size_t nGenp = GenP_Pt->size();
     // cout<< nGenp<<endl;
 
+    // for(Size_t i=0; i<nGenp; i++)
+    //   {
+    // 	if(EvtNumber == 881422 || EvtNumber == 924723 || EvtNumber == 435239)
+    // 	  myPrintGenp(i,true);
+    //   }
+
     ttHParIndx lIndex;
     //   lIndex.init();
     lIndex = GetttHParIndices();
-    
+
+    if(lIndex.H != -1) nHiggs++;
+    if(lIndex.Wpfromt != -1) nWplus++;
+    if(lIndex.Wmfromtbar != -1) nWMinus++;
+
+    // cout<< EvtNumber<<endl;
 
     // cout<< lIndex.t<<"\t\t"<< lIndex.tbar<<"\t\t"<< lIndex.H<<endl
-    // 	<<"\t\t"<<lIndex.Wpfromt<<"\t\t"<<lIndex.Wmfromtbar<<endl
-    // 	<<"\t\t"<<lIndex.WpfromH<<"\t\t"<<lIndex.WmfromH<<"\t\t"<<lIndex.TpfromH<<"\t\t"<<lIndex.TmfromH<<"\t\t"<<lIndex.Z1fromH<<"\t\t"<<lIndex.Z2fromH<<endl;
-    // cout<<"\n\n___________________________________________________________________________________________________________________\n"<<endl;
-
-
-
-
-
-
-
-
-
+    //  	<<"\t\t"<<lIndex.Wpfromt<<"\t\t"<<lIndex.Wmfromtbar<<endl
+    //  	<<"\t\t"<<lIndex.WpfromH<<"\t\t"<<lIndex.WmfromH<<"\t\t"<<lIndex.TpfromH<<"\t\t"<<lIndex.TmfromH<<"\t\t"<<lIndex.Z1fromH<<"\t\t"<<lIndex.Z2fromH<<endl;
+    // cout<<EvtNumber<<"\n\n___________________________________________________________________________________________________________________\n"<<endl;
 
 
     //Step1: Basic Acceptance of e, mu, and bhad.
     vector<ParticleInfo> vGenLep;
     vector<ParticleInfo> vGenBHad;
+   
+    // Get Leptons from indices found above....
+    
+    if(lIndex.Wpfromt != -1)      GetLeptonEntries(lIndex.Wpfromt    ,vGenLep);
+    if(lIndex.TpfromWpt != -1)    GetLeptonEntries(lIndex.TpfromWpt  ,vGenLep);
+   
+    if(lIndex.Wmfromtbar != -1)   GetLeptonEntries(lIndex.Wmfromtbar  ,vGenLep);
+    if(lIndex.TmfromWmtbar != -1) GetLeptonEntries(lIndex.TmfromWmtbar,vGenLep);
+
+    if(lIndex.WpfromH != -1)      GetLeptonEntries(lIndex.WpfromH   ,vGenLep);
+    if(lIndex.TpfromWpH != -1)    GetLeptonEntries(lIndex.TpfromWpH   ,vGenLep);
+    
+    if(lIndex.WmfromH != -1)      GetLeptonEntries(lIndex.WmfromH   ,vGenLep);
+    if(lIndex.TmfromWmH != -1)    GetLeptonEntries(lIndex.TmfromWmH   ,vGenLep);
+
+    if(lIndex.TpfromH != -1)      GetLeptonEntries(lIndex.TpfromH   ,vGenLep);
+    if(lIndex.TmfromH != -1)      GetLeptonEntries(lIndex.TmfromH   ,vGenLep);
+    
+    if(lIndex.Z1fromH != -1)      GetLeptonEntries(lIndex.Z1fromH   ,vGenLep);
+    if(lIndex.TpfromZ1H != -1)    GetLeptonEntries(lIndex.TpfromZ1H   ,vGenLep);
+    if(lIndex.TmfromZ1H != -1)    GetLeptonEntries(lIndex.TmfromZ1H   ,vGenLep);
+
+    if(lIndex.Z2fromH != -1)      GetLeptonEntries(lIndex.Z2fromH   ,vGenLep);
+    if(lIndex.TpfromZ2H != -1)    GetLeptonEntries(lIndex.TpfromZ2H   ,vGenLep);
+    if(lIndex.TmfromZ2H != -1)    GetLeptonEntries(lIndex.TmfromZ2H   ,vGenLep);
+
+
+    //*********************************************************************************
+    //Checking Leptong Branching....W
+    if(lIndex.Wpfromt != -1)    {nW++;	nWL+=CheckLeptonBranching(lIndex.Wpfromt);}
+    if(lIndex.Wmfromtbar != -1) {nW++;	nWL+=CheckLeptonBranching(lIndex.Wmfromtbar);}
+    if(lIndex.WmfromH != -1)    {nW++;	nWL+=CheckLeptonBranching(lIndex.WmfromH);}
+    if(lIndex.WpfromH != -1)    {nW++;	nWL+=CheckLeptonBranching(lIndex.WpfromH);}
+
+
+    //Checking Leptong Branching....T
+    if(lIndex.TpfromWpt != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TpfromWpt);}
+    if(lIndex.TmfromWmtbar != -1) {nT++; nTL+=CheckLeptonBranching(lIndex.TmfromWmtbar);}
+    if(lIndex.TpfromWpH != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TpfromWpH);}
+    if(lIndex.TmfromWmH != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TmfromWmH);}
+    if(lIndex.TpfromH != -1)      {nT++; nTL+=CheckLeptonBranching(lIndex.TpfromH);}
+    if(lIndex.TmfromH != -1)      {nT++; nTL+=CheckLeptonBranching(lIndex.TmfromH);}
+    if(lIndex.TpfromZ1H != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TpfromZ1H);}
+    if(lIndex.TmfromZ1H != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TmfromZ1H);}
+    if(lIndex.TpfromZ2H != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TpfromZ2H);}
+    if(lIndex.TmfromZ2H != -1)    {nT++; nTL+=CheckLeptonBranching(lIndex.TmfromZ2H);}
+
+
+    //Checking Leptong Branching....Z
+    if(lIndex.Z1fromH != -1)      {nZ++; nZL+=CheckLeptonBranching(lIndex.Z1fromH);}
+    if(lIndex.Z2fromH != -1)      {nZ++; nZL+=CheckLeptonBranching(lIndex.Z2fromH);}
+    //*********************************************************************************
+
+
+
+
+    // if(vGenLep.size()>1)cout<<"\n\n___________________________________________________________________________________________________________________\n"<<EvtNumber<<endl;
+    // if(vGenLep.size()>1) cout<< vGenLep.size()<<"\t\t"<<vGenLep.at(0).Pt<<"\t"<<vGenLep.at(0).PdgId<<"\t\t"<<vGenLep.at(0).Indx<<endl;
+    // if(vGenLep.size()>1) cout<< vGenLep.size()<<"\t\t"<<vGenLep.at(1).Pt<<"\t"<<vGenLep.at(1).PdgId<<"\t\t"<<vGenLep.at(1).Indx<<endl;
+    // if(vGenLep.size()>2) cout<< vGenLep.size()<<"\t\t"<<vGenLep.at(2).Pt<<"\t"<<vGenLep.at(2).PdgId<<"\t\t"<<vGenLep.at(2).Indx<<endl;
+    // if(vGenLep.size()>3) cout<< vGenLep.size()<<"\t\t"<<vGenLep.at(3).Pt<<"\t"<<vGenLep.at(3).PdgId<<"\t\t"<<vGenLep.at(3).Indx<<endl;
+    
     for(Size_t iGenp = 0; iGenp<nGenp; iGenp++)
       {
-	//	myPrintGenp(iGenp,true);
-     	//Take All status 1 leptons in an event in 
-    	if(GenP_Status->at(iGenp) == 1)
-    	  {
-    	    if(abs(GenP_PdgId->at(iGenp)) == 11)
-    	      {
-    		if(GenP_Pt->at(iGenp)>7 && abs(GenP_Eta->at(iGenp))<2.5)
-    		  {
-    		    ParticleInfo Lep;
-    		    Lep = SetParticleInfo (iGenp,
-    					   GenP_Pt->at(iGenp),
-    					   GenP_Eta->at(iGenp),
-    					   GenP_Phi->at(iGenp),
-    					   GenP_E->at(iGenp),
-    					   GenP_PdgId->at(iGenp),
-    					   GenP_Charge->at(iGenp));
-    		    vGenLep.push_back(Lep);
-    		  }// if within detector acceptance
-    	      }// if electron
-    	    if(abs(GenP_PdgId->at(iGenp)) == 13)
-    	      {
-    		if(GenP_Pt->at(iGenp)>5 && abs(GenP_Eta->at(iGenp))<2.4)
-    		  {
-    		    ParticleInfo Lep;
-    		    Lep = SetParticleInfo (iGenp,
-    					   GenP_Pt->at(iGenp),
-    					   GenP_Eta->at(iGenp),
-    					   GenP_Phi->at(iGenp),
-    					   GenP_E->at(iGenp),
-    					   GenP_PdgId->at(iGenp),
-    					   GenP_Charge->at(iGenp));
-    		    vGenLep.push_back(Lep);
-    		  }// if within detector acceptance
-    	      }//if muon
-    	  }// if status 1 particle
 
     	if(IsFinalBHadron(iGenp))
     	  {
+	    //	    cout<< iGenp<<"\t"<<GenP_PdgId->at(iGenp)<<endl;
     	    if(GenP_Pt->at(iGenp)>25 && abs(GenP_Eta->at(iGenp))<2.5)
     	      {
     		ParticleInfo BHad;
@@ -135,11 +207,15 @@ void EventYield::Loop()
 
     //Step2: Simulate Trigger Lep Pt (20,10)
     Bool_t bPassTrg=false;
+
     SortLepPt(vGenLep);
+
     if(vGenLep.size()>1)// atleast 2 leptons
       {
-    	if(vGenLep.at(0).Pt>20 && vGenLep.at(1).Pt>10)
-    	  bPassTrg = true;
+	// cout<<vGenLep.at(0).PdgId<<"\t\t"<<vGenLep.at(1).PdgId<<endl;
+	// cout<<vGenLep.at(0).Pt<<"\t\t"<<vGenLep.at(1).Pt<<endl;
+	if(vGenLep.at(0).Pt>20 && vGenLep.at(1).Pt>10)
+	  bPassTrg = true;
       }// atleast 2 leptons
     
 
@@ -147,82 +223,76 @@ void EventYield::Loop()
     Bool_t bHtoTT=false;
     Bool_t bHtoZZ=false;
     Bool_t bHtoWW=false;
-        
+    
     for(Size_t iGenp=0; iGenp<nGenp; iGenp++)
       {
-    	if(GenP_PdgId->at(iGenp) == 25 && GenP_Daughters->at(iGenp).size()!=0 )
+    	if(GenP_PdgId->at(iGenp) == 25 )//&& GenP_Daughters->at(iGenp).size()!=0 
     	  {
-	    //  cout<<EvtNumber<<"\t\t"<<iGenp<<endl;
-	    // cout<< GenP_Daughters->at(iGenp).size()<<endl;
-	    // for(Size_t itemp =0; itemp<GenP_Daughters->at(iGenp).size(); itemp++)
-	    //   {
-	    // 	Size_t DauIndddd = GenP_Daughters->at(iGenp).at(itemp);
-	    // 	cout<<"\t\t"<< GenP_PdgId->at(DauIndddd)<<"\t"<<GenP_Pt->at(DauIndddd)<<endl;
-	    //   }
 	    
-	    if(IsFinalGenp(iGenp, GenP_Daughters->at(iGenp)))// For sample made with pythia 8, this check do not work because of the way information is stored.
-	                                                       
+	    //if(IsFinalGenp(iGenp, GenP_Daughters->at(iGenp)))// For sample made with pythia 8, this check do not work because of the way information is stored.
 	    
-	    //if(GenP_Daughters->at(iGenp).size() == 3)         //For sample made with pythia 6,.
+	    
+	    if(GenP_Daughters->at(iGenp).size() == 3)         //For sample made with pythia 6,.
 	                                                      //Just ask if this selected higgs have three daughters, (which is always the case)
 	                                                      // and pick first two daughters as already being done.
     	      {
-		//		cout<<EvtNumber<<"\t\t"<<iGenp<<endl;
-    		Size_t Dau1 = GenP_Daughters->at(iGenp).at(0);
+		Size_t Dau1 = GenP_Daughters->at(iGenp).at(0);
     		Size_t Dau2 = GenP_Daughters->at(iGenp).at(1);
-    		if(abs(GenP_PdgId->at(Dau1)) == 15 && abs(GenP_PdgId->at(Dau2)) == 15 )
+    		if(abs(GenP_PdgId->at(Dau1)) == 15 || abs(GenP_PdgId->at(Dau2)) == 15 )
     		  {
     		    bHtoTT=true;
     		    nHtoTT++;
     		  }
-    		if(abs(GenP_PdgId->at(Dau1)) == 23 && abs(GenP_PdgId->at(Dau2)) == 23 )
+    		if(abs(GenP_PdgId->at(Dau1)) == 23 || abs(GenP_PdgId->at(Dau2)) == 23 )
     		  {
     		    bHtoZZ=true;
     		    nHtoZZ++;
     		  }
-    		if(abs(GenP_PdgId->at(Dau1)) == 24 && abs(GenP_PdgId->at(Dau2)) == 24 )
+    		if(abs(GenP_PdgId->at(Dau1)) == 24 || abs(GenP_PdgId->at(Dau2)) == 24 )
     		  {
     		    bHtoWW=true;
     		    nHtoWW++;
     		  }
-		if(abs(GenP_PdgId->at(Dau1)) == 5 && abs(GenP_PdgId->at(Dau2)) == 5 )
+		if(abs(GenP_PdgId->at(Dau1)) == 5 || abs(GenP_PdgId->at(Dau2)) == 5 )
     		  {
 		    nHtoBB++;
     		  }
     	      }// is final Higgs
     	  }// if higgs
       }// loop on particles
-
-
+    
+    
     //Step4: Select Events
     if(bPassTrg)
       {
     	if(vGenLep.size()==2)
     	  {
-    	    if(vGenLep.at(0).Charge == vGenLep.at(1).Charge)
+	    //totalfucking2lss+=Weight;
+	    if(vGenLep.at(0).Charge == vGenLep.at(1).Charge)
     	      {
+		//		cout<< GenP_PdgId->at(vGenLep.at(0).Indx)<<"\t"<< GenP_PdgId->at(vGenLep.at(0).Indx)<<endl;
     		if(bHtoTT)
     		  {
-    		    n2lssHTT++;
+		    n2lssHTT+= Weight;//n2lssHTT++;
     		    if(vGenBHad.size()==2)
     		      {
-    			n2lssbbHTT++;
+    			n2lssbbHTT+= Weight;
     		      }//if 2 Bhad in acceptance
     		  }// if event is H to TT
     		if(bHtoZZ)
     		  {
-    		    n2lssHZZ++;
+    		    n2lssHZZ+= Weight;
     		    if(vGenBHad.size()==2)
     		      {
-    			n2lssbbHZZ++;
+    			n2lssbbHZZ+= Weight;
     		      }//if 2 Bhad in acceptance
     		  }// if event is H to ZZ
     		if(bHtoWW)
     		  {
-    		    n2lssHWW++;
+    		    n2lssHWW+= Weight;
     		    if(vGenBHad.size()==2)
     		      {
-    			n2lssbbHWW++;
+    			n2lssbbHWW+= Weight;
     		      }//if 2 Bhad in acceptance
     		  }// if event is H to ZZ
     	      }// same sign
@@ -234,26 +304,26 @@ void EventYield::Loop()
     	  {
     	    if(bHtoTT)
     	      {
-    		n3lHTT++;
+    		n3lHTT+= Weight;
     		if(vGenBHad.size()==2)
     		  {
-    		    n3lbbHTT++;
+    		    n3lbbHTT+= Weight;
     		  }//if 2 Bhad in acceptance
     	      }// if event is H to TT
     	    if(bHtoZZ)
     	      {
-    		n3lHZZ++;
+    		n3lHZZ+= Weight;
     		if(vGenBHad.size()==2)
     		  {
-    		    n3lbbHZZ++;
+    		    n3lbbHZZ+= Weight;
     		  }//if 2 Bhad in acceptance
     	      }// if event is H to ZZ
     	    if(bHtoWW)
     	      {
-    		n3lHWW++;
+    		n3lHWW+= Weight;
     		if(vGenBHad.size()==2)
     		  {
-    		    n3lbbHWW++;
+    		    n3lbbHWW+= Weight;
     		  }//if 2 Bhad in acceptance
     	      }// if event is H to ZZ
     	  }//if 3lep
@@ -264,26 +334,26 @@ void EventYield::Loop()
     	  {
     	    if(bHtoTT)
     	      {
-    		n4lHTT++;
+    		n4lHTT+= Weight;
     		if(vGenBHad.size()==2)
     		  {
-    		    n4lbbHTT++;
+    		    n4lbbHTT+= Weight;
     		  }//if 2 Bhad in acceptance
     	      }// if event is H to TT
     	    if(bHtoZZ)
     	      {
-    		n4lHZZ++;
+    		n4lHZZ+= Weight;
     		if(vGenBHad.size()==2)
     		  {
-    		    n4lbbHZZ++;
+    		    n4lbbHZZ+= Weight;
     		  }//if 2 Bhad in acceptance
     	      }// if event is H to ZZ
     	    if(bHtoWW)
     	      {
-    		n4lHWW++;
+    		n4lHWW+= Weight;
     		if(vGenBHad.size()==2)
     		  {
-    		    n4lbbHWW++;
+    		    n4lbbHWW+= Weight;
     		  }//if 2 Bhad in acceptance
     	      }// if event is H to ZZ
     	  }//if 4lep
@@ -323,7 +393,7 @@ void EventYield::Loop()
   cout<< "H to BB events \t "<<nHtoBB<<"\tPercentage\t"<<nHtoBB/nentries<<endl;
   cout<<endl<<endl<<"________________________________________________________"<<endl;
   
-  cout<< "\tFinalState\t HtoWW \t HtoTT \t HtoZZ \t Total"<<endl;
+  cout<< "\tFinalState\t    HtoWW \t    HtoTT \t    HtoZZ \t   Total"<<endl;
   cout<< "\t2lss\t\t  "<<n2lssHWW<<"\t  "<<n2lssHTT<<"\t  "<<n2lssHZZ<<"\t  "<<n2lssHWW+n2lssHTT+n2lssHZZ<<endl;
   cout<< "\t3l\t\t  "<<n3lHWW<<"\t  "<<n3lHTT<<"\t  "<<n3lHZZ<<"\t  "<<n3lHWW+n3lHTT+n3lHZZ<<endl;
   cout<< "\t4l\t\t  "<<n4lHWW<<"\t  "<<n4lHTT<<"\t  "<<n4lHZZ<<"\t  "<<n4lHWW+n4lHTT+n4lHZZ<<endl;
@@ -333,15 +403,68 @@ void EventYield::Loop()
   cout<< "\t4l+bb\t\t  "<<n4lbbHWW<<"\t  "<<n4lbbHTT<<"\t  "<<n4lbbHZZ<<"\t  "<<n4lbbHWW+n4lbbHTT+n4lbbHZZ<<endl;
 
 
+
+
+  cout<<"________________________________________________________________________________________________\n";
+  cout<<"\tN Higgs\t"<<  nHiggs<<"\tN W+\t"<< nWplus<<"\t N W-\t"<< nWMinus<<"\tnTest \t"<<nTest++<<endl;
+
+
+  cout<<"\n\n\nW\t"<<nW<<"\t\t"<<nWL<<"\t\t"<<nWL/nW<<endl;
+  cout<<"\n\n\nT\t"<<nT<<"\t\t"<<nTL<<"\t\t"<<nTL/nT<<endl;
+  cout<<"\n\n\nZ\t"<<nZ<<"\t\t"<<nZL<<"\t\t"<<nZL/nZ<<endl;
+
+
+  cout<<"\t\t"<<totalfucking2lss<<endl;
+
   // Keep this line here!
   outFile->cd();
 
   // Create and write canvases here
 
   // Uncomment this line to write also the histograms to the file
-  // outFile->Write();
+  outFile->Write();
 }
 
+//****************************************************************************
+void EventYield::GetLeptonEntries(Int_t Indx, vector<ParticleInfo> &lepVec)
+//****************************************************************************
+{
+  for(Size_t iDau=0; iDau<GenP_Daughters->at(Indx).size(); iDau++)
+    {
+      Int_t DauIndx=GenP_Daughters->at(Indx).at(iDau);
+      if(abs(GenP_PdgId->at(DauIndx)) == 11)
+	{
+	  if(GenP_Pt->at(DauIndx)>7 && abs(GenP_Eta->at(DauIndx))<2.5)
+	    {
+	      ParticleInfo Lep;
+	      Lep = SetParticleInfo (DauIndx,
+				     GenP_Pt->at(DauIndx),
+				     GenP_Eta->at(DauIndx),
+				     GenP_Phi->at(DauIndx),
+				     GenP_E->at(DauIndx),
+				     GenP_PdgId->at(DauIndx),
+				     GenP_Charge->at(DauIndx));
+	      lepVec.push_back(Lep);
+	    }// if within detector acceptance
+	}// if electron
+      if(abs(GenP_PdgId->at(DauIndx)) == 13)
+	{
+	  if(GenP_Pt->at(DauIndx)>5 && abs(GenP_Eta->at(DauIndx))<2.4)
+	    {
+	      ParticleInfo Lep;
+	      Lep = SetParticleInfo (DauIndx,
+				     GenP_Pt->at(DauIndx),
+				     GenP_Eta->at(DauIndx),
+				     GenP_Phi->at(DauIndx),
+				     GenP_E->at(DauIndx),
+				     GenP_PdgId->at(DauIndx),
+				     GenP_Charge->at(DauIndx));
+	      lepVec.push_back(Lep);
+	    }// if within detector acceptance
+	}//if muon
+    }
+  
+}
 
 //****************************************************************************
 Bool_t EventYield::IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug)
@@ -355,8 +478,36 @@ Bool_t EventYield::IsFinalGenp (Size_t MotIndx, vector<unsigned short>& Daug)
     {
       Int_t DauIndx = Daug.at(iDau);
       Int_t DauId   = GenP_PdgId->at(DauIndx);
-      
-      if(MotId == DauId)
+      //if(MotId != DauId)
+      //{
+	  //return true;
+      //  break;
+      //}
+      if(MotId == DauId  )
+	return false;
+    }// end loop on daughters
+  return true;
+}
+
+
+//****************************************************************************
+Bool_t EventYield::IsFinalGenpPy6 (Size_t MotIndx, vector<unsigned short>& Daug)
+//****************************************************************************
+{
+  Int_t MotId = GenP_PdgId->at(MotIndx);
+  
+  if(Daug.size()==0) return true;
+  
+  for(Size_t iDau=0; iDau<Daug.size(); iDau++)
+    {
+      Int_t DauIndx = Daug.at(iDau);
+      Int_t DauId   = GenP_PdgId->at(DauIndx);
+      //if(MotId != DauId)
+      //{
+	  //return true;
+      //  break;
+      //}
+      if(MotId == DauId  )
 	return false;
     }// end loop on daughters
   return true;
@@ -452,16 +603,33 @@ ttHParIndx EventYield::GetttHParIndices()
       //*********************************************
       if (GenP_PdgId->at(iGenp) == 6)
 	{
+//	  cout<<"\t\t"<< iGenp<<"\t"<<GenP_Pt->at(iGenp)<< endl;
 	  vector<unsigned short> tDau = GenP_Daughters->at(iGenp);
 	  if(IsFinalGenp(iGenp, tDau ))
 	    {
+//	      cout<<"\t"<< iGenp<<"\t"<<GenP_Pt->at(iGenp)<< endl;
 	      list.t = iGenp;
 	      for(Size_t iDau=0; iDau<tDau.size(); iDau++)
 		{
 		  Size_t DauIndx = tDau.at(iDau);
 		  if(GenP_PdgId->at(DauIndx) == 24)
 		    {
+		      //cout<<DauIndx<< "\t"<<GenP_Pt->at(DauIndx)<<endl;
+		      //cout<<GenP_Daughters->at(DauIndx).size()<<endl;
 		      list.Wpfromt = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		      for(Size_t iWpDau=0; iWpDau<GenP_Daughters->at(list.Wpfromt).size(); iWpDau++ )//cout<<list.Wpfromt<<endl;
+			{
+			  Size_t WpDauIndx = GenP_Daughters->at(list.Wpfromt).at(iWpDau);
+			  if(abs(GenP_PdgId->at(WpDauIndx)) == 15)
+			    {
+			      //cout<< EvtNumber<<"\t"<<list.Wpfromt<<"\t"<<WpDauIndx<<"\t"<<GenP_PdgId->at(WpDauIndx)<<endl;
+			      list.TpfromWpt = GetFinalGenpIndx(WpDauIndx, GenP_Daughters->at(WpDauIndx));
+			      //cout<<"\tThe final Tau iss \t"<< test<<endl;
+			    }
+			}//end loop on daughters of Wp
+
+
+		      //cout<<list.Wpfromt<<endl;
 		    }// if W
 		}// loop on t dau
 	    }//final top
@@ -483,6 +651,18 @@ ttHParIndx EventYield::GetttHParIndices()
 		  if(GenP_PdgId->at(DauIndx) == -24)
 		    {
 		      list.Wmfromtbar = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		      for(Size_t iWmDau=0; iWmDau<GenP_Daughters->at(list.Wmfromtbar).size(); iWmDau++ )//cout<<list.Wpfromt<<endl;
+			{
+			  Size_t WmDauIndx = GenP_Daughters->at(list.Wmfromtbar).at(iWmDau);
+			  if(abs(GenP_PdgId->at(WmDauIndx)) == 15)
+			    {
+			      //  cout<< EvtNumber<<"\t"<<list.Wmfromtbar<<"\t"<<WmDauIndx<<"\t"<<GenP_PdgId->at(WmDauIndx)<<endl;
+			      list.TmfromWmtbar = GetFinalGenpIndx(WmDauIndx, GenP_Daughters->at(WmDauIndx));
+			      //  cout<<"\tThe final Tau iss \t"<< list.TmfromWmtbar<<endl;
+			    }
+			}//end loop on daughters of Wm
+		      
+		      
 		    }// if W
 		}// loop on t dau
 	    }//final Antitop
@@ -494,10 +674,13 @@ ttHParIndx EventYield::GetttHParIndices()
       //*********************************************
       if (GenP_PdgId->at(iGenp) == 25)
 	{
+	  //	  cout<<"\tThe higgssss   \t"<<iGenp<<endl;
 	  vector<unsigned short> HDau = GenP_Daughters->at(iGenp);
 	  Bool_t bhasZ1 = false;
-	  if(IsFinalGenp(iGenp, HDau ))
+	  //if(IsFinalGenp(iGenp, HDau )) // Py8
+	  if(HDau.size() != 0)// Py6
 	    {
+	      // cout<<"\t\t\t\tThe higgssss   \t"<<iGenp<<endl;
 	      list.H = iGenp;
 	      for(Size_t iDau=0; iDau<HDau.size(); iDau++)
 		{
@@ -506,11 +689,36 @@ ttHParIndx EventYield::GetttHParIndices()
 		    {
 		      //cout<<"This do not occur\n";
 		      list.WmfromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+
+		      for(Size_t iWmDau=0; iWmDau<GenP_Daughters->at(list.WmfromH).size(); iWmDau++ )//cout<<list.Wpfromt<<endl;
+			{
+			  Size_t WmDauIndx = GenP_Daughters->at(list.WmfromH).at(iWmDau);
+			  if(abs(GenP_PdgId->at(WmDauIndx)) == 15)
+			    {
+			      //cout<< EvtNumber<<"\t"<<list.WmfromH<<"\t"<<WmDauIndx<<"\t"<<GenP_PdgId->at(WmDauIndx)<<endl;
+			      list.TmfromWmH = GetFinalGenpIndx(WmDauIndx, GenP_Daughters->at(WmDauIndx));
+			      //cout<<"\tThe final Tau iss \t"<< list.TmfromWmH<<endl;
+			    }
+			}//end loop on daughters of Wm
+
 		    }// if W
 		  if(GenP_PdgId->at(DauIndx) == +24)
 		    {
 		      //cout<<"This do not occur either\n";
 		      list.WpfromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+		      
+		      for(Size_t iWpDau=0; iWpDau<GenP_Daughters->at(list.WpfromH).size(); iWpDau++ )//cout<<list.Wpfromt<<endl;
+			{
+			  Size_t WpDauIndx = GenP_Daughters->at(list.WpfromH).at(iWpDau);
+			  if(abs(GenP_PdgId->at(WpDauIndx)) == 15)
+			    {
+			      //cout<< EvtNumber<<"\t"<<list.WpfromH<<"\t"<<WpDauIndx<<"\t"<<GenP_PdgId->at(WpDauIndx)<<endl;
+			      list.TpfromWpH = GetFinalGenpIndx(WpDauIndx, GenP_Daughters->at(WpDauIndx));
+			      //cout<<"\tThe final Tau iss \t"<< list.TpfromWpH<<endl;
+			    }
+			}//end loop on daughters of Wm
+
+
 		    }// if W
 		  if(GenP_PdgId->at(DauIndx) == -15)
 		    {
@@ -522,13 +730,55 @@ ttHParIndx EventYield::GetttHParIndices()
 		    }// if T
 		  if(GenP_PdgId->at(DauIndx) == 23)
 		    {
+		      Bool_t bhasZ1 = false; 
 		      if(!bhasZ1)
 			{
 			  list.Z1fromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+			  //list.Z1fromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(HDau.at(0)));
 			  bhasZ1 = true;
+			  //Bool_t bhasT1=false;
+			  for(Size_t iZ1Dau=0; iZ1Dau<GenP_Daughters->at(list.Z1fromH).size(); iZ1Dau++ )//cout<<list.Wpfromt<<endl;
+			    {
+			      Size_t Z1DauIndx = GenP_Daughters->at(list.Z1fromH).at(iZ1Dau);
+			      if(GenP_PdgId->at(Z1DauIndx) == 15)
+				{
+				  list.TmfromZ1H = GetFinalGenpIndx(Z1DauIndx, GenP_Daughters->at(Z1DauIndx));
+				}
+			      if(GenP_PdgId->at(Z1DauIndx) == -15)
+				{
+				  list.TpfromZ1H = GetFinalGenpIndx(Z1DauIndx, GenP_Daughters->at(Z1DauIndx));
+				}
+				  //Int_t test  = GetFinalGenpIndx(Z1DauIndx, GenP_Daughters->at(Z1DauIndx));
+				  // cout<<"\tThe final Tau iss \t"<< test<<endl;
+				  //cout<<"\tThe final Tau 1  iss \t"<< list.TpfromZ1H<<endl;
+				  //cout<<"\t and The final Tau 2  iss \t"<< list.TmfromZ1H<<endl;
+			    			      
+			    }//end loop on daughters of Z1
+			  
+
 			}
-		      else 
-			list.Z2fromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+			
+		      if(bhasZ1) 
+			{
+			  //list.Z2fromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(HDau.at(1)));
+			  list.Z2fromH = GetFinalGenpIndx(DauIndx, GenP_Daughters->at(DauIndx));
+			
+			  //			  Bool_t bhasT1=false;
+			  for(Size_t iZ2Dau=0; iZ2Dau<GenP_Daughters->at(list.Z2fromH).size(); iZ2Dau++ )//cout<<list.Wpfromt<<endl;
+			    {
+			      Size_t Z2DauIndx = GenP_Daughters->at(list.Z2fromH).at(iZ2Dau);
+			      if(GenP_PdgId->at(Z2DauIndx) == 15)
+				{
+				  list.TmfromZ2H = GetFinalGenpIndx(Z2DauIndx, GenP_Daughters->at(Z2DauIndx));
+				}
+			      if(GenP_PdgId->at(Z2DauIndx) == -15)
+				{
+				  list.TpfromZ2H = GetFinalGenpIndx(Z2DauIndx, GenP_Daughters->at(Z2DauIndx));
+				}
+
+			      
+			    }//end loop on daughters of Wm
+			}
 		    }// if Z
 		}// loop on t dau
 	    }//final Higgs
@@ -547,13 +797,16 @@ Int_t EventYield::GetFinalGenpIndx (Size_t MotIndx, vector<unsigned short>& Daug
   
   Int_t FinalGenpIndx = MotIndx;
 
+//  cout<<MotIndx<<"\t\t"<<MotId<<"\t\t"<< Daug.size()<<"\t\t"<<FinalGenpIndx <<endl;
+
   if(Daug.size()==0) return FinalGenpIndx;
   
   for(Size_t iDau=0; iDau<Daug.size(); iDau++)
     {
       Int_t DauIndx = Daug.at(iDau);
       Int_t DauId   = GenP_PdgId->at(DauIndx);
-      
+      if(MotId != DauId)
+	break;
       if(MotId == DauId)
 	FinalGenpIndx = GetFinalGenpIndx(DauIndx,GenP_Daughters->at(DauIndx));
     }// end loop on daughters
@@ -644,6 +897,137 @@ void EventYield::myPrintGenp(Size_t Indx, bool bPrintHeaders)
 	 << std::endl;
 }
 
+//**************************************************
+void EventYield::CalculateEventExpectation(void)
+//**************************************************
+{
 
+  vector<Double_t > BRH;
+  BRH.push_back(0.063);    // H to TT
+  BRH.push_back(0.0266);   // H to ZZ
+  BRH.push_back(0.216);    // H to WW
+  // Double_t BRHtoW = 0.216;
+  // Double_t BRHtoT = 0.063;
+  // Double_t BRHtoZ = 0.0266;
+  
+  vector<Double_t > BRW;
+  BRW.push_back(0.1125);  //W to TNu
+  BRW.push_back(0.6760);  //W to QQ
+  BRW.push_back(0.2132);  //W to LNu
+
+  
+  // Double_t BRWtoL = 0.2132;
+  // Double_t BRWtoT = 0.1125;
+  // Double_t BRWtoQ = 0.6760;
+  
+
+  vector<Double_t > BRZ;
+  BRZ.push_back(0.6991);  //Z to QQ
+  BRZ.push_back(0.0672);  //Z to LL
+  BRZ.push_back(0.0365);  //Z to TT
+  
+  // Double_t BRZtoL = 0.0672;
+  // Double_t BRZtoT = 0.0365;
+  // Double_t BRZtoQ = 0.6991;
+
+
+  vector<Double_t > BRT;
+  BRT.push_back(0.6479);  //T to Had
+  BRT.push_back(0.3521);  //T to LNu
+
+
+  vector<Double_t > BRNone;
+  BRNone.push_back(1.000);
+  // Double_t BRTtoL = 0.3521;
+  // Double_t BRTtoQ = 0.6479;
+  
+  Double_t TotalBR=0;
+
+  // for(Size_t iHDecay=0; iHDecay<1; iHDecay++) //iHDecay 0 = HtoTT, iHDecay 1 = HtoZZ, iHDecay 2 = HtoWW
+  //   {
+  //     if(iHDecay == 0)
+  // 	{
+  // 	  for(Size_t iT1H=0; iT1H<2; iT1H++) // Daughters of Tau1 decay of higgs
+  // 	    {
+  // 	      for(Size_t iT2H=0; iT2H<2; iT2H++) // Daughters of Tau2 decay of higgs
+  // 		{
+  // 		  for(Size_t iW1t=0; iW1t< 3; iW1t++)
+  // 		    {
+  // 		      if(iW1t == 0)
+  // 			{
+  // 			  for(Size_t iT1Wt=0; iT1Wt<2; iT1Wt++)
+  // 			    {
+  // 			      for(Size_t iW1t=0; iW1t< 3; iW1t++)
+  // 				{
+  // 				  if(iW1t == 0)
+  // 				    {
+  // 				      for(Size_t iT1Wt=0; iT1Wt<2; iT1Wt++)
+  // 					{
+  // 					  TotalBR = BRH.at(iHDecay) * BRT(iT1H) * BRT(iT2H) * BRW(iW1t) * BRW(iW2T) *  ;
+  // 					}// loop on Tau from W2t
+  // 				    }// if W2 Decay to Tau
+  // 				}// loop on W2 from top
+  // 			    }// loop on Tau from W1t
+  // 			}//if W1 Decay to Tau
+  // 		    }//loop on W1 from top 
+  // 		}//loop on Tau 2 from H
+  // 	    }//loop on Tau 1 from H
+  // 	}// if H decay to Tau
+  //   }// loop on H decay
+
+
+
+  // for(Size_t iHDecay=0; iHDecay<1; iHDecay++)
+  //   {
+  //     //iHDecay 0 = HtoTT, iHDecay 1 = HtoZZ, iHDecay 2 = HtoWW*BRW.at(iWpDecay)*BRW.at(iWmDecay)
+  //     for(Size_t iTmDecay=0; iTmDecay<1; iTmDecay++)
+  // 	{
+  // 	  //iTmDecay 0 = TmtoHad, iTmDecay 1 = TmtoLNu
+  // 	  for(Size_t iTpDecay=0; iTpDecay<1; iTpDecay++)
+  // 	    {
+  // 	      //iTpDecay 0 = TptoHad, iTpDecay 1 = TmtoLNu
+	      
+  // 	      for(Size_t iWpDecay=0; iWpDecay<3; iWpDecay++)
+  // 		{
+  // 		  //iWpDecay 0 = WptoQQ, iWpDecay 1 = WptoLNu
+  // 		  for(Size_t iWmDecay=0; iWmDecay<3; iWmDecay++)
+  // 		    {
+  // 		      //iWmDecay 0 = WmtoQQ, iWmDecay 1 = WmtoLNu
+  // 		      //for(Size_t iTmWmDecay=0; iTmWmDecay<2; iTmWmDecay++)
+  // 			{
+  // 			  //iTmWmDecay 0 = TmtoHad, iTmWmDecay 1 = TmtoLNu
+  // 			  //  for(Size_t iTpWpDecay=0; iTpWpDecay<2; iTpWpDecay++)
+  // 			    {
+  // 			      //iTpWpDecay 0 = TptoHad, iTpWpDecay 1 = TptoLNu
+  // 			      TotalBR = BRW.at(iWpDecay)*BRW.at(iWmDecay)*BRH.at(iHDecay)*BRT.at(iTpDecay)*BRT.at(iTmDecay);//*BRT.at(iTmWmDecay)*BRT.at(iTpWpDecay);
+  // 			      cout<<
+  // 			    }
+  // 			}
+  // 		    }
+  // 		}
+  // 	    }
+
+  // 	}
+  //   }
+
+}
+
+//**************************************************
+Double_t EventYield::CheckLeptonBranching(Size_t Indx)
+//**************************************************
+{
+  Double_t nL=0.0;
+  for(Size_t iD=0; iD<GenP_Daughters->at(Indx).size() ; iD++)
+    {
+      Int_t DIndx = GenP_Daughters->at(Indx).at(iD);
+      if(abs(GenP_PdgId->at(DIndx)) == 11 || abs(GenP_PdgId->at(DIndx)) == 13 )
+	{
+	  nL++;
+	  break;
+	}
+    }
+  return nL;
+  
+}
 
 #endif // EventYield_cxx

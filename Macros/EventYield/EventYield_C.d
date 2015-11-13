@@ -109,5 +109,7 @@ EventYield_C.so: ../utilities/MCTools.C ../utilities/MCTools.h
 EventYield_C.so: ../utilities/AuxTools.h ../utilities/ObjectMCAssociator.C
 EventYield_C.so: ../utilities/ObjectMCAssociator.h ../utilities/AuxTools.C
 EventYield_C.so: ../utilities/Table.C ../utilities/constants.h
+EventYield_C.so: /home/athermw/root/include/TRandom3.h
+EventYield_C.so: /home/athermw/root/include/TRandom.h
 EventYield_C.so: /home/athermw/root/include/cintdictversion.h /home/athermw/root/include/RVersion.h
 EventYield_C__ROOTBUILDVERSION= 5.34/25
