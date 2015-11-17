@@ -1,7 +1,7 @@
 void ttHMCToy()
 {
   Double_t pass =0.0;
-  Double_t TotalExp = 5000000.0;
+  Double_t TotalExp = 10000.0;
   
   Double_t nWW = 0.0;
   Double_t nZZ = 0.0;
@@ -75,31 +75,51 @@ void ttHMCToy()
 	  nWW++;
 	  //Top Quark
  	  Double_t LpWpt    = IsLfromW(ranWptDecay); // first lepton from WT
+	  Double_t QqWpt    = IsQfromW(ranWptDecay); // W goes hadronically 
 	  Double_t TpWpt    = IsTfromW(ranWptDecay); // random number for same W will be same as for one before
 	  Double_t LpTpWpt  = 0;
-	  if(TpWpt) LpTpWpt = IsLfromT(ranTpWptDecay); // second lepton from TWpt
+	  if(TpWpt) 
+	    {
+	      LpTpWpt = IsLfromT(ranTpWptDecay); // second lepton from TWpt
+	      ThTpWpt = IsQfromT(ranTpWptDecay); // Tau gets hadronic
+	    }
 
 	  //Anti Top Quark
 	  Double_t LmWmt    = IsLfromW(ranWmtDecay); // third lepton from WTbar
+	  Double_t QqWmt    = IsQfromW(ranWmtDecay); // W goes hadronically 
 	  Double_t TmWmt    = IsTfromW(ranWmtDecay); // random number for same W will be same as for one before
 	  Double_t LmTmWmt  = 0;
-	  if(TmWmt) LmTmWmt = IsLfromT(ranTmWmtDecay); //  fourth lepton from TWptbar
-	  
+	  if(TmWmt)
+	    {
+	      LmTmWmt = IsLfromT(ranTmWmtDecay); //  fourth lepton from TWptbar
+	      ThTmWmt = IsQfromT(ranTmWmtDecay); // Tau gets hadronic
+	    }
+
 	  //Higgs Wp
 	  Double_t LpWpH    = IsLfromW(ranWpHDecay); // fifth lepton from WpH
+	  Double_t QqWpH    = IsQfromW(ranWpHDecay); // hadronic  WpH
 	  Double_t TpWpH    = IsTfromW(ranWpHDecay); // random number for same W will be same as for one before
 	  Double_t LpTpWpH  = 0;
-	  if(TpWpH) LpTpWpH = IsLfromT(ranTpWpHDecay); // Sixth lepton from TpWpH
+	  if(TpWpH)
+	    {
+	      LpTpWpH = IsLfromT(ranTpWpHDecay); // Sixth lepton from TpWpH
+	      ThTpWpH = IsQfromT(ranTpWpHDecay); // Tau gets hadronic
+	    }
 
 	  //Higgs Wm
 	  Double_t LmWmH    = IsLfromW(ranWmHDecay); // Seventh lepton from WpH
+	  Double_t QqWmH    = IsQfromW(ranWmHDecay); // hadronic  WpH
 	  Double_t TmWmH    = IsTfromW(ranWmHDecay); // random number for same W will be same as for one before
 	  Double_t LmTmWmH  = 0;
-	  if(TmWmH) LmTmWmH = IsLfromT(ranTmWmHDecay); // Eighth lepton from TpWpH
-	  
+	  if(TmWmH) 
+	    {
+	      LmTmWmH = IsLfromT(ranTmWmHDecay); // Eighth lepton from TpWpH
+	      ThTpWmH = IsQfromT(ranTmWmHDecay); // Tau gets hadronic
+	    }
 
 	  vector <Double_t> vLp;
 	  vector <Double_t> vLm;
+	  vector <Double_t> vQq;
 	
 
 	  if(LpWpt)   vLp.push_back(LpWpt);
@@ -116,6 +136,10 @@ void ttHMCToy()
 	  Double_t nL = vLp.size()+vLm.size();
 	  
 	  //	  cout<< nL<<endl;
+	  if(nL == 1)
+	    {
+	      HWWn1l++;
+	    }
 	  if(nL == 2)
 	    {
 	      HWWn2l++;
@@ -138,10 +162,6 @@ void ttHMCToy()
 	  if(nL == 4)
 	    {
 	      HWWn4l++;
-	    }
-	  if(nL == 5)
-	    {
-	      HWWn5l++;
 	    }
  
 	}// Higgs to WW 
@@ -483,6 +503,16 @@ Double_t IsTfromW (Double_t ran)
   return T;
 }
 
+Double_t IsQfromW (Double_t ran)
+{
+  Double_t Q =0;
+  
+  if(ran > 0.3257 && ran<= 1.0)
+    Q++;
+
+  return Q;
+}
+
 
 Double_t IsLfromZ (Double_t ran)
 {
@@ -498,10 +528,31 @@ Double_t IsTfromZ (Double_t ran)
 {
   Double_t T =0;
   
-  if(ran > 0.0672 && ran<= 0.10085)
+  if(ran > 0.0672 && ran<= 0.1009)
     T++;
 
   return T;
+}
+
+Double_t IsNufromZ (Double_t ran)
+{
+  Double_t Nu =0;
+  
+  if(ran > 0.1009 && ran<= 0.3009)
+    Nu++;
+
+  return Nu;
+}
+
+
+Double_t IsQfromZ (Double_t ran)
+{
+  Double_t Q =0;
+  
+  if(ran > 0.3009 && ran<= 1.0)
+    Q++;
+
+  return Q;
 }
 
 
@@ -513,4 +564,15 @@ Double_t IsLfromT (Double_t ran)
     L++;
 
   return L;
+}
+
+
+Double_t IsQfromT (Double_t ran)
+{
+  Double_t Q =0;
+  
+  if(ran > 0.3521 && ran<= 1.0)
+    Q++;
+
+  return Q;
 }

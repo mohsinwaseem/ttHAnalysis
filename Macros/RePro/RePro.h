@@ -1,5 +1,5 @@
-#ifndef MACRONAMEMC_h
-#define MACRONAMEMC_h
+#ifndef RePro_h
+#define RePro_h
 
 #include <iostream>
 
@@ -8,22 +8,24 @@
 #include "../utilities/Table.C"
 #include "../utilities/Datasets.C"
 
-class MACRONAMEMC : public TreeAnalyserMC
+class RePro : public TreeAnalyserMC
 {
   public:
-    MACRONAMEMC(const std::string SamplePath,
+    RePro(const std::string SamplePath,
 	const std::string SampleName,
 	const std::string text_, 
 	const int maxEvents_ = -1, 
 	TTree* tree=0) : 
-    TreeAnalyserMC("MACRONAMEMC", SamplePath, SampleName, text_, maxEvents_, tree) {
+    TreeAnalyserMC("RePro", SamplePath, SampleName, text_, maxEvents_, tree) {
       auxTools_.StopwatchStart();
       mcSample = SampleName;
     };
 
-    ~MACRONAMEMC() {};
+    ~RePro() {};
 
     virtual void Loop();
+
+    void MakeHisto (void);
 
   private:
     std::string mcSample;
@@ -31,6 +33,12 @@ class MACRONAMEMC : public TreeAnalyserMC
     Datasets datasets_;
 
     // Add your private variables/methods here
+
+    TH1D* hGenPar_PdgId;
+    TH1D* hGenJet_N;
+    TH1D* hGenJet_Pt;
+    
+
 };
 
-#endif // MACRONAMEMC_h
+#endif // RePro_h
