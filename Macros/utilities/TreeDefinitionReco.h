@@ -37,6 +37,61 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<Int_t> *Elec_Id;
   std::vector<Int_t> *Elec_Charge;
 
+  std::vector<bool>  *Elec_IsPF;
+  std::vector<float> *Elec_EcalIso;
+  std::vector<float> *Elec_HcalIso;
+  std::vector<float> *Elec_CaloIso;
+  std::vector<float> *Elec_HadOverEm;
+  std::vector<float> *Elec_HadOverEm1;
+  std::vector<float> *Elec_HadOverEm2;
+
+  std::vector<float> *Elec_NeutralHadIso;
+  std::vector<float> *Elec_ChargedHadIso;
+  std::vector<float> *Elec_PUChargedHadIso;
+  std::vector<float> *Elec_ParticleIso;
+  std::vector<float> *Elec_PhotonIso;
+  std::vector<float> *Elec_TrackIso;
+
+  std::vector<float> *Elec_E1X5;
+  std::vector<float> *Elec_E2X5max;
+  std::vector<float> *Elec_E5X5;
+
+  std::vector<float> *Elec_EcalEnergy;
+  std::vector<float> *Elec_CorrectedEcalEnergy;
+  std::vector<float> *Elec_CorrectedEcalEnergyError;
+  std::vector<float> *Elec_TrackMomentumError;
+  
+  std::vector<float> *Elec_Vx;
+  std::vector<float> *Elec_Vy;
+  std::vector<float> *Elec_Vz;
+  
+  std::vector<float> *Elec_SigmaEtaEta;
+  std::vector<float> *Elec_SigmaIetaIeta;
+  std::vector<float> *Elec_SigmaIphiIphi;
+  std::vector<float> *Elec_SigmaIetaIphi;
+  std::vector<float> *Elec_Full5x5_SigmaIphiIphi;
+  std::vector<float> *Elec_Full5x5_SigmaEtaEta;
+  std::vector<float> *Elec_Full5x5_SigmaIetaIeta;
+  std::vector<float> *Elec_Full5x5_SigmaIetaIphi;
+  std::vector<float> *Elec_Full5x5_R9;
+  std::vector<float> *Elec_Full5x5_E1x5;
+  std::vector<float> *Elec_Full5x5_E5x5;
+  std::vector<float> *Elec_Full5x5_E2x5Max;
+
+  std::vector<float> *Elec_Dr03ECALSumEt;
+  std::vector<float> *Elec_Dr03HCALSumEt;
+  std::vector<float> *Elec_Dr03HCAL1SumEt;
+  std::vector<float> *Elec_Dr03HCAL2SumEt;
+  std::vector<float> *Elec_Dr03TkSumPt;
+
+
+  std::vector<float> *Elec_Dr04ECALSumEt;
+  std::vector<float> *Elec_Dr04HCALSumEt;
+  std::vector<float> *Elec_Dr04HCAL1SumEt;
+  std::vector<float> *Elec_Dr04HCAL2SumEt;
+  std::vector<float> *Elec_Dr04TkSumPt;
+
+
   std::vector<float> *Elec_SCl_Eta;
   std::vector<float> *Elec_SCl_EtaWidth;
   std::vector<float> *Elec_SCl_Phi;
@@ -81,6 +136,44 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<float> *Muon_E;
   std::vector<Int_t> *Muon_Id;
   std::vector<Int_t> *Muon_Charge;
+
+  std::vector<bool> *Muon_IsPF;
+  std::vector<bool> *Muon_IsGlobalMuon;
+  std::vector<bool> *Muon_IsTrackerMuon;
+  std::vector<bool> *Muon_IsStandAloneMuon;
+  std::vector<bool> *Muon_IsCaloMuon;
+  std::vector<bool> *Muon_IsRPCMuon;
+
+  std::vector<float> *Muon_EcalIso;
+  std::vector<float> *Muon_HcalIso;
+  std::vector<float> *Muon_CaloIso;
+
+  std::vector<float> *Muon_Vx;
+  std::vector<float> *Muon_Vy;
+  std::vector<float> *Muon_Vz;
+  
+  std::vector<float> *Muon_NeutralHadronIso;
+  std::vector<float> *Muon_ChargedHadronIso;
+  std::vector<float> *Muon_PUChargedHadronIso;
+  std::vector<float> *Muon_PhotonIso;
+  std::vector<float> *Muon_TrackIso;
+  
+  std::vector<float> *Muon_PFIso03_SumChargedHadronPt;
+  std::vector<float> *Muon_PFIso03_SumChargedParticlePt;
+  std::vector<float> *Muon_PFIso03_SumNeutralHadronEt;
+  std::vector<float> *Muon_PFIso03_SumNeutralHadronEtHighThreshold;
+  std::vector<float> *Muon_PFIso03_SumPhotonEt;
+  std::vector<float> *Muon_PFIso03_SumPhotonEtHighThreshold;
+  std::vector<float> *Muon_PFIso03_SumPUPt;
+  
+  std::vector<float> *Muon_PFIso04_SumChargedHadronPt;
+  std::vector<float> *Muon_PFIso04_SumChargedParticlePt;
+  std::vector<float> *Muon_PFIso04_SumNeutralHadronEt;
+  std::vector<float> *Muon_PFIso04_SumNeutralHadronEtHighThreshold;
+  std::vector<float> *Muon_PFIso04_SumPhotonEt;
+  std::vector<float> *Muon_PFIso04_SumPhotonEtHighThreshold;
+  std::vector<float> *Muon_PFIso04_SumPUPt;
+
 
   std::vector<float> *Muon_IP3d;
   std::vector<float> *Muon_IP3dError;
@@ -228,6 +321,12 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<float> *Jet_bDis_SVHE;
   std::vector<float> *Jet_bDis_CMVA;
 
+  std::vector<float> *Jet_bDis_CSV;
+  std::vector<float> *Jet_bDis_CSV2;
+  std::vector<float> *Jet_bDis_CISV2;
+  std::vector<float> *Jet_bDis_CSVSL;
+
+
   std::vector<Bool_t> *Jet_HasGenJet;
   std::vector<float> *Jet_GenJet_Pt;
   std::vector<float> *Jet_GenJet_Eta;
@@ -257,6 +356,13 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   std::vector<float> *Vertex_Chi2;
   std::vector<float> *Vertex_DOF;
   std::vector<float> *Vertex_ReducedChi2;
+
+
+  //PileUp
+  std::vector<int>                  *PU_Bx;
+  std::vector<float>                *PU_EventPU;
+  std::vector<int>                  *PU_BxPU;
+  std::vector< std::vector<float> > *PU_ZPositions;
    
 
    // List of branches
@@ -285,6 +391,59 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   TBranch  *b_Elec_E;
   TBranch  *b_Elec_Id;
   TBranch  *b_Elec_Charge;
+
+  TBranch  *b_Elec_IsPF;
+  TBranch  *b_Elec_EcalIso;
+  TBranch  *b_Elec_HcalIso;
+  TBranch  *b_Elec_CaloIso;
+  TBranch  *b_Elec_HadOverEm;
+  TBranch  *b_Elec_HadOverEm1;
+  TBranch  *b_Elec_HadOverEm2;
+
+  TBranch  *b_Elec_NeutralHadIso;
+  TBranch  *b_Elec_ChargedHadIso;
+  TBranch  *b_Elec_PUChargedHadIso;
+  TBranch  *b_Elec_ParticleIso;
+  TBranch  *b_Elec_PhotonIso;
+  TBranch  *b_Elec_TrackIso;
+
+  TBranch  *b_Elec_E1X5;
+  TBranch  *b_Elec_E2X5max;
+  TBranch  *b_Elec_E5X5;
+
+  TBranch  *b_Elec_EcalEnergy;
+  TBranch  *b_Elec_CorrectedEcalEnergy;
+  TBranch  *b_Elec_CorrectedEcalEnergyError;
+  TBranch  *b_Elec_TrackMomentumError;
+  
+  TBranch  *b_Elec_Vx;
+  TBranch  *b_Elec_Vy;
+  TBranch  *b_Elec_Vz;
+  
+  TBranch  *b_Elec_SigmaEtaEta;
+  TBranch  *b_Elec_SigmaIetaIeta;
+  TBranch  *b_Elec_SigmaIphiIphi;
+  TBranch  *b_Elec_SigmaIetaIphi;
+  TBranch  *b_Elec_Full5x5_SigmaIphiIphi;
+  TBranch  *b_Elec_Full5x5_SigmaEtaEta;
+  TBranch  *b_Elec_Full5x5_SigmaIetaIeta;
+  TBranch  *b_Elec_Full5x5_SigmaIetaIphi;
+  TBranch  *b_Elec_Full5x5_R9;
+  TBranch  *b_Elec_Full5x5_E1x5;
+  TBranch  *b_Elec_Full5x5_E5x5;
+  TBranch  *b_Elec_Full5x5_E2x5Max;
+
+  TBranch  *b_Elec_Dr03ECALSumEt;
+  TBranch  *b_Elec_Dr03HCALSumEt;
+  TBranch  *b_Elec_Dr03HCAL1SumEt;
+  TBranch  *b_Elec_Dr03HCAL2SumEt;
+  TBranch  *b_Elec_Dr03TkSumPt;
+
+  TBranch  *b_Elec_Dr04ECALSumEt;
+  TBranch  *b_Elec_Dr04HCALSumEt;
+  TBranch  *b_Elec_Dr04HCAL1SumEt;
+  TBranch  *b_Elec_Dr04HCAL2SumEt;
+  TBranch  *b_Elec_Dr04TkSumPt;
 
   TBranch  *b_Elec_SCl_Eta;
   TBranch  *b_Elec_SCl_EtaWidth;
@@ -330,6 +489,45 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   TBranch  *b_Muon_E;
   TBranch  *b_Muon_Id;
   TBranch  *b_Muon_Charge;
+
+
+  TBranch  *b_Muon_IsPF;
+  TBranch  *b_Muon_IsGlobalMuon;
+  TBranch  *b_Muon_IsTrackerMuon;
+  TBranch  *b_Muon_IsStandAloneMuon;
+  TBranch  *b_Muon_IsCaloMuon;
+  TBranch  *b_Muon_IsRPCMuon;
+
+  TBranch  *b_Muon_EcalIso;
+  TBranch  *b_Muon_HcalIso;
+  TBranch  *b_Muon_CaloIso;
+
+  TBranch  *b_Muon_Vx;
+  TBranch  *b_Muon_Vy;
+  TBranch  *b_Muon_Vz;
+  
+  TBranch  *b_Muon_NeutralHadronIso;
+  TBranch  *b_Muon_ChargedHadronIso;
+  TBranch  *b_Muon_PUChargedHadronIso;
+  TBranch  *b_Muon_PhotonIso;
+  TBranch  *b_Muon_TrackIso;
+  
+  TBranch  *b_Muon_PFIso03_SumChargedHadronPt;
+  TBranch  *b_Muon_PFIso03_SumChargedParticlePt;
+  TBranch  *b_Muon_PFIso03_SumNeutralHadronEt;
+  TBranch  *b_Muon_PFIso03_SumNeutralHadronEtHighThreshold;
+  TBranch  *b_Muon_PFIso03_SumPhotonEt;
+  TBranch  *b_Muon_PFIso03_SumPhotonEtHighThreshold;
+  TBranch  *b_Muon_PFIso03_SumPUPt;
+  
+  TBranch  *b_Muon_PFIso04_SumChargedHadronPt;
+  TBranch  *b_Muon_PFIso04_SumChargedParticlePt;
+  TBranch  *b_Muon_PFIso04_SumNeutralHadronEt;
+  TBranch  *b_Muon_PFIso04_SumNeutralHadronEtHighThreshold;
+  TBranch  *b_Muon_PFIso04_SumPhotonEt;
+  TBranch  *b_Muon_PFIso04_SumPhotonEtHighThreshold;
+  TBranch  *b_Muon_PFIso04_SumPUPt;
+
 
   TBranch  *b_Muon_IP3d;
   TBranch  *b_Muon_IP3dError;
@@ -476,6 +674,12 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   TBranch  *b_Jet_bDis_SVHP;
   TBranch  *b_Jet_bDis_SVHE;
   TBranch  *b_Jet_bDis_CMVA;
+  
+  TBranch  *b_Jet_bDis_CSV;
+  TBranch  *b_Jet_bDis_CSV2;
+  TBranch  *b_Jet_bDis_CISV2;
+  TBranch  *b_Jet_bDis_CSVSL;
+
 
   TBranch  *b_Jet_HasGenJet;
   TBranch  *b_Jet_GenJet_Pt;
@@ -502,6 +706,14 @@ class TreeDefinitionReco : public virtual TreeDefinitionBase
   TBranch  *b_Vertex_Chi2;
   TBranch  *b_Vertex_DOF;
   TBranch  *b_Vertex_ReducedChi2;
+
+
+  //PileUp
+  TBranch  *b_PU_Bx;
+  TBranch  *b_PU_EventPU;
+  TBranch  *b_PU_BxPU;
+  TBranch  *b_PU_ZPositions;
+
 
    virtual void InitReco(TTree *tree);
 };
@@ -542,6 +754,62 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   Elec_E = 0;
   Elec_Id = 0;
   Elec_Charge = 0;
+  
+
+  Elec_IsPF = 0;
+  Elec_EcalIso = 0;
+  Elec_HcalIso = 0;
+  Elec_CaloIso = 0;
+  Elec_HadOverEm = 0;
+  Elec_HadOverEm1 = 0;
+  Elec_HadOverEm2 = 0;
+
+  Elec_NeutralHadIso = 0;
+  Elec_ChargedHadIso = 0;
+  Elec_PUChargedHadIso = 0;
+  Elec_ParticleIso = 0;
+  Elec_PhotonIso = 0;
+  Elec_TrackIso = 0;
+
+  Elec_E1X5 = 0;
+  Elec_E2X5max = 0;
+  Elec_E5X5 = 0;
+
+  Elec_EcalEnergy = 0;
+  Elec_CorrectedEcalEnergy = 0;
+  Elec_CorrectedEcalEnergyError = 0;
+  Elec_TrackMomentumError = 0;
+  
+  Elec_Vx = 0;
+  Elec_Vy = 0;
+  Elec_Vz = 0;
+  
+  Elec_SigmaEtaEta = 0;
+  Elec_SigmaIetaIeta = 0;
+  Elec_SigmaIphiIphi = 0;
+  Elec_SigmaIetaIphi = 0;
+  Elec_Full5x5_SigmaIphiIphi = 0;
+  Elec_Full5x5_SigmaEtaEta = 0;
+  Elec_Full5x5_SigmaIetaIeta = 0;
+  Elec_Full5x5_SigmaIetaIphi = 0;
+  Elec_Full5x5_R9 = 0;
+  Elec_Full5x5_E1x5 = 0;
+  Elec_Full5x5_E5x5 = 0;
+  Elec_Full5x5_E2x5Max = 0;
+
+  Elec_Dr03ECALSumEt = 0;
+  Elec_Dr03HCALSumEt = 0;
+  Elec_Dr03HCAL1SumEt = 0;
+  Elec_Dr03HCAL2SumEt = 0;
+  Elec_Dr03TkSumPt = 0;
+
+
+  Elec_Dr04ECALSumEt = 0;
+  Elec_Dr04HCALSumEt = 0;
+  Elec_Dr04HCAL1SumEt = 0;
+  Elec_Dr04HCAL2SumEt = 0;
+  Elec_Dr04TkSumPt = 0;
+
   
   Elec_SCl_Eta = 0;
   Elec_SCl_EtaWidth = 0;
@@ -587,6 +855,46 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   Muon_E = 0;
   Muon_Id = 0;
   Muon_Charge = 0;
+
+  Muon_IsPF = 0;
+  Muon_IsGlobalMuon = 0;
+  Muon_IsTrackerMuon = 0;
+  Muon_IsStandAloneMuon = 0;
+  Muon_IsCaloMuon = 0;
+  Muon_IsRPCMuon = 0;
+
+  Muon_EcalIso = 0;
+  Muon_HcalIso = 0;
+  Muon_CaloIso = 0;
+
+  Muon_Vx = 0;
+  Muon_Vy = 0;
+  Muon_Vz = 0;
+  
+  Muon_NeutralHadronIso = 0;
+  Muon_ChargedHadronIso = 0;
+  Muon_PUChargedHadronIso = 0;
+  Muon_PhotonIso = 0;
+  Muon_TrackIso = 0;
+  
+  Muon_PFIso03_SumChargedHadronPt = 0;
+  Muon_PFIso03_SumChargedParticlePt = 0;
+  Muon_PFIso03_SumNeutralHadronEt = 0;
+  Muon_PFIso03_SumNeutralHadronEtHighThreshold = 0;
+  Muon_PFIso03_SumPhotonEt = 0;
+  Muon_PFIso03_SumPhotonEtHighThreshold = 0;
+  Muon_PFIso03_SumPUPt = 0;
+  
+  Muon_PFIso04_SumChargedHadronPt = 0;
+  Muon_PFIso04_SumChargedParticlePt = 0;
+  Muon_PFIso04_SumNeutralHadronEt = 0;
+  Muon_PFIso04_SumNeutralHadronEtHighThreshold = 0;
+  Muon_PFIso04_SumPhotonEt = 0;
+  Muon_PFIso04_SumPhotonEtHighThreshold = 0;
+  Muon_PFIso04_SumPUPt = 0;
+
+
+
   
   Muon_IP3d = 0;
   Muon_IP3dError = 0;
@@ -733,6 +1041,10 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   Jet_bDis_SVHP = 0;
   Jet_bDis_SVHE = 0;
   Jet_bDis_CMVA = 0;
+  Jet_bDis_CSV = 0;
+  Jet_bDis_CSV2 = 0;
+  Jet_bDis_CISV2 = 0;
+  Jet_bDis_CSVSL = 0;
   
   Jet_HasGenJet = 0;
   Jet_GenJet_Pt = 0;
@@ -760,8 +1072,11 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   Vertex_DOF = 0;
   Vertex_ReducedChi2 = 0;
 
-
-
+  //PileUp
+  PU_Bx = 0;
+  PU_EventPU = 0;
+  PU_BxPU = 0;
+  PU_ZPositions = 0;
 
    std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting branch addresses and branch pointers." << std::endl;
    // Set branch addresses and branch pointers
@@ -797,6 +1112,60 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   fChain->SetBranchAddress("Elec_Id"                     , &Elec_Id                     , &b_Elec_Id);
   fChain->SetBranchAddress("Elec_Charge"                 , &Elec_Charge                 , &b_Elec_Charge);
   
+  fChain->SetBranchAddress("Elec_IsPF"                  , &Elec_IsPF                    , &b_Elec_IsPF);
+  fChain->SetBranchAddress("Elec_EcalIso"               , &Elec_EcalIso                 , &b_Elec_EcalIso);
+  fChain->SetBranchAddress("Elec_HcalIso"               , &Elec_HcalIso                 , &b_Elec_HcalIso);
+  fChain->SetBranchAddress("Elec_CaloIso"               , &Elec_CaloIso                 , &b_Elec_CaloIso);
+  fChain->SetBranchAddress("Elec_HadOverEm"             , &Elec_HadOverEm               , &b_Elec_HadOverEm);
+  fChain->SetBranchAddress("Elec_HadOverEm1"            , &Elec_HadOverEm1              , &b_Elec_HadOverEm1);
+  fChain->SetBranchAddress("Elec_HadOverEm2"            , &Elec_HadOverEm2              , &b_Elec_HadOverEm2);
+
+  fChain->SetBranchAddress("Elec_NeutralHadIso"         , &Elec_NeutralHadIso           , &b_Elec_NeutralHadIso);
+  fChain->SetBranchAddress("Elec_ChargedHadIso"         , &Elec_ChargedHadIso           , &b_Elec_ChargedHadIso);
+  fChain->SetBranchAddress("Elec_PUChargedHadIso"       , &Elec_PUChargedHadIso         , &b_Elec_PUChargedHadIso);
+  fChain->SetBranchAddress("Elec_ParticleIso"           , &Elec_ParticleIso             , &b_Elec_ParticleIso);
+  fChain->SetBranchAddress("Elec_PhotonIso"             , &Elec_PhotonIso               , &b_Elec_PhotonIso);
+  fChain->SetBranchAddress("Elec_TrackIso"              , &Elec_TrackIso                , &b_Elec_TrackIso);
+
+  fChain->SetBranchAddress("Elec_E1X5"                  , &Elec_E1X5                    , &b_Elec_E1X5);
+  fChain->SetBranchAddress("Elec_E2X5max"               , &Elec_E2X5max                 , &b_Elec_E2X5max);
+  fChain->SetBranchAddress("Elec_E5X5"                  , &Elec_E5X5                    , &b_Elec_E5X5);
+
+  fChain->SetBranchAddress("Elec_EcalEnergy"               , &Elec_EcalEnergy               , &b_Elec_EcalEnergy);
+  fChain->SetBranchAddress("Elec_CorrectedEcalEnergy"      , &Elec_CorrectedEcalEnergy      , &b_Elec_CorrectedEcalEnergy);
+  fChain->SetBranchAddress("Elec_CorrectedEcalEnergyError" , &Elec_CorrectedEcalEnergyError , &b_Elec_CorrectedEcalEnergyError);
+  fChain->SetBranchAddress("Elec_TrackMomentumError"       , &Elec_TrackMomentumError       , &b_Elec_TrackMomentumError);
+  
+  fChain->SetBranchAddress("Elec_Vx"               , &Elec_Vx                 , &b_Elec_Vx);
+  fChain->SetBranchAddress("Elec_Vy"               , &Elec_Vy                 , &b_Elec_Vy);
+  fChain->SetBranchAddress("Elec_Vz"               , &Elec_Vz                 , &b_Elec_Vz);
+  
+  fChain->SetBranchAddress("Elec_SigmaEtaEta"                 , &Elec_SigmaEtaEta             , &b_Elec_SigmaEtaEta);
+  fChain->SetBranchAddress("Elec_SigmaIetaIeta"               , &Elec_SigmaIetaIeta           , &b_Elec_SigmaIetaIeta);
+  fChain->SetBranchAddress("Elec_SigmaIphiIphi"               , &Elec_SigmaIphiIphi           , &b_Elec_SigmaIphiIphi);
+  fChain->SetBranchAddress("Elec_SigmaIetaIphi"               , &Elec_SigmaIetaIphi           , &b_Elec_SigmaIetaIphi);
+  fChain->SetBranchAddress("Elec_Full5x5_SigmaIphiIphi"       , &Elec_Full5x5_SigmaIphiIphi   , &b_Elec_Full5x5_SigmaIphiIphi);
+  fChain->SetBranchAddress("Elec_Full5x5_SigmaEtaEta"         , &Elec_Full5x5_SigmaEtaEta     , &b_Elec_Full5x5_SigmaEtaEta);
+  fChain->SetBranchAddress("Elec_Full5x5_SigmaIetaIeta"       , &Elec_Full5x5_SigmaIetaIeta   , &b_Elec_Full5x5_SigmaIetaIeta);
+  fChain->SetBranchAddress("Elec_Full5x5_SigmaIetaIphi"       , &Elec_Full5x5_SigmaIetaIphi   , &b_Elec_Full5x5_SigmaIetaIphi);
+  fChain->SetBranchAddress("Elec_Full5x5_R9"                  , &Elec_Full5x5_R9              , &b_Elec_Full5x5_R9);
+  fChain->SetBranchAddress("Elec_Full5x5_E1x5"                , &Elec_Full5x5_E1x5            , &b_Elec_Full5x5_E1x5);
+  fChain->SetBranchAddress("Elec_Full5x5_E5x5"                , &Elec_Full5x5_E5x5            , &b_Elec_Full5x5_E5x5);
+  fChain->SetBranchAddress("Elec_Full5x5_E2x5Max"             , &Elec_Full5x5_E2x5Max         , &b_Elec_Full5x5_E2x5Max);
+
+  fChain->SetBranchAddress("Elec_Dr03ECALSumEt"               , &Elec_Dr03ECALSumEt                , &b_Elec_Dr03ECALSumEt);
+  fChain->SetBranchAddress("Elec_Dr03HCALSumEt"               , &Elec_Dr03HCALSumEt                , &b_Elec_Dr03HCALSumEt);
+  fChain->SetBranchAddress("Elec_Dr03HCAL1SumEt"              , &Elec_Dr03HCAL1SumEt               , &b_Elec_Dr03HCAL1SumEt);
+  fChain->SetBranchAddress("Elec_Dr03HCAL2SumEt"              , &Elec_Dr03HCAL2SumEt               , &b_Elec_Dr03HCAL2SumEt);
+  fChain->SetBranchAddress("Elec_Dr03TkSumPt"                 , &Elec_Dr03TkSumPt                  , &b_Elec_Dr03TkSumPt);
+
+  fChain->SetBranchAddress("Elec_Dr04ECALSumEt"               , &Elec_Dr04ECALSumEt                , &b_Elec_Dr04ECALSumEt);
+  fChain->SetBranchAddress("Elec_Dr04HCALSumEt"               , &Elec_Dr04HCALSumEt                , &b_Elec_Dr04HCALSumEt);
+  fChain->SetBranchAddress("Elec_Dr04HCAL1SumEt"              , &Elec_Dr04HCAL1SumEt               , &b_Elec_Dr04HCAL1SumEt);
+  fChain->SetBranchAddress("Elec_Dr04HCAL2SumEt"              , &Elec_Dr04HCAL2SumEt               , &b_Elec_Dr04HCAL2SumEt);
+  fChain->SetBranchAddress("Elec_Dr04TkSumPt"                 , &Elec_Dr04TkSumPt                  , &b_Elec_Dr04TkSumPt);
+
+
   fChain->SetBranchAddress("Elec_SCl_Eta"                , &Elec_SCl_Eta                , &b_Elec_SCl_Eta);
   fChain->SetBranchAddress("Elec_SCl_EtaWidth"           , &Elec_SCl_EtaWidth           , &b_Elec_SCl_EtaWidth);
   fChain->SetBranchAddress("Elec_SCl_Phi"                , &Elec_SCl_Phi                , &b_Elec_SCl_Phi);
@@ -842,6 +1211,45 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   fChain->SetBranchAddress("Muon_Id"                        , &Muon_Id                        , &b_Muon_Id);
   fChain->SetBranchAddress("Muon_Charge"                    , &Muon_Charge                    , &b_Muon_Charge);
   
+  fChain->SetBranchAddress("Muon_IsPF"                   , &Muon_IsPF	                   , &b_Muon_IsPF	);
+  fChain->SetBranchAddress("Muon_IsGlobalMuon"           , &Muon_IsGlobalMuon	           , &b_Muon_IsGlobalMuon	);
+  fChain->SetBranchAddress("Muon_IsTrackerMuon"          , &Muon_IsTrackerMuon	           , &b_Muon_IsTrackerMuon	);
+  fChain->SetBranchAddress("Muon_IsStandAloneMuon"       , &Muon_IsStandAloneMuon	   , &b_Muon_IsStandAloneMuon	);
+  fChain->SetBranchAddress("Muon_IsCaloMuon"             , &Muon_IsCaloMuon	           , &b_Muon_IsCaloMuon	);
+  fChain->SetBranchAddress("Muon_IsRPCMuon"              , &Muon_IsRPCMuon	           , &b_Muon_IsRPCMuon	);
+  fChain->SetBranchAddress("Muon_EcalIso"                , &Muon_EcalIso	           , &b_Muon_EcalIso	);
+  fChain->SetBranchAddress("Muon_HcalIso"                , &Muon_HcalIso	           , &b_Muon_HcalIso	);
+  fChain->SetBranchAddress("Muon_CaloIso"                , &Muon_CaloIso	           , &b_Muon_CaloIso	);
+  
+  fChain->SetBranchAddress("Muon_Vx"           , &Muon_Vx	           , &b_Muon_Vx	);
+  fChain->SetBranchAddress("Muon_Vy"           , &Muon_Vy	           , &b_Muon_Vy	);
+  fChain->SetBranchAddress("Muon_Vz"           , &Muon_Vz	           , &b_Muon_Vz	);
+  
+  fChain->SetBranchAddress("Muon_NeutralHadronIso"    , &Muon_NeutralHadronIso	           , &b_Muon_NeutralHadronIso	);
+  fChain->SetBranchAddress("Muon_ChargedHadronIso"    , &Muon_ChargedHadronIso	           , &b_Muon_ChargedHadronIso	);
+  fChain->SetBranchAddress("Muon_PUChargedHadronIso"  , &Muon_PUChargedHadronIso	   , &b_Muon_PUChargedHadronIso	);
+  fChain->SetBranchAddress("Muon_PhotonIso"           , &Muon_PhotonIso	                   , &b_Muon_PhotonIso	);
+  fChain->SetBranchAddress("Muon_TrackIso"            , &Muon_TrackIso	                   , &b_Muon_TrackIso	);
+
+  fChain->SetBranchAddress("Muon_PFIso03_SumChargedHadronPt"              , &Muon_PFIso03_SumChargedHadronPt	           , &b_Muon_PFIso03_SumChargedHadronPt	);
+  fChain->SetBranchAddress("Muon_PFIso03_SumChargedParticlePt"            , &Muon_PFIso03_SumChargedParticlePt	           , &b_Muon_PFIso03_SumChargedParticlePt	);
+  fChain->SetBranchAddress("Muon_PFIso03_SumNeutralHadronEt"              , &Muon_PFIso03_SumNeutralHadronEt	           , &b_Muon_PFIso03_SumNeutralHadronEt	);
+  fChain->SetBranchAddress("Muon_PFIso03_SumNeutralHadronEtHighThreshold" , &Muon_PFIso03_SumNeutralHadronEtHighThreshold  , &b_Muon_PFIso03_SumNeutralHadronEtHighThreshold	);
+  fChain->SetBranchAddress("Muon_PFIso03_SumPhotonEt"                     , &Muon_PFIso03_SumPhotonEt	                   , &b_Muon_PFIso03_SumPhotonEt	);
+  fChain->SetBranchAddress("Muon_PFIso03_SumPhotonEtHighThreshold"        , &Muon_PFIso03_SumPhotonEtHighThreshold	   , &b_Muon_PFIso03_SumPhotonEtHighThreshold	);
+  fChain->SetBranchAddress("Muon_PFIso03_SumPUPt"                         , &Muon_PFIso03_SumPUPt	                   , &b_Muon_PFIso03_SumPUPt	);
+
+
+  fChain->SetBranchAddress("Muon_PFIso04_SumChargedHadronPt"              , &Muon_PFIso04_SumChargedHadronPt	           , &b_Muon_PFIso04_SumChargedHadronPt	);
+  fChain->SetBranchAddress("Muon_PFIso04_SumChargedParticlePt"            , &Muon_PFIso04_SumChargedParticlePt	           , &b_Muon_PFIso04_SumChargedParticlePt	);
+  fChain->SetBranchAddress("Muon_PFIso04_SumNeutralHadronEt"              , &Muon_PFIso04_SumNeutralHadronEt	           , &b_Muon_PFIso04_SumNeutralHadronEt	);
+  fChain->SetBranchAddress("Muon_PFIso04_SumNeutralHadronEtHighThreshold" , &Muon_PFIso04_SumNeutralHadronEtHighThreshold  , &b_Muon_PFIso04_SumNeutralHadronEtHighThreshold	);
+  fChain->SetBranchAddress("Muon_PFIso04_SumPhotonEt"                     , &Muon_PFIso04_SumPhotonEt	                   , &b_Muon_PFIso04_SumPhotonEt	);
+  fChain->SetBranchAddress("Muon_PFIso04_SumPhotonEtHighThreshold"        , &Muon_PFIso04_SumPhotonEtHighThreshold	   , &b_Muon_PFIso04_SumPhotonEtHighThreshold	);
+  fChain->SetBranchAddress("Muon_PFIso04_SumPUPt"                         , &Muon_PFIso04_SumPUPt	                   , &b_Muon_PFIso04_SumPUPt	);
+  
+
+
   fChain->SetBranchAddress("Muon_IP3d"                      , &Muon_IP3d                      , &b_Muon_IP3d);
   fChain->SetBranchAddress("Muon_IP3dError"                 , &Muon_IP3dError                 , &b_Muon_IP3dError);
   fChain->SetBranchAddress("Muon_IP2d"                      , &Muon_IP2d                      , &b_Muon_IP2d);
@@ -990,6 +1398,11 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   fChain->SetBranchAddress("Jet_bDis_SVHP"                 , &Jet_bDis_SVHP                 , &b_Jet_bDis_SVHP);
   fChain->SetBranchAddress("Jet_bDis_SVHE"                 , &Jet_bDis_SVHE                 , &b_Jet_bDis_SVHE);
   fChain->SetBranchAddress("Jet_bDis_CMVA"                 , &Jet_bDis_CMVA                 , &b_Jet_bDis_CMVA);
+
+  fChain->SetBranchAddress("Jet_bDis_CSV"                  , &Jet_bDis_CSV                  , &b_Jet_bDis_CSV);
+  fChain->SetBranchAddress("Jet_bDis_CSV2"                 , &Jet_bDis_CSV2                 , &b_Jet_bDis_CSV2);
+  fChain->SetBranchAddress("Jet_bDis_CISV2"                , &Jet_bDis_CISV2                , &b_Jet_bDis_CISV2);
+  fChain->SetBranchAddress("Jet_bDis_CSVSL"                , &Jet_bDis_CSVSL                , &b_Jet_bDis_CSVSL);
    
   fChain->SetBranchAddress("Jet_HasGenJet"                 , &Jet_HasGenJet                 , &b_Jet_HasGenJet);
   fChain->SetBranchAddress("Jet_GenJet_Pt"                 , &Jet_GenJet_Pt                 , &b_Jet_GenJet_Pt);
@@ -1019,7 +1432,12 @@ void TreeDefinitionReco::InitReco(TTree *tree)
   fChain->SetBranchAddress("Vertex_DOF"         , &Vertex_DOF         , &b_Vertex_DOF);
   fChain->SetBranchAddress("Vertex_ReducedChi2" , &Vertex_ReducedChi2 , &b_Vertex_ReducedChi2);
 
-
+  std::cout << "I N F O ! TreeDefinitionReco::InitReco(...) - Setting Pileup addresses." << std::endl;
+  //PileUp
+  fChain->SetBranchAddress("PU_Bx"         , &PU_Bx         , &b_PU_Bx);
+  fChain->SetBranchAddress("PU_EventPU"    , &PU_EventPU    , &b_PU_EventPU);
+  fChain->SetBranchAddress("PU_BxPU"       , &PU_BxPU       , &b_PU_BxPU);
+  fChain->SetBranchAddress("PU_ZPositions" , &PU_ZPositions , &b_PU_ZPositions);
 
 
    Notify();

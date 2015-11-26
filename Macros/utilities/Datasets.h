@@ -48,7 +48,7 @@ class Datasets{
   int nPileUp_;
   int nEvents_;
   int nMcTaus_;
-  int McTauMomPdgId_;
+int McTauMomPdgId_;
   vector<string> mcProductions;
 
   private:

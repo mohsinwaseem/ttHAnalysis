@@ -211,7 +211,11 @@ void Datasets::CreateMcProductions_(void)
   Datasets ZZ           ("ZZ","ZZ_TuneCUETP8M1_13TeV-pythia8","ZZ_TuneCUETP8M1_13TeV-pythia8",CP, cmssw, geometry,   0, 0, 0, 0);
   Datasets WZ           ("WZ","WZ_TuneCUETP8M1_13TeV-pythia8","WZ_TuneCUETP8M1_13TeV-pythia8",CP, cmssw, geometry,   0, 0, 0, 0);
 
+  Datasets ZLL          ("ZLL","ZJetToLL","ZJetToLL",CP, cmssw, geometry,   0, 0, 0, 0);
+  Datasets WLNu         ("WLNu","WLNu","WLNu",CP, cmssw, geometry,   0, 0, 0, 0);
   // 
+
+
   datasets_Spring15MiniAOD.push_back(ttHNonbb_M120);
   datasets_Spring15MiniAOD.push_back(ttHNonbb_M125);
   datasets_Spring15MiniAOD.push_back(ttHNonbb_M130);
@@ -227,6 +231,8 @@ void Datasets::CreateMcProductions_(void)
   datasets_Spring15MiniAOD.push_back(ZZ);
   datasets_Spring15MiniAOD.push_back(WZ);
   datasets_Spring15MiniAOD.push_back(ttHInclusive_M125);
+  datasets_Spring15MiniAOD.push_back(ZLL);
+  datasets_Spring15MiniAOD.push_back(WLNu);
 
   return;
 }
