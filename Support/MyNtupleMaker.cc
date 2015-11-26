@@ -175,6 +175,61 @@ class MyNtupleMaker : public edm::EDAnalyzer {
   std::vector<Int_t>    Elec_Id;
   std::vector<Int_t>    Elec_Charge;
 
+  std::vector<bool>  Elec_IsPF;
+  std::vector<float> Elec_EcalIso;
+  std::vector<float> Elec_HcalIso;
+  std::vector<float> Elec_CaloIso;
+  std::vector<float> Elec_HadOverEm;
+  std::vector<float> Elec_HadOverEm1;
+  std::vector<float> Elec_HadOverEm2;
+
+  std::vector<float> Elec_NeutralHadIso;
+  std::vector<float> Elec_ChargedHadIso;
+  std::vector<float> Elec_PUChargedHadIso;
+  std::vector<float> Elec_ParticleIso;
+  std::vector<float> Elec_PhotonIso;
+  std::vector<float> Elec_TrackIso;
+
+  std::vector<float> Elec_E1X5;
+  std::vector<float> Elec_E2X5max;
+  std::vector<float> Elec_E5X5;
+
+  std::vector<float> Elec_EcalEnergy;
+  std::vector<float> Elec_CorrectedEcalEnergy;
+  std::vector<float> Elec_CorrectedEcalEnergyError;
+  std::vector<float> Elec_TrackMomentumError;
+  
+  std::vector<float> Elec_Vx;
+  std::vector<float> Elec_Vy;
+  std::vector<float> Elec_Vz;
+  
+  std::vector<float> Elec_SigmaEtaEta;
+  std::vector<float> Elec_SigmaIetaIeta;
+  std::vector<float> Elec_SigmaIphiIphi;
+  std::vector<float> Elec_SigmaIetaIphi;
+  std::vector<float> Elec_Full5x5_SigmaIphiIphi;
+  std::vector<float> Elec_Full5x5_SigmaEtaEta;
+  std::vector<float> Elec_Full5x5_SigmaIetaIeta;
+  std::vector<float> Elec_Full5x5_SigmaIetaIphi;
+  std::vector<float> Elec_Full5x5_R9;
+  std::vector<float> Elec_Full5x5_E1x5;
+  std::vector<float> Elec_Full5x5_E5x5;
+  std::vector<float> Elec_Full5x5_E2x5Max;
+
+  std::vector<float> Elec_Dr03ECALSumEt;
+  std::vector<float> Elec_Dr03HCALSumEt;
+  std::vector<float> Elec_Dr03HCAL1SumEt;
+  std::vector<float> Elec_Dr03HCAL2SumEt;
+  std::vector<float> Elec_Dr03TkSumPt;
+
+
+  std::vector<float> Elec_Dr04ECALSumEt;
+  std::vector<float> Elec_Dr04HCALSumEt;
+  std::vector<float> Elec_Dr04HCAL1SumEt;
+  std::vector<float> Elec_Dr04HCAL2SumEt;
+  std::vector<float> Elec_Dr04TkSumPt;
+
+  
   std::vector<float> Elec_SCl_Eta;
   std::vector<float> Elec_SCl_EtaWidth;
   std::vector<float> Elec_SCl_Phi;
@@ -210,7 +265,6 @@ class MyNtupleMaker : public edm::EDAnalyzer {
   std::vector<float> Elec_IP2dBSError;
 
 
-
   //Muons
   std::vector<float> Muon_Pt;
   std::vector<float> Muon_Eta;
@@ -219,6 +273,47 @@ class MyNtupleMaker : public edm::EDAnalyzer {
   std::vector<float> Muon_E;
   std::vector<Int_t>    Muon_Id;
   std::vector<Int_t>    Muon_Charge;
+
+  //  std::vector<bool>  Muon_IsPF;
+  
+  std::vector<bool> Muon_IsPF;
+  std::vector<bool> Muon_IsGlobalMuon;
+  std::vector<bool> Muon_IsTrackerMuon;
+  std::vector<bool> Muon_IsStandAloneMuon;
+  std::vector<bool> Muon_IsCaloMuon;
+  std::vector<bool> Muon_IsRPCMuon;
+
+
+  std::vector<float> Muon_EcalIso;
+  std::vector<float> Muon_HcalIso;
+  std::vector<float> Muon_CaloIso;
+
+  std::vector<float> Muon_Vx;
+  std::vector<float> Muon_Vy;
+  std::vector<float> Muon_Vz;
+  
+  std::vector<float> Muon_NeutralHadronIso;
+  std::vector<float> Muon_ChargedHadronIso;
+  std::vector<float> Muon_PUChargedHadronIso;
+  std::vector<float> Muon_PhotonIso;
+  std::vector<float> Muon_TrackIso;
+  
+  std::vector<float> Muon_PFIso03_SumChargedHadronPt;
+  std::vector<float> Muon_PFIso03_SumChargedParticlePt;
+  std::vector<float> Muon_PFIso03_SumNeutralHadronEt;
+  std::vector<float> Muon_PFIso03_SumNeutralHadronEtHighThreshold;
+  std::vector<float> Muon_PFIso03_SumPhotonEt;
+  std::vector<float> Muon_PFIso03_SumPhotonEtHighThreshold;
+  std::vector<float> Muon_PFIso03_SumPUPt;
+  
+  std::vector<float> Muon_PFIso04_SumChargedHadronPt;
+  std::vector<float> Muon_PFIso04_SumChargedParticlePt;
+  std::vector<float> Muon_PFIso04_SumNeutralHadronEt;
+  std::vector<float> Muon_PFIso04_SumNeutralHadronEtHighThreshold;
+  std::vector<float> Muon_PFIso04_SumPhotonEt;
+  std::vector<float> Muon_PFIso04_SumPhotonEtHighThreshold;
+  std::vector<float> Muon_PFIso04_SumPUPt;
+
 
   std::vector<float> Muon_IP3d;
   std::vector<float> Muon_IP3dError;
@@ -378,6 +473,11 @@ class MyNtupleMaker : public edm::EDAnalyzer {
   std::vector<float> Jet_bDis_SVHE;
   std::vector<float> Jet_bDis_CMVA;
 
+  std::vector<float> Jet_bDis_CSV;
+  std::vector<float> Jet_bDis_CSV2;
+  std::vector<float> Jet_bDis_CISV2;
+  std::vector<float> Jet_bDis_CSVSL;
+
   std::vector<Bool_t>Jet_HasGenJet;
   std::vector<float> Jet_GenJet_Pt;
   std::vector<float> Jet_GenJet_Eta;
@@ -404,6 +504,11 @@ class MyNtupleMaker : public edm::EDAnalyzer {
   std::vector<float> Vertex_DOF;
   std::vector<float> Vertex_ReducedChi2;
 
+  // PileUp
+  std::vector<int> PU_Bx;
+  std::vector<float> PU_EventPU;
+  std::vector<int> PU_BxPU;
+  std::vector< std::vector<float> > PU_ZPositions;
 
 };
 
@@ -460,13 +565,66 @@ MyNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    iEvent.getByLabel("offlineBeamSpot", bsHandle);
    const reco::BeamSpot &beamspot = *bsHandle.product();
 
+   //****************************************************************************
+   // PileUpSummary
+   //****************************************************************************
+   edm::Handle<std::vector<PileupSummaryInfo> > PUHandle;                            
+   iEvent.getByLabel("addPileupInfo", PUHandle);
+   
+   Int_t nPU = PUHandle->size();
+   for(Int_t iPU=0; iPU<nPU; iPU++)
+     {
+       const PileupSummaryInfo& tempPU = PUHandle->at(iPU);
 
+       std::vector<float> vZPos;
+       for(Size_t iZ=0; iZ<tempPU.getPU_zpositions().size(); iZ++)
+	 {
+	   vZPos.push_back(tempPU.getPU_zpositions().at(iZ));
+	 }
+
+       Int_t BX = tempPU.getBunchCrossing();
+       PU_Bx.push_back(BX);
+       if(BX == 0)
+       	 {
+       	   PU_EventPU.push_back(tempPU.getTrueNumInteractions());
+	 }//Signal Event
+       
+       PU_BxPU.push_back(tempPU.getPU_NumInteractions());
+       PU_ZPositions.push_back(vZPos);
+
+
+
+
+       // std::cout<< tempPU.getPU_zpositions().size()<<endl;
+       // std::cout<< tempPU.getPU_NumInteractions()<<endl;
+       // std::cout<< "________________________________________________\n\n\n";
+
+       //       PU_
+
+       // std::cout<< iPU<<"\tNumInteracrions\t"<<PUHandle->at(iPU).getPU_NumInteractions()<<endl;
+       // std::cout<< iPU<<"\tTrue NumInteractions\t"<<PUHandle->at(iPU).getTrueNumInteractions()<<endl;
+       // std::cout<< iPU<<"\tBX\t"<<PUHandle->at(iPU).getBunchCrossing()<<endl<<endl;
+
+       
+       // std::cout<< iPU<<"\tNumInteracrions\t"<<tempPU.getPU_NumInteractions()<<endl;
+       // std::cout<< iPU<<"\tTrue NumInteractions\t"<<tempPU.getTrueNumInteractions()<<endl;
+       // std::cout<< iPU<<"\tBX\t"<<tempPU.getBunchCrossing()<<endl;
+       
+       // std::cout<<"\t\t\t,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n\n";
+       
+     }
+   
+   //   std::cout<<PUHandle->getPU_NumInteractions()<<"\t\t"<<PUHandle->getTrueNumInteractions()<<endl;
+   // std::cout<<"\tPU 0 \t"<<PUHandle->at(0).getPU_NumInteractions()<<endl;
+   // std::cout<<"\tPU 1 \t"<<PUHandle->at(1).getPU_NumInteractions()<<endl;
+   // std::cout<<"\tPU 2 \t"<<PUHandle->at(2).getPU_NumInteractions()<<endl;
+   // std::cout<<"\tPU 3 \t"<<PUHandle->at(3).getPU_NumInteractions()<<endl;
+   // std::cout<<"\tPU 4 \t"<<PUHandle->at(4).getPU_NumInteractions()<<endl;
    //****************************************************************************
    // MET
    //****************************************************************************
    edm::Handle<pat::METCollection> met;
    iEvent.getByLabel("slimmedMETs",met);
-
    const pat::MET &tempmet = met->front();
    MET_Px    = tempmet.px();
    MET_Py    = tempmet.py();
@@ -675,6 +833,64 @@ MyNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        Elec_Id.push_back     (tempelec.pdgId());
        Elec_Charge.push_back (tempelec.charge());
        
+
+       Elec_IsPF.push_back       (tempelec.isPF());
+       Elec_EcalIso.push_back    (tempelec.ecalIso());
+       Elec_HcalIso.push_back    (tempelec.hcalIso());
+       Elec_CaloIso.push_back    (tempelec.caloIso());
+       Elec_HadOverEm.push_back  (tempelec.hadronicOverEm());
+       Elec_HadOverEm1.push_back (tempelec.hadronicOverEm1());
+       Elec_HadOverEm2.push_back (tempelec.hadronicOverEm2());
+       
+       Elec_NeutralHadIso.push_back  (tempelec.neutralHadronIso());
+       Elec_ChargedHadIso.push_back  (tempelec.chargedHadronIso());
+       Elec_PUChargedHadIso.push_back(tempelec.puChargedHadronIso());
+       Elec_ParticleIso.push_back    (tempelec.particleIso());
+       Elec_PhotonIso.push_back      (tempelec.photonIso());
+       Elec_TrackIso.push_back       (tempelec.trackIso());
+
+       Elec_EcalEnergy.push_back              (tempelec.ecalEnergy());
+       Elec_CorrectedEcalEnergy.push_back     (tempelec.correctedEcalEnergy());
+       Elec_CorrectedEcalEnergyError.push_back(tempelec.correctedEcalEnergyError());
+       Elec_TrackMomentumError.push_back      (tempelec.trackMomentumError());
+       
+       Elec_Vx.push_back(tempelec.vx());
+       Elec_Vy.push_back(tempelec.vy());
+       Elec_Vz.push_back(tempelec.vz());
+
+       Elec_E1X5.push_back       (tempelec.e1x5());
+       Elec_E2X5max.push_back    (tempelec.e2x5Max());
+       Elec_E5X5.push_back       (tempelec.e5x5());
+       
+       Elec_SigmaEtaEta.push_back          (tempelec.sigmaEtaEta());
+       Elec_SigmaIetaIeta.push_back        (tempelec.sigmaIetaIeta());
+       Elec_SigmaIphiIphi.push_back        (tempelec.sigmaIphiIphi());
+       Elec_SigmaIetaIphi.push_back        (tempelec.sigmaIetaIphi());
+       Elec_Full5x5_SigmaIphiIphi.push_back(tempelec.full5x5_sigmaIphiIphi());
+       Elec_Full5x5_SigmaEtaEta.push_back  (tempelec.full5x5_sigmaEtaEta());
+       Elec_Full5x5_SigmaIetaIeta.push_back(tempelec.full5x5_sigmaIetaIeta());
+       Elec_Full5x5_SigmaIetaIphi.push_back(tempelec.full5x5_sigmaIetaIphi());
+       Elec_Full5x5_R9.push_back           (tempelec.full5x5_r9());
+       Elec_Full5x5_E1x5.push_back         (tempelec.full5x5_e1x5());
+       Elec_Full5x5_E5x5.push_back         (tempelec.full5x5_e5x5());
+       Elec_Full5x5_E2x5Max.push_back      (tempelec.full5x5_e2x5Max());
+
+
+       Elec_Dr03ECALSumEt.push_back (tempelec.dr03EcalRecHitSumEt());
+       Elec_Dr03HCALSumEt.push_back (tempelec.dr03HcalTowerSumEt());
+       Elec_Dr03HCAL1SumEt.push_back(tempelec.dr03HcalDepth1TowerSumEt());
+       Elec_Dr03HCAL2SumEt.push_back(tempelec.dr03HcalDepth2TowerSumEt());
+       Elec_Dr03TkSumPt.push_back   (tempelec.dr03TkSumPt());
+
+       Elec_Dr04ECALSumEt.push_back (tempelec.dr04EcalRecHitSumEt());
+       Elec_Dr04HCALSumEt.push_back (tempelec.dr04HcalTowerSumEt());
+       Elec_Dr04HCAL1SumEt.push_back(tempelec.dr04HcalDepth1TowerSumEt());
+       Elec_Dr04HCAL2SumEt.push_back(tempelec.dr04HcalDepth2TowerSumEt());
+       Elec_Dr04TkSumPt.push_back   (tempelec.dr04TkSumPt());
+
+
+
+
        Elec_SCl_Eta.push_back (tempelec.superCluster()->eta());
        Elec_SCl_EtaWidth.push_back (tempelec.superCluster()->etaWidth());
        Elec_SCl_Phi.push_back (tempelec.superCluster()->phi());
@@ -685,6 +901,8 @@ MyNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        Elec_SCl_PreShower1E.push_back (tempelec.superCluster()->preshowerEnergyPlane1());
        Elec_SCl_PreShower2E.push_back (tempelec.superCluster()->preshowerEnergyPlane2());
        Elec_SCl_PositionR.push_back (tempelec.superCluster()->position().R());
+
+
 
        Elec_IP3d.push_back(tempelec.dB(pat::Electron::PV3D));
        Elec_IP3dError.push_back(tempelec.edB(pat::Electron::PV3D));
@@ -744,6 +962,52 @@ MyNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         Muon_E.push_back      (tempmuon.energy());
         Muon_Id.push_back     (tempmuon.pdgId());
         Muon_Charge.push_back (tempmuon.charge());
+
+	
+	Muon_IsPF.push_back            (tempmuon.isPFMuon());
+	Muon_IsGlobalMuon.push_back    (tempmuon.isGlobalMuon());
+        Muon_IsTrackerMuon.push_back   (tempmuon.isTrackerMuon());
+        Muon_IsStandAloneMuon.push_back(tempmuon.isStandAloneMuon());
+        Muon_IsCaloMuon.push_back      (tempmuon.isCaloMuon());
+	Muon_IsRPCMuon.push_back       (tempmuon.isRPCMuon());
+
+
+	Muon_EcalIso.push_back    (tempmuon.ecalIso());
+	Muon_HcalIso.push_back    (tempmuon.hcalIso());
+	Muon_CaloIso.push_back    (tempmuon.caloIso());
+
+
+	Muon_Vx.push_back(tempmuon.vx());
+        Muon_Vy.push_back(tempmuon.vy());
+        Muon_Vz.push_back(tempmuon.vz());
+
+	Muon_NeutralHadronIso.push_back(tempmuon.neutralHadronIso());
+        Muon_ChargedHadronIso.push_back(tempmuon.chargedHadronIso());
+        Muon_PUChargedHadronIso.push_back(tempmuon.puChargedHadronIso());
+        Muon_PhotonIso.push_back(tempmuon.photonIso());
+        Muon_TrackIso.push_back(tempmuon.trackIso());
+
+	//	std::cout<<tempmuon.neutralHadronIso()<<endl;
+
+	// PF Isolation	
+	reco::MuonPFIsolation pfR03 = tempmuon.pfIsolationR03();	
+        Muon_PFIso03_SumChargedHadronPt.push_back(pfR03.sumChargedHadronPt);
+	Muon_PFIso03_SumChargedParticlePt.push_back(pfR03.sumChargedParticlePt);
+        Muon_PFIso03_SumNeutralHadronEt.push_back(pfR03.sumNeutralHadronEt);
+	Muon_PFIso03_SumNeutralHadronEtHighThreshold.push_back(pfR03.sumNeutralHadronEtHighThreshold);
+        Muon_PFIso03_SumPhotonEt.push_back(pfR03.sumPhotonEt);
+	Muon_PFIso03_SumPhotonEtHighThreshold.push_back(pfR03.sumPhotonEtHighThreshold);
+        Muon_PFIso03_SumPUPt.push_back(pfR03.sumPUPt);
+
+	reco::MuonPFIsolation pfR04 = tempmuon.pfIsolationR04();	
+        Muon_PFIso04_SumChargedHadronPt.push_back(pfR04.sumChargedHadronPt);
+	Muon_PFIso04_SumChargedParticlePt.push_back(pfR04.sumChargedParticlePt);
+        Muon_PFIso04_SumNeutralHadronEt.push_back(pfR04.sumNeutralHadronEt);
+	Muon_PFIso04_SumNeutralHadronEtHighThreshold.push_back(pfR04.sumNeutralHadronEtHighThreshold);
+        Muon_PFIso04_SumPhotonEt.push_back(pfR04.sumPhotonEt);
+	Muon_PFIso04_SumPhotonEtHighThreshold.push_back(pfR04.sumPhotonEtHighThreshold);
+        Muon_PFIso04_SumPUPt.push_back(pfR04.sumPUPt);
+
 
 
 	Muon_IP3d.push_back(tempmuon.dB(pat::Muon::PV3D));
@@ -1010,19 +1274,26 @@ MyNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	Jet_bDis_SVHE.push_back(tempjet.bDiscriminator("pfSimpleSecondaryVertexHighEffBJetTags"));
 	Jet_bDis_CMVA.push_back(tempjet.bDiscriminator("pfCombinedMVABJetTags"));
 
+
+
+	Jet_bDis_CSV.push_back(tempjet.bDiscriminator("combinedSecondaryVertexBJetTags"));
+	Jet_bDis_CSV2.push_back(tempjet.bDiscriminator("pfCombinedSecondaryVertexV2BJetTags"));
+	Jet_bDis_CISV2.push_back(tempjet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
+	Jet_bDis_CSVSL.push_back(tempjet.bDiscriminator("pfCombinedSecondaryVertexSoftLeptonBJetTags"));
+
 	// Discriminator Tags
 	// 	discriminatorSources = cms.VInputTag(
 	//     cms.InputTag("combinedSecondaryVertexBJetTags"),
-	//     cms.InputTag("pfJetBProbabilityBJetTags"),
-	//     cms.InputTag("pfJetProbabilityBJetTags"),
-	//     cms.InputTag("pfTrackCountingHighPurBJetTags"),
-	//     cms.InputTag("pfTrackCountingHighEffBJetTags"),
-	//     cms.InputTag("pfSimpleSecondaryVertexHighEffBJetTags"),
-	//     cms.InputTag("pfSimpleSecondaryVertexHighPurBJetTags"),
+	//            cms.InputTag("pfJetBProbabilityBJetTags"),
+	//            cms.InputTag("pfJetProbabilityBJetTags"),
+	//            cms.InputTag("pfTrackCountingHighPurBJetTags"),
+	//            cms.InputTag("pfTrackCountingHighEffBJetTags"),
+	//            cms.InputTag("pfSimpleSecondaryVertexHighEffBJetTags"),
+	//            cms.InputTag("pfSimpleSecondaryVertexHighPurBJetTags"),
 	//     cms.InputTag("pfCombinedSecondaryVertexV2BJetTags"),
 	//     cms.InputTag("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
 	//     cms.InputTag("pfCombinedSecondaryVertexSoftLeptonBJetTags"),
-	//     cms.InputTag("pfCombinedMVABJetTags")
+	//            cms.InputTag("pfCombinedMVABJetTags")
 	// ),
 
 
@@ -1261,6 +1532,59 @@ MyNtupleMaker::beginJob()
   EvtTree->Branch("Elec_Id"                      , &Elec_Id);
   EvtTree->Branch("Elec_Charge"                  , &Elec_Charge);
   
+  EvtTree->Branch("Elec_IsPF"                    , &Elec_IsPF);
+  EvtTree->Branch("Elec_EcalIso"                 , &Elec_EcalIso);
+  EvtTree->Branch("Elec_HcalIso"                 , &Elec_HcalIso);
+  EvtTree->Branch("Elec_CaloIso"                 , &Elec_CaloIso);
+  EvtTree->Branch("Elec_HadOverEm"               , &Elec_HadOverEm);
+  EvtTree->Branch("Elec_HadOverEm1"              , &Elec_HadOverEm1);
+  EvtTree->Branch("Elec_HadOverEm2"              , &Elec_HadOverEm2);
+
+  EvtTree->Branch("Elec_NeutralHadIso"           , &Elec_NeutralHadIso);
+  EvtTree->Branch("Elec_ChargedHadIso"           , &Elec_ChargedHadIso);
+  EvtTree->Branch("Elec_PUChargedHadIso"         , &Elec_PUChargedHadIso);
+  EvtTree->Branch("Elec_ParticleIso"             , &Elec_ParticleIso);
+  EvtTree->Branch("Elec_PhotonIso"               , &Elec_PhotonIso);
+  EvtTree->Branch("Elec_TrackIso"                , &Elec_TrackIso);
+       
+  EvtTree->Branch("Elec_EcalEnergy"               , &Elec_EcalEnergy);
+  EvtTree->Branch("Elec_CorrectedEcalEnergy"      , &Elec_CorrectedEcalEnergy);
+  EvtTree->Branch("Elec_CorrectedEcalEnergyError" , &Elec_CorrectedEcalEnergyError);
+  EvtTree->Branch("Elec_TrackMomentumError"       , &Elec_TrackMomentumError);
+  
+  EvtTree->Branch("Elec_Vx"                       , &Elec_Vx);
+  EvtTree->Branch("Elec_Vy"                       , &Elec_Vy);
+  EvtTree->Branch("Elec_Vz"                       , &Elec_Vz);
+  
+  EvtTree->Branch("Elec_SigmaEtaEta"              , &Elec_SigmaEtaEta);
+  EvtTree->Branch("Elec_SigmaIetaIeta"            , &Elec_SigmaIetaIeta);
+  EvtTree->Branch("Elec_SigmaIphiIphi"            , &Elec_SigmaIphiIphi);
+  EvtTree->Branch("Elec_SigmaIetaIphi"            , &Elec_SigmaIetaIphi);
+  EvtTree->Branch("Elec_E1X5"                    , &Elec_E1X5);
+  EvtTree->Branch("Elec_E2X5max"                 , &Elec_E2X5max);
+  EvtTree->Branch("Elec_E5X5"                    , &Elec_E5X5);
+  EvtTree->Branch("Elec_Full5x5_SigmaIphiIphi"    , &Elec_Full5x5_SigmaIphiIphi);
+  EvtTree->Branch("Elec_Full5x5_SigmaEtaEta"      , &Elec_Full5x5_SigmaEtaEta);
+  EvtTree->Branch("Elec_Full5x5_SigmaIetaIeta"    , &Elec_Full5x5_SigmaIetaIeta);
+  EvtTree->Branch("Elec_Full5x5_SigmaIetaIphi"    , &Elec_Full5x5_SigmaIetaIphi);
+  EvtTree->Branch("Elec_Full5x5_R9"               , &Elec_Full5x5_R9);
+  EvtTree->Branch("Elec_Full5x5_E1x5"             , &Elec_Full5x5_E1x5);
+  EvtTree->Branch("Elec_Full5x5_E5x5"             , &Elec_Full5x5_E5x5);
+  EvtTree->Branch("Elec_Full5x5_E2x5Max"          , &Elec_Full5x5_E2x5Max);
+  
+  EvtTree->Branch("Elec_Dr03ECALSumEt"           , &Elec_Dr03ECALSumEt);
+  EvtTree->Branch("Elec_Dr03HCALSumEt"           , &Elec_Dr03HCALSumEt);
+  EvtTree->Branch("Elec_Dr03HCAL1SumEt"          , &Elec_Dr03HCAL1SumEt);
+  EvtTree->Branch("Elec_Dr03HCAL2SumEt"          , &Elec_Dr03HCAL2SumEt);
+  EvtTree->Branch("Elec_Dr03TkSumPt"             , &Elec_Dr03TkSumPt);
+
+  EvtTree->Branch("Elec_Dr04ECALSumEt"           , &Elec_Dr04ECALSumEt);
+  EvtTree->Branch("Elec_Dr04HCALSumEt"           , &Elec_Dr04HCALSumEt);
+  EvtTree->Branch("Elec_Dr04HCAL1SumEt"          , &Elec_Dr04HCAL1SumEt);
+  EvtTree->Branch("Elec_Dr04HCAL2SumEt"          , &Elec_Dr04HCAL2SumEt);
+  EvtTree->Branch("Elec_Dr04TkSumPt"             , &Elec_Dr04TkSumPt);
+
+  
   EvtTree->Branch("Elec_SCl_Eta"                 , &Elec_SCl_Eta);
   EvtTree->Branch("Elec_SCl_EtaWidth"            , &Elec_SCl_EtaWidth);
   EvtTree->Branch("Elec_SCl_Phi"                 , &Elec_SCl_Phi);
@@ -1298,7 +1622,7 @@ MyNtupleMaker::beginJob()
 
 
 
-  //Mouns
+  //Muons
   EvtTree->Branch("Muon_Pt"                    , &Muon_Pt);
   EvtTree->Branch("Muon_Eta"                   , &Muon_Eta);
   EvtTree->Branch("Muon_Phi"                   , &Muon_Phi);
@@ -1306,6 +1630,47 @@ MyNtupleMaker::beginJob()
   EvtTree->Branch("Muon_E"                     , &Muon_E);
   EvtTree->Branch("Muon_Id"                    , &Muon_Id);
   EvtTree->Branch("Muon_Charge"                , &Muon_Charge);
+
+
+  EvtTree->Branch("Muon_IsPF"                  , &Muon_IsPF);
+  EvtTree->Branch("Muon_IsGlobalMuon"          , &Muon_IsGlobalMuon);
+  EvtTree->Branch("Muon_IsTrackerMuon"         , &Muon_IsTrackerMuon);
+  EvtTree->Branch("Muon_IsStandAloneMuon"      , &Muon_IsStandAloneMuon);
+  EvtTree->Branch("Muon_IsCaloMuon"            , &Muon_IsCaloMuon);
+  EvtTree->Branch("Muon_IsRPCMuon"             , &Muon_IsRPCMuon);
+
+  //  EvtTree->Branch("Muon_IsPF"                    , &Muon_IsPF);
+  EvtTree->Branch("Muon_EcalIso"                 , &Muon_EcalIso);
+  EvtTree->Branch("Muon_HcalIso"                 , &Muon_HcalIso);
+  EvtTree->Branch("Muon_CaloIso"                 , &Muon_CaloIso);
+
+  EvtTree->Branch("Muon_Vx"                 , &Muon_Vx);
+  EvtTree->Branch("Muon_Vy"                 , &Muon_Vy);
+  EvtTree->Branch("Muon_Vz"                 , &Muon_Vz);
+  
+  EvtTree->Branch("Muon_NeutralHadronIso"   , &Muon_NeutralHadronIso);
+  EvtTree->Branch("Muon_ChargedHadronIso"   , &Muon_ChargedHadronIso);
+  EvtTree->Branch("Muon_PUChargedHadronIso" , &Muon_PUChargedHadronIso);
+  EvtTree->Branch("Muon_PhotonIso"          , &Muon_PhotonIso);
+  EvtTree->Branch("Muon_TrackIso"           , &Muon_TrackIso);
+  
+  EvtTree->Branch("Muon_PFIso03_SumChargedHadronPt"             , &Muon_PFIso03_SumChargedHadronPt);
+  EvtTree->Branch("Muon_PFIso03_SumChargedParticlePt"           , &Muon_PFIso03_SumChargedParticlePt);
+  EvtTree->Branch("Muon_PFIso03_SumNeutralHadronEt"             , &Muon_PFIso03_SumNeutralHadronEt);
+  EvtTree->Branch("Muon_PFIso03_SumNeutralHadronEtHighThreshold", &Muon_PFIso03_SumNeutralHadronEtHighThreshold);
+  EvtTree->Branch("Muon_PFIso03_SumPhotonEt"                    , &Muon_PFIso03_SumPhotonEt);
+  EvtTree->Branch("Muon_PFIso03_SumPhotonEtHighThreshold"       , &Muon_PFIso03_SumPhotonEtHighThreshold);
+  EvtTree->Branch("Muon_PFIso03_SumPUPt"                        , &Muon_PFIso03_SumPUPt);
+
+
+  EvtTree->Branch("Muon_PFIso04_SumChargedHadronPt"             , &Muon_PFIso04_SumChargedHadronPt);
+  EvtTree->Branch("Muon_PFIso04_SumChargedParticlePt"           , &Muon_PFIso04_SumChargedParticlePt);
+  EvtTree->Branch("Muon_PFIso04_SumNeutralHadronEt"             , &Muon_PFIso04_SumNeutralHadronEt);
+  EvtTree->Branch("Muon_PFIso04_SumNeutralHadronEtHighThreshold", &Muon_PFIso04_SumNeutralHadronEtHighThreshold);
+  EvtTree->Branch("Muon_PFIso04_SumPhotonEt"                    , &Muon_PFIso04_SumPhotonEt);
+  EvtTree->Branch("Muon_PFIso04_SumPhotonEtHighThreshold"       , &Muon_PFIso04_SumPhotonEtHighThreshold);
+  EvtTree->Branch("Muon_PFIso04_SumPUPt"                        , &Muon_PFIso04_SumPUPt);
+
 
   EvtTree->Branch("Muon_IP3d"                  , &Muon_IP3d);
   EvtTree->Branch("Muon_IP3dError"             , &Muon_IP3dError);
@@ -1465,7 +1830,12 @@ MyNtupleMaker::beginJob()
   EvtTree->Branch("Jet_bDis_SVHP"                   , &Jet_bDis_SVHP);
   EvtTree->Branch("Jet_bDis_SVHE"                   , &Jet_bDis_SVHE);
   EvtTree->Branch("Jet_bDis_CMVA"                   , &Jet_bDis_CMVA);
-  
+
+  EvtTree->Branch("Jet_bDis_CSV"                    , &Jet_bDis_CSV);
+  EvtTree->Branch("Jet_bDis_CSV2"                   , &Jet_bDis_CSV2);
+  EvtTree->Branch("Jet_bDis_CISV2"                  , &Jet_bDis_CISV2);
+  EvtTree->Branch("Jet_bDis_CSVSL"                  , &Jet_bDis_CSVSL);
+
   EvtTree->Branch("Jet_HasGenJet"                   , &Jet_HasGenJet);
   EvtTree->Branch("Jet_GenJet_Pt"                   , &Jet_GenJet_Pt);
   EvtTree->Branch("Jet_GenJet_Eta"                  , &Jet_GenJet_Eta);
@@ -1495,8 +1865,11 @@ MyNtupleMaker::beginJob()
   EvtTree->Branch("Vertex_DOF"         , &Vertex_DOF);
   EvtTree->Branch("Vertex_ReducedChi2" , &Vertex_ReducedChi2);
 
-
-  
+  //Pileup
+  EvtTree->Branch("PU_Bx"         , &PU_Bx);
+  EvtTree->Branch("PU_EventPU"    , &PU_EventPU);
+  EvtTree->Branch("PU_BxPU"       , &PU_BxPU);
+  EvtTree->Branch("PU_ZPositions" , &PU_ZPositions);  
 
 
   //PU-Jets
@@ -1612,6 +1985,60 @@ void MyNtupleMaker::InitializeContainers(void)
   Elec_Id.clear();
   Elec_Charge.clear();
 
+  Elec_IsPF.clear();
+  Elec_EcalIso.clear();
+  Elec_HcalIso.clear();
+  Elec_CaloIso.clear();
+  Elec_HadOverEm.clear();
+  Elec_HadOverEm1.clear();
+  Elec_HadOverEm2.clear();
+
+  Elec_NeutralHadIso.clear();
+  Elec_ChargedHadIso.clear();
+  Elec_PUChargedHadIso.clear();
+  Elec_ParticleIso.clear();
+  Elec_PhotonIso.clear();
+  Elec_TrackIso.clear();
+
+  Elec_E1X5.clear();
+  Elec_E2X5max.clear();
+  Elec_E5X5.clear();
+
+  Elec_EcalEnergy.clear();
+  Elec_CorrectedEcalEnergy.clear();
+  Elec_CorrectedEcalEnergyError.clear();
+  Elec_TrackMomentumError.clear();
+  
+  Elec_Vx.clear();
+  Elec_Vy.clear();
+  Elec_Vz.clear();
+  
+  Elec_SigmaEtaEta.clear();
+  Elec_SigmaIetaIeta.clear();
+  Elec_SigmaIphiIphi.clear();
+  Elec_SigmaIetaIphi.clear();
+  Elec_Full5x5_SigmaIphiIphi.clear();
+  Elec_Full5x5_SigmaEtaEta.clear();
+  Elec_Full5x5_SigmaIetaIeta.clear();
+  Elec_Full5x5_SigmaIetaIphi.clear();
+  Elec_Full5x5_R9.clear();
+  Elec_Full5x5_E1x5.clear();
+  Elec_Full5x5_E5x5.clear();
+  Elec_Full5x5_E2x5Max.clear();
+
+
+  Elec_Dr03ECALSumEt.clear();
+  Elec_Dr03HCALSumEt.clear();
+  Elec_Dr03HCAL1SumEt.clear();
+  Elec_Dr03HCAL2SumEt.clear();
+  Elec_Dr03TkSumPt.clear();
+
+  Elec_Dr04ECALSumEt.clear();
+  Elec_Dr04HCALSumEt.clear();
+  Elec_Dr04HCAL1SumEt.clear();
+  Elec_Dr04HCAL2SumEt.clear();
+  Elec_Dr04TkSumPt.clear();
+
   Elec_SCl_Eta.clear();
   Elec_SCl_EtaWidth.clear();
   Elec_SCl_Phi.clear();
@@ -1648,6 +2075,8 @@ void MyNtupleMaker::InitializeContainers(void)
   Elec_IP2dBSError.clear();
 
 
+
+
   //Muons
   Muon_Pt.clear();
   Muon_Eta.clear();
@@ -1657,6 +2086,50 @@ void MyNtupleMaker::InitializeContainers(void)
   Muon_Id.clear();
   Muon_Charge.clear();
   
+
+
+  Muon_IsPF.clear();
+  Muon_IsGlobalMuon.clear();
+  Muon_IsTrackerMuon.clear();
+  Muon_IsStandAloneMuon.clear();
+  Muon_IsCaloMuon.clear();
+  Muon_IsRPCMuon.clear();
+
+
+  //  Muon_IsPF.clear();
+  Muon_EcalIso.clear();
+  Muon_HcalIso.clear();
+  Muon_CaloIso.clear();
+
+  Muon_Vx.clear();
+  Muon_Vy.clear();
+  Muon_Vz.clear();
+  
+  Muon_NeutralHadronIso.clear();
+  Muon_ChargedHadronIso.clear();
+  Muon_PUChargedHadronIso.clear();
+  Muon_EcalIso.clear();
+  Muon_HcalIso.clear();
+  Muon_PhotonIso.clear();
+  Muon_TrackIso.clear();
+  
+  Muon_PFIso03_SumChargedHadronPt.clear();
+  Muon_PFIso03_SumChargedParticlePt.clear();
+  Muon_PFIso03_SumNeutralHadronEt.clear();
+  Muon_PFIso03_SumNeutralHadronEtHighThreshold.clear();
+  Muon_PFIso03_SumPhotonEt.clear();
+  Muon_PFIso03_SumPhotonEtHighThreshold.clear();
+  Muon_PFIso03_SumPUPt.clear();
+  
+  Muon_PFIso04_SumChargedHadronPt.clear();
+  Muon_PFIso04_SumChargedParticlePt.clear();
+  Muon_PFIso04_SumNeutralHadronEt.clear();
+  Muon_PFIso04_SumNeutralHadronEtHighThreshold.clear();
+  Muon_PFIso04_SumPhotonEt.clear();
+  Muon_PFIso04_SumPhotonEtHighThreshold.clear();
+  Muon_PFIso04_SumPUPt.clear();
+
+
   Muon_IP3d.clear();
   Muon_IP3dError.clear();
   Muon_IP2d.clear();
@@ -1819,6 +2292,12 @@ void MyNtupleMaker::InitializeContainers(void)
   Jet_bDis_SVHP.clear();
   Jet_bDis_SVHE.clear();
   Jet_bDis_CMVA.clear();
+  
+  Jet_bDis_CSV.clear();
+  Jet_bDis_CSV2.clear();
+  Jet_bDis_CISV2.clear();
+  Jet_bDis_CSVSL.clear();
+
 
   Jet_HasGenJet.clear();
   Jet_GenJet_Pt.clear();
@@ -1846,6 +2325,14 @@ void MyNtupleMaker::InitializeContainers(void)
   Vertex_Chi2.clear();
   Vertex_DOF.clear();
   Vertex_ReducedChi2.clear();
+
+
+  //Pileup  
+  PU_Bx.clear();
+  PU_EventPU.clear();
+  PU_BxPU.clear();
+  PU_ZPositions.clear();  
+
 
   //PU-Jets
   // PUJet_Pt.clear();
